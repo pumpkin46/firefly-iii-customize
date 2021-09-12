@@ -1,0 +1,26 @@
+{
+    "private": true,
+    "scripts": {
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "production": "mix --production",
+        "prod": "mix --production"
+    },
+    "devDependencies": {
+        "@johmun/vue-tags-input": "^2",
+        "axios": "^0.21",
+        "bootstrap-sass": "^3",
+        "cross-env": "^7.0",
+        "font-awesome": "^4.7.0",
+        "jquery": "^3",
+        "laravel-mix": "^6.0",
+        "postcss": "^8.2",
+        "uiv": "^1.2",
+        "vue": "^2.6",
+        "vue-i18n": "^8.23",
+        "vue-loader": "^15.9.5",
+        "vue-template-compiler": "^2.6"
+    }
+}
