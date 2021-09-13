@@ -416,6 +416,14 @@ Route::group(
 
     }
 );
+// Real Estate Management API routes:
+Route::group(
+    ['namespace' => 'FireflyIII\Http\Controllers', 'prefix' => 'real-estate-management', 'as' => 'real-estate-management.'],
+    static function () {
+        Route::get('', ['uses' => 'RealEstateManagementController@getApartments', 'as' => 'index']);
+        Route::post('', ['uses' => 'RealEstateManagementController@store', 'as' => 'store']);
+    }
+);
 
 Route::group(
     ['namespace' => 'FireflyIII\Api\V1\Controllers\Models\Transaction', 'prefix' => 'transaction-journals',

@@ -25,6 +25,7 @@ namespace FireflyIII\Models;
 use Carbon\Carbon;
 use Eloquent;
 use FireflyIII\User;
+use FireflyIII\Models\Apartment;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -277,5 +278,13 @@ class Account extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return HasMany
+     * @codeCoverageIgnore
+     */
+    public function apartments() {
+        return $this->hasMany(Apartment::class, 'sourceAccount', 'id');
     }
 }

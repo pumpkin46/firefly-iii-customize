@@ -50,6 +50,11 @@
                     transactions.length
                   }}</span>
                 <span v-if="transactions.length === 1">{{ $t('firefly.transaction_journal_information') }}</span>
+                <!-- <div v-if="transactions.length-1 === index" class="box-footer"> -->
+                  <button class="split_add_btn btn btn-default" type="button" @click="addTransactionToArray">
+                    {{ $t('firefly.add_another_split') }}
+                  </button>
+                <!-- </div> -->
               </h3>
               <div v-if="transactions.length > 1" class="box-tools pull-right">
                 <button class="btn btn-xs btn-danger" type="button" v-on:click="deleteTransaction(index, $event)"><i
@@ -58,7 +63,15 @@
             </div>
             <div class="box-body">
               <div class="row">
-                <div id="transaction-info" class="col-lg-4">
+                <div id="transaction-info" class="col-lg-12">
+                  
+                  <amount
+                      v-model="transaction.amount"
+                      :destination="transaction.destination_account"
+                      :error="transaction.errors.amount"
+                      :source="transaction.source_account"
+                      :transactionType="transactionType"
+                  ></amount>
                   <transaction-description
                       v-model="transaction.description"
                       :error="transaction.errors.description"
@@ -117,63 +130,51 @@
                         v-on:act:limitDestinationType="limitDestinationType($event)"
                     ></transaction-type>
                   </div>
-                </div>
-                <div id="amount-info" class="col-lg-4">
-                  <amount
-                      v-model="transaction.amount"
-                      :destination="transaction.destination_account"
-                      :error="transaction.errors.amount"
-                      :source="transaction.source_account"
-                      :transactionType="transactionType"
-                  ></amount>
-                  <foreign-amount
-                      v-model="transaction.foreign_amount"
-                      :destination="transaction.destination_account"
-                      :error="transaction.errors.foreign_amount"
-                      :source="transaction.source_account"
-                      :transactionType="transactionType"
-                      v-bind:title="$t('form.foreign_amount')"
-                  ></foreign-amount>
-                </div>
-                <div id="optional-info" class="col-lg-4">
-                  <budget
-                      v-model="transaction.budget"
-                      :error="transaction.errors.budget_id"
-                      :no_budget="$t('firefly.none_in_select_list')"
-                      :transactionType="transactionType"
-                  ></budget>
                   <category
                       v-model="transaction.category"
                       :error="transaction.errors.category"
                       :transactionType="transactionType"
                   ></category>
-                  <piggy-bank
-                      v-model="transaction.piggy_bank"
-                      :error="transaction.errors.piggy_bank"
-                      :no_piggy_bank="$t('firefly.no_piggy_bank')"
-                      :transactionType="transactionType"
-                  ></piggy-bank>
                   <tags
                       v-model="transaction.tags"
                       :error="transaction.errors.tags"
                   ></tags>
-                  <bill
-                      v-model="transaction.bill"
-                      :error="transaction.errors.bill_id"
-                      :no_bill="$t('firefly.none_in_select_list')"
-                      :transactionType="transactionType"
-                  ></bill>
-                  <custom-transaction-fields
-                      v-model="transaction.custom_fields"
-                      :error="transaction.errors.custom_errors"
-                  ></custom-transaction-fields>
+                  <span class="create_transaction_see_more" v-if="!visibleMore" @click="visibleMore=true">See More</span>
+                  <span class="create_transaction_see_more" v-if="visibleMore" @click="visibleMore=false">See Less</span>
+                  <div v-if="visibleMore">
+                    <foreign-amount
+                        v-model="transaction.foreign_amount"
+                        :destination="transaction.destination_account"
+                        :error="transaction.errors.foreign_amount"
+                        :source="transaction.source_account"
+                        :transactionType="transactionType"
+                        v-bind:title="$t('form.foreign_amount')"
+                    ></foreign-amount>
+                    <budget
+                        v-model="transaction.budget"
+                        :error="transaction.errors.budget_id"
+                        :no_budget="$t('firefly.none_in_select_list')"
+                        :transactionType="transactionType"
+                    ></budget>
+                    <piggy-bank
+                        v-model="transaction.piggy_bank"
+                        :error="transaction.errors.piggy_bank"
+                        :no_piggy_bank="$t('firefly.no_piggy_bank')"
+                        :transactionType="transactionType"
+                    ></piggy-bank>
+                    <bill
+                        v-model="transaction.bill"
+                        :error="transaction.errors.bill_id"
+                        :no_bill="$t('firefly.none_in_select_list')"
+                        :transactionType="transactionType"
+                    ></bill>
+                    <custom-transaction-fields
+                        v-model="transaction.custom_fields"
+                        :error="transaction.errors.custom_errors"
+                    ></custom-transaction-fields>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div v-if="transactions.length-1 === index" class="box-footer">
-              <button class="split_add_btn btn btn-default" type="button" @click="addTransactionToArray">
-                {{ $t('firefly.add_another_split') }}
-              </button>
             </div>
           </div>
         </div>
@@ -969,6 +970,7 @@ export default {
       resetFormAfter: false,
       resetButtonDisabled: true,
       attachmentCount: 0,
+      visibleMore: false,
     };
   },
 }

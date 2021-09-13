@@ -1204,6 +1204,21 @@ try {
             $breadcrumbs->push(trans('breadcrumbs.delete_object_group', ['title' => $objectGroup->title]), route('object-groups.delete', [$objectGroup->id]));
         }
     );
+    //Real-Estate Management
+    Breadcrumbs::register(
+        'real-estate-management.index',
+        static function (Generator $breadcrumbs) {
+            $breadcrumbs->parent('home');
+            $breadcrumbs->push(trans('firefly.realEstateManagement'), route('real-estate-management.index'));
+        }
+    );
+    Breadcrumbs::register(
+        'real-estate-management.create',
+        static function (Generator $breadcrumbs) {
+            $breadcrumbs->parent('home');
+            $breadcrumbs->push(trans('firefly.createApartment'), route('real-estate-management.create'));
+        }
+    );
 
 } catch (DuplicateBreadcrumbException $e) {
     // @ignoreException

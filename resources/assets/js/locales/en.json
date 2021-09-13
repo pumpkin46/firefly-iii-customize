@@ -18,6 +18,7 @@
         "hidden_fields_preferences": "You can enable more transaction options in your <a href=\"preferences\">preferences<\/a>.",
         "destination_account": "Destination account",
         "add_another_split": "Add another split",
+        "create_apartment ": "Create Apartment",
         "submission": "Submission",
         "create_another": "After storing, return here to create another one.",
         "reset_after": "Reset form after submission",

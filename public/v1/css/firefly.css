@@ -345,3 +345,16 @@ span.twitter-typeahead {
     background-color: #428bca;
 }
 */
+.split_add_btn{
+    margin-left: 10px;
+}
+.create_transaction_see_more{
+    cursor: pointer;
+    text-decoration: underline;
+}
+.apartment_row:nth-child(odd){
+    background-color: #d4d4d4;
+}
+.apartment_list_table th, .apartment_list_table td{
+    padding: 5px 10px;
+}

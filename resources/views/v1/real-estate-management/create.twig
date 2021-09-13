@@ -1,0 +1,13 @@
+{% set VUE_SCRIPT_NAME = 'create_apartment' %}
+{% extends './v1/layout/default' %}
+{% block breadcrumbs %}
+    {{ Breadcrumbs.render(Route.getCurrentRoute.getName, objectType) }}
+{% endblock %}
+
+{% block content %}
+    <div id="create_apartment"></div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" nonce="{{ JS_NONCE }}">
+    </script>
+{% endblock %}

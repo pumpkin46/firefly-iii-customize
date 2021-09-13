@@ -125,6 +125,15 @@
             </li>
         </ul>
     </li>
+                
+    <li class="nav-item">
+        <a href="{{ route('real-estate-management.index') }}" class="nav-link {{ activeRoutePartial('real-estate-management') }}">
+            <i class="nav-icon fas fa-piggy-bank"></i>
+            <p>
+                {{ 'realEstateManagement'|_ }}
+            </p>
+        </a>
+    </li>
 
     <li class="{{ activeRoutePartial('categories') }} {{ activeRoutePartial('tags') }} treeview">
         <a href="#">

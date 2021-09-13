@@ -1337,6 +1337,8 @@ return [
     'money_management'                          => 'Money management',
     'tools'                                     => 'Tools',
     'piggyBanks'                                => 'Piggy banks',
+    'realEstateManagement'                                => 'Real-Estate Management',
+    'createApartment'                                => 'Crate Apartment',
     'piggy_banks'                               => 'Piggy banks',
     'amount_x_of_y'                             => '{current} of {total}',
     'bills'                                     => 'Bills',
