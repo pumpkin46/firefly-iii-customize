@@ -31,6 +31,7 @@ use FireflyIII\Models\BudgetLimit;
 use FireflyIII\Models\Category;
 use FireflyIII\Models\LinkType;
 use FireflyIII\Models\ObjectGroup;
+use FireflyIII\Models\Apartment;
 use FireflyIII\Models\PiggyBank;
 use FireflyIII\Models\Recurrence;
 use FireflyIII\Models\Rule;
@@ -1217,6 +1218,30 @@ try {
         static function (Generator $breadcrumbs) {
             $breadcrumbs->parent('home');
             $breadcrumbs->push(trans('firefly.createApartment'), route('real-estate-management.create'));
+        }
+    );
+
+    Breadcrumbs::register(
+        'real-estate-management.edit',
+        static function (Generator $breadcrumbs, Apartment $apartment) {
+            $breadcrumbs->parent('real-estate-management.index', $apartment);
+            $breadcrumbs->push(trans('firefly.editApartment'));
+        }
+    );
+
+    Breadcrumbs::register(
+        'real-estate-management.rent_control',
+        static function (Generator $breadcrumbs) {
+            $breadcrumbs->parent('home');
+            $breadcrumbs->push(trans('firefly.rentControl'));
+        }
+    );
+    
+    Breadcrumbs::register(
+        'real-estate-management.yearly_overview',
+        static function (Generator $breadcrumbs) {
+            $breadcrumbs->parent('home');
+            $breadcrumbs->push(trans('firefly.yearlyOverview'));
         }
     );
 

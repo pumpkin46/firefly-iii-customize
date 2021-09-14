@@ -1,0 +1,13 @@
+{% set VUE_SCRIPT_NAME = 'rent_control' %}
+{% extends './v1/layout/default' %}
+{% block breadcrumbs %}
+    {{ Breadcrumbs.render(Route.getCurrentRoute.getName, objectType) }}
+{% endblock %}
+
+{% block content %}
+    <div id="rent_control"></div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" nonce="{{ JS_NONCE }}">
+    </script>
+{% endblock %}

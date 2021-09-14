@@ -2065,6 +2065,262 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomDate.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomDate.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['error', 'value', 'index', "type"],
+  name: "StandardDate",
+  methods: {
+    hasError: function hasError() {
+      return this.error.length > 0;
+    },
+    handleInput: function handleInput(e) {
+      this.$emit('input', this.$refs.date.value);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/YearlyOverview.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/YearlyOverview.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "RentControl",
+  components: {},
+  created: function created() {
+    var tempDate = new Date();
+    this.year = tempDate.getFullYear();
+    this.getApartments();
+  },
+  watch: {
+    year: function year() {
+      this.getApartments();
+    }
+  },
+  methods: {
+    getApartments: function getApartments() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/v1/real-estate-management/rent-status-yearly?year=".concat(this.year)).then(function (_ref) {
+        var data = _ref.data;
+        _this.accounts = data.accounts;
+
+        if (_this.accounts.length) {
+          _this.selectedAccount = _this.accounts[0];
+        }
+      });
+    },
+    addTransaction: function addTransaction(apartment, month) {
+      var _this2 = this;
+
+      if (confirm('Do you really want to do paid rent?')) {
+        var uri = './api/v1/transactions?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
+        var data = {
+          transactions: [{
+            amount: apartment.totalRent,
+            book_date: "",
+            category_name: "",
+            currency_id: undefined,
+            date: "".concat(this.year, "-").concat(month, "-01"),
+            description: apartment.renter_account.name,
+            destination_id: apartment.source_account.id,
+            destination_name: apartment.source_account.name,
+            due_date: "",
+            interest_date: "",
+            internal_reference: "",
+            invoice_date: "",
+            notes: "",
+            payment_date: "",
+            process_date: "",
+            source_id: apartment.renter_account.id,
+            source_name: apartment.renter_account.name,
+            type: "deposit"
+          }]
+        };
+        axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, data).then(function () {
+          uri = './api/v1/real-estate-management/apartment-payment?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
+          var submitData = {
+            apartment_id: apartment.id,
+            account_id: apartment.renter_account.id,
+            date: 1,
+            month: month,
+            year: _this2.year
+          };
+          axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, submitData).then(function () {
+            location.reload();
+          });
+        });
+      }
+    },
+    isPaidMonth: function isPaidMonth(apartment, month) {
+      if (apartment.payments.find(function (e) {
+        return new Date(e.date).getMonth() === month - 1 && e.apartment_id === apartment.id;
+      })) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    selectAccount: function selectAccount(event) {
+      var account = this.accounts.find(function (e) {
+        return e.id == event.target.value;
+      });
+      this.selectedAccount = account;
+    }
+  },
+
+  /*
+   * The component's data.
+   */
+  data: function data() {
+    return {
+      year: new Date(),
+      accounts: [],
+      selectedAccount: null
+    };
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/AccountSelect.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/AccountSelect.vue?vue&type=script&lang=js& ***!
@@ -2897,6 +3153,1020 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CreateTransaction.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CreateTransaction.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "CreateTransaction",
+  components: {},
+  created: function created() {
+    var _this = this;
+
+    this.addTransactionToArray();
+
+    document.onreadystatechange = function () {
+      if (document.readyState === "complete") {
+        _this.prefillSourceAccount();
+
+        _this.prefillDestinationAccount();
+      }
+    };
+  },
+  methods: {
+    prefillSourceAccount: function prefillSourceAccount() {
+      if (0 === window.sourceId) {
+        return;
+      }
+
+      this.getAccount(window.sourceId, 'source_account');
+    },
+    prefillDestinationAccount: function prefillDestinationAccount() {
+      if (0 === destinationId) {
+        return;
+      }
+
+      this.getAccount(window.destinationId, 'destination_account');
+    },
+    getAccount: function getAccount(accountId, slot) {
+      var _this2 = this;
+
+      var uri = './api/v1/accounts/' + accountId + '?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
+      axios.get(uri).then(function (response) {
+        var model = response.data.data.attributes;
+        model.type = _this2.fullAccountType(model.type, model.liability_type);
+        model.id = parseInt(response.data.data.id);
+
+        if ('source_account' === slot) {
+          _this2.selectedSourceAccount(0, model);
+        }
+
+        if ('destination_account' === slot) {
+          _this2.selectedDestinationAccount(0, model);
+        }
+      })["catch"](function (error) {
+        console.warn('Could  not auto fill account');
+        console.warn(error);
+      });
+    },
+    fullAccountType: function fullAccountType(shortType, liabilityType) {
+      var _arr$searchType;
+
+      var searchType = shortType;
+
+      if ('liabilities' === shortType) {
+        searchType = liabilityType;
+      }
+
+      var arr = {
+        'asset': 'Asset account',
+        'loan': 'Loan',
+        'debt': 'Debt',
+        'mortgage': 'Mortgage'
+      };
+      return (_arr$searchType = arr[searchType]) !== null && _arr$searchType !== void 0 ? _arr$searchType : searchType;
+    },
+    convertData: function convertData() {
+      // console.log('Now in convertData()');
+      var data = {
+        'transactions': []
+      };
+      var transactionType;
+      var firstSource;
+      var firstDestination;
+
+      if (this.transactions.length > 1) {
+        data.group_title = this.group_title;
+      } // get transaction type from first transaction
+
+
+      transactionType = this.transactionType ? this.transactionType.toLowerCase() : 'invalid'; // if the transaction type is invalid, might just be that we can deduce it from
+      // the presence of a source or destination account
+
+      firstSource = this.transactions[0].source_account.type;
+      firstDestination = this.transactions[0].destination_account.type; // console.log('Type of first source is  ' + firstSource);
+
+      if ('invalid' === transactionType && ['asset', 'Asset account', 'Loan', 'Debt', 'Mortgage'].includes(firstSource)) {
+        transactionType = 'withdrawal';
+      }
+
+      if ('invalid' === transactionType && ['asset', 'Asset account', 'Loan', 'Debt', 'Mortgage'].includes(firstDestination)) {
+        transactionType = 'deposit';
+      }
+
+      for (var key in this.transactions) {
+        if (this.transactions.hasOwnProperty(key) && /^0$|^[1-9]\d*$/.test(key) && key <= 4294967294) {
+          data.transactions.push(this.convertDataRow(this.transactions[key], key, transactionType));
+        }
+      } // overrule group title in case its empty:
+
+
+      if ('' === data.group_title && data.transactions.length > 1) {
+        data.group_title = data.transactions[0].description;
+      }
+
+      return data;
+    },
+    convertDataRow: function convertDataRow(row, index, transactionType) {
+      // console.log('Now in convertDataRow()');
+      var tagList = [];
+      var foreignAmount = null;
+      var foreignCurrency = null;
+      var currentArray;
+      var sourceId;
+      var sourceName;
+      var destId;
+      var destName;
+      var date;
+      sourceId = row.source_account.id;
+      sourceName = row.source_account.name;
+      destId = row.destination_account.id;
+      destName = row.destination_account.name;
+      date = row.date;
+
+      if (index > 0) {
+        date = this.transactions[0].date;
+      } // if type is 'withdrawal' and destination is empty, cash withdrawal.
+
+
+      if (transactionType === 'withdrawal' && '' === destName) {
+        destId = window.cashAccountId;
+      } // if type is 'deposit' and source is empty, cash deposit.
+
+
+      if (transactionType === 'deposit' && '' === sourceName) {
+        sourceId = window.cashAccountId;
+      } // if index is over 0 and type is withdrawal or transfer, take source from index 0.
+
+
+      if (index > 0 && (transactionType.toLowerCase() === 'withdrawal' || transactionType.toLowerCase() === 'transfer')) {
+        sourceId = this.transactions[0].source_account.id;
+        sourceName = this.transactions[0].source_account.name;
+      } // if index is over 0 and type is deposit or transfer, take destination from index 0.
+
+
+      if (index > 0 && (transactionType.toLowerCase() === 'deposit' || transactionType.toLowerCase() === 'transfer')) {
+        destId = this.transactions[0].destination_account.id;
+        destName = this.transactions[0].destination_account.name;
+      }
+
+      tagList = [];
+      foreignAmount = null;
+      foreignCurrency = null; // loop tags
+
+      for (var tagKey in row.tags) {
+        if (row.tags.hasOwnProperty(tagKey) && /^0$|^[1-9]\d*$/.test(tagKey) && tagKey <= 4294967294) {
+          tagList.push(row.tags[tagKey].text);
+        }
+      } // set foreign currency info:
+
+
+      if (row.foreign_amount.amount !== '' && parseFloat(row.foreign_amount.amount) !== .00) {
+        foreignAmount = row.foreign_amount.amount;
+        foreignCurrency = row.foreign_amount.currency_id;
+      }
+
+      if (foreignCurrency === row.currency_id) {
+        foreignAmount = null;
+        foreignCurrency = null;
+      } // correct some id's
+
+
+      if (0 === destId) {
+        destId = null;
+      }
+
+      if (0 === sourceId) {
+        sourceId = null;
+      } // parse amount if has exactly one comma:
+      // solves issues with some locales.
+
+
+      if (1 === (row.amount.match(/\,/g) || []).length) {
+        row.amount = row.amount.replace(',', '.');
+      }
+
+      currentArray = {
+        type: transactionType,
+        date: date,
+        amount: row.amount,
+        currency_id: row.currency_id,
+        description: row.description,
+        source_id: sourceId,
+        source_name: sourceName,
+        destination_id: destId,
+        destination_name: destName,
+        category_name: row.category,
+        interest_date: row.custom_fields.interest_date,
+        book_date: row.custom_fields.book_date,
+        process_date: row.custom_fields.process_date,
+        due_date: row.custom_fields.due_date,
+        payment_date: row.custom_fields.payment_date,
+        invoice_date: row.custom_fields.invoice_date,
+        internal_reference: row.custom_fields.internal_reference,
+        notes: row.custom_fields.notes
+      };
+
+      if (tagList.length > 0) {
+        currentArray.tags = tagList;
+      }
+
+      if (null !== foreignAmount) {
+        currentArray.foreign_amount = foreignAmount;
+        currentArray.foreign_currency_id = foreignCurrency;
+      } // set budget id and piggy ID.
+
+
+      if (parseInt(row.budget) > 0) {
+        currentArray.budget_id = parseInt(row.budget);
+      }
+
+      if (parseInt(row.bill) > 0) {
+        currentArray.bill_id = parseInt(row.bill);
+      }
+
+      if (parseInt(row.piggy_bank) > 0) {
+        currentArray.piggy_bank_id = parseInt(row.piggy_bank);
+      }
+
+      return currentArray;
+    },
+    // submit transaction
+    submit: function submit(e) {
+      var _this3 = this;
+
+      // console.log('Now in submit()');
+      // e.preventDefault();
+      var uri = './api/v1/transactions?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
+      var data = this.convertData(); // console.log(data);
+      // return;
+
+      var button = $('#submitButton');
+      button.prop("disabled", true);
+      axios.post(uri, data).then(function (response) {
+        // console.log('Did a succesfull POST');
+        // this method will ultimately send the user on (or not).
+        if (0 === _this3.collectAttachmentData(response)) {
+          // console.log('Will now go to redirectUser()');
+          _this3.redirectUser(response.data.data.id, response.data.data);
+        }
+      })["catch"](function (error) {
+        // give user errors things back.
+        // something something render errors.
+        console.error('Error in transaction submission.');
+        console.error(error);
+
+        _this3.parseErrors(error.response.data); // something.
+        // console.log('enable button again.')
+
+
+        button.removeAttr('disabled');
+      });
+
+      if (e) {
+        e.preventDefault();
+      }
+    },
+    escapeHTML: function escapeHTML(unsafeText) {
+      var div = document.createElement('div');
+      div.innerText = unsafeText;
+      return div.innerHTML;
+    },
+    redirectUser: function redirectUser(groupId, transactionData) {
+      var _this4 = this;
+
+      // console.log('In redirectUser()');
+      // console.log(transactionData);
+      var title = null === transactionData.attributes.group_title ? transactionData.attributes.transactions[0].description : transactionData.attributes.group_title; // console.log('Title is "' + title + '"');
+      // if count is 0, send user onwards.
+
+      if (this.createAnother) {
+        // do message:
+        this.success_message = this.$t('firefly.transaction_stored_link', {
+          ID: groupId,
+          title: title
+        });
+        this.error_message = '';
+
+        if (this.resetFormAfter) {
+          // also clear form.
+          this.resetTransactions(); // do a short time out?
+
+          setTimeout(function () {
+            return _this4.addTransactionToArray();
+          }, 50); //this.addTransactionToArray();
+        } // clear errors:
+
+
+        this.setDefaultErrors(); // console.log('enable button again.')
+
+        var button = $('#submitButton');
+        button.removeAttr('disabled');
+      } else {
+        // console.log('Will redirect to previous URL. (' + previousUri + ')');
+        window.location.href = window.previousUri + '?transaction_group_id=' + groupId + '&message=created';
+      }
+    },
+    collectAttachmentData: function collectAttachmentData(response) {
+      var _this5 = this;
+
+      // console.log('Now incollectAttachmentData()');
+      var groupId = response.data.data.id; // reverse list of transactions?
+
+      response.data.data.attributes.transactions = response.data.data.attributes.transactions.reverse(); // array of all files to be uploaded:
+
+      var toBeUploaded = []; // array with all file data.
+
+      var fileData = []; // all attachments
+
+      var attachments = $('input[name="attachments[]"]'); // loop over all attachments, and add references to this array:
+
+      for (var key in attachments) {
+        if (attachments.hasOwnProperty(key) && /^0$|^[1-9]\d*$/.test(key) && key <= 4294967294) {
+          for (var fileKey in attachments[key].files) {
+            if (attachments[key].files.hasOwnProperty(fileKey) && /^0$|^[1-9]\d*$/.test(fileKey) && fileKey <= 4294967294) {
+              // include journal thing.
+              toBeUploaded.push({
+                journal: response.data.data.attributes.transactions[key].transaction_journal_id,
+                file: attachments[key].files[fileKey]
+              });
+            }
+          }
+        }
+      }
+
+      var count = toBeUploaded.length; // console.log('Found ' + toBeUploaded.length + ' attachments.');
+      // loop all uploads.
+
+      var _loop = function _loop(_key) {
+        if (toBeUploaded.hasOwnProperty(_key) && /^0$|^[1-9]\d*$/.test(_key) && _key <= 4294967294) {
+          // create file reader thing that will read all of these uploads
+          (function (f, i, theParent) {
+            var fileReader = new FileReader();
+
+            fileReader.onloadend = function (evt) {
+              if (evt.target.readyState === FileReader.DONE) {
+                // DONE == 2
+                fileData.push({
+                  name: toBeUploaded[_key].file.name,
+                  journal: toBeUploaded[_key].journal,
+                  content: new Blob([evt.target.result])
+                });
+
+                if (fileData.length === count) {
+                  theParent.uploadFiles(fileData, groupId, response.data.data);
+                }
+              }
+            };
+
+            fileReader.readAsArrayBuffer(f.file);
+          })(toBeUploaded[_key], _key, _this5);
+        }
+      };
+
+      for (var _key in toBeUploaded) {
+        _loop(_key);
+      }
+
+      return count;
+    },
+    uploadFiles: function uploadFiles(fileData, groupId, transactionData) {
+      var _this6 = this;
+
+      var count = fileData.length;
+      var uploads = 0;
+
+      var _loop2 = function _loop2(key) {
+        if (fileData.hasOwnProperty(key) && /^0$|^[1-9]\d*$/.test(key) && key <= 4294967294) {
+          // console.log('Creating attachment #' + key);
+          // axios thing, + then.
+          var uri = './api/v1/attachments';
+          var data = {
+            filename: fileData[key].name,
+            attachable_type: 'TransactionJournal',
+            attachable_id: fileData[key].journal
+          };
+          axios.post(uri, data).then(function (response) {
+            // console.log('Created attachment #' + key);
+            // console.log('Uploading attachment #' + key);
+            var uploadUri = './api/v1/attachments/' + response.data.data.id + '/upload';
+            axios.post(uploadUri, fileData[key].content).then(function (attachmentResponse) {
+              // console.log('Uploaded attachment #' + key);
+              uploads++;
+
+              if (uploads === count) {
+                // finally we can redirect the user onwards.
+                // console.log('FINAL UPLOAD');
+                _this6.redirectUser(groupId, transactionData);
+              } // console.log('Upload complete!');
+
+
+              return true;
+            })["catch"](function (error) {
+              console.error('Could not upload');
+              console.error(error); // console.log('Uploaded attachment #' + key);
+
+              uploads++;
+
+              if (uploads === count) {
+                // finally we can redirect the user onwards.
+                // console.log('FINAL UPLOAD');
+                _this6.redirectUser(groupId, transactionData);
+              } // console.log('Upload complete!');
+
+
+              return false;
+            });
+          })["catch"](function (error) {
+            console.error('Could not create upload.');
+            console.error(error);
+            uploads++;
+
+            if (uploads === count) {
+              // finally we can redirect the user onwards.
+              // console.log('FINAL UPLOAD');
+              _this6.redirectUser(groupId, transactionData);
+            } // console.log('Upload complete!');
+
+
+            return false;
+          });
+        }
+      };
+
+      for (var key in fileData) {
+        _loop2(key);
+      }
+    },
+    setDefaultErrors: function setDefaultErrors() {
+      for (var key in this.transactions) {
+        if (this.transactions.hasOwnProperty(key) && /^0$|^[1-9]\d*$/.test(key) && key <= 4294967294) {
+          // console.log('Set default errors for key ' + key);
+          //this.transactions[key].description
+          this.transactions[key].errors = {
+            source_account: [],
+            destination_account: [],
+            description: [],
+            amount: [],
+            date: [],
+            budget_id: [],
+            bill_id: [],
+            foreign_amount: [],
+            category: [],
+            piggy_bank: [],
+            tags: [],
+            // custom fields:
+            custom_errors: {
+              interest_date: [],
+              book_date: [],
+              process_date: [],
+              due_date: [],
+              payment_date: [],
+              invoice_date: [],
+              internal_reference: [],
+              notes: [],
+              attachments: [],
+              external_uri: []
+            }
+          };
+        }
+      }
+    },
+    parseErrors: function parseErrors(errors) {
+      this.setDefaultErrors();
+      this.error_message = "";
+
+      if (typeof errors.errors === 'undefined') {
+        this.success_message = '';
+        this.error_message = errors.message;
+      } else {
+        this.success_message = '';
+        this.error_message = this.$t('firefly.errors_submission');
+      }
+
+      var transactionIndex;
+      var fieldName;
+
+      for (var key in errors.errors) {
+        if (errors.errors.hasOwnProperty(key)) {
+          if (key === 'group_title') {
+            this.group_title_errors = errors.errors[key];
+          }
+
+          if (key !== 'group_title') {
+            // lol dumbest way to explode "transactions.0.something" ever.
+            transactionIndex = parseInt(key.split('.')[1]);
+            fieldName = key.split('.')[2]; // set error in this object thing.
+
+            switch (fieldName) {
+              case 'amount':
+              case 'date':
+              case 'budget_id':
+              case 'bill_id':
+              case 'description':
+              case 'tags':
+                this.transactions[transactionIndex].errors[fieldName] = errors.errors[key];
+                break;
+
+              case 'source_name':
+              case 'source_id':
+                this.transactions[transactionIndex].errors.source_account = this.transactions[transactionIndex].errors.source_account.concat(errors.errors[key]);
+                break;
+
+              case 'destination_name':
+              case 'destination_id':
+                this.transactions[transactionIndex].errors.destination_account = this.transactions[transactionIndex].errors.destination_account.concat(errors.errors[key]);
+                break;
+
+              case 'foreign_amount':
+              case 'foreign_currency_id':
+                this.transactions[transactionIndex].errors.foreign_amount = this.transactions[transactionIndex].errors.foreign_amount.concat(errors.errors[key]);
+                break;
+            }
+          } // unique some things
+
+
+          if (typeof this.transactions[transactionIndex] !== 'undefined') {
+            this.transactions[transactionIndex].errors.source_account = Array.from(new Set(this.transactions[transactionIndex].errors.source_account));
+            this.transactions[transactionIndex].errors.destination_account = Array.from(new Set(this.transactions[transactionIndex].errors.destination_account));
+          }
+        }
+      }
+    },
+    resetTransactions: function resetTransactions() {
+      // console.log('Now in resetTransactions()');
+      this.transactions = [];
+      this.group_title = '';
+    },
+    addTransactionToArray: function addTransactionToArray(e) {
+      // console.log('Now in addTransactionToArray()');
+      this.transactions.push({
+        description: "",
+        date: "",
+        amount: "",
+        category: "",
+        piggy_bank: 0,
+        errors: {
+          source_account: [],
+          destination_account: [],
+          description: [],
+          amount: [],
+          date: [],
+          budget_id: [],
+          bill_id: [],
+          foreign_amount: [],
+          category: [],
+          piggy_bank: [],
+          tags: [],
+          // custom fields:
+          custom_errors: {
+            interest_date: [],
+            book_date: [],
+            process_date: [],
+            due_date: [],
+            payment_date: [],
+            invoice_date: [],
+            internal_reference: [],
+            notes: [],
+            attachments: [],
+            external_uri: []
+          }
+        },
+        budget: 0,
+        bill: 0,
+        tags: [],
+        custom_fields: {
+          "interest_date": "",
+          "book_date": "",
+          "process_date": "",
+          "due_date": "",
+          "payment_date": "",
+          "invoice_date": "",
+          "internal_reference": "",
+          "notes": "",
+          "attachments": [],
+          "external_uri": ""
+        },
+        foreign_amount: {
+          amount: "",
+          currency_id: 0
+        },
+        source_account: {
+          id: 0,
+          name: "",
+          type: "",
+          currency_id: 0,
+          currency_name: '',
+          currency_code: '',
+          currency_decimal_places: 2,
+          allowed_types: ['Asset account', 'Revenue account', 'Loan', 'Debt', 'Mortgage'],
+          default_allowed_types: ['Asset account', 'Revenue account', 'Loan', 'Debt', 'Mortgage']
+        },
+        destination_account: {
+          id: 0,
+          name: "",
+          type: "",
+          currency_id: 0,
+          currency_name: '',
+          currency_code: '',
+          currency_decimal_places: 2,
+          allowed_types: ['Asset account', 'Expense account', 'Loan', 'Debt', 'Mortgage'],
+          default_allowed_types: ['Asset account', 'Expense account', 'Loan', 'Debt', 'Mortgage']
+        }
+      });
+
+      if (this.transactions.length === 1) {
+        // console.log('Length == 1, set date to today.');
+        // set first date.
+        var today = new Date();
+        this.transactions[0].date = today.getFullYear() + '-' + ("0" + (today.getMonth() + 1)).slice(-2) + '-' + ("0" + today.getDate()).slice(-2); // call for extra clear thing:
+        // this.clearSource(0);
+        //this.clearDestination(0);
+      }
+
+      if (e) {
+        e.preventDefault();
+      }
+    },
+    setTransactionType: function setTransactionType(type) {
+      this.transactionType = type;
+    },
+    deleteTransaction: function deleteTransaction(index, event) {
+      event.preventDefault();
+      this.transactions.splice(index, 1);
+    },
+    limitSourceType: function limitSourceType(type) {
+      var i;
+
+      for (i = 0; i < this.transactions.length; i++) {
+        this.transactions[i].source_account.allowed_types = [type];
+      }
+    },
+    limitDestinationType: function limitDestinationType(type) {
+      var i;
+
+      for (i = 0; i < this.transactions.length; i++) {
+        this.transactions[i].destination_account.allowed_types = [type];
+      }
+    },
+    selectedSourceAccount: function selectedSourceAccount(index, model) {
+      // console.log('Now in selectedSourceAccount()');
+      if (typeof model === 'string') {
+        //console.log('model is string.')
+        // cant change types, only name.
+        this.transactions[index].source_account.name = model;
+      } else {
+        //console.log('model is NOT string.')
+        this.transactions[index].source_account = {
+          id: model.id,
+          name: model.name,
+          type: model.type,
+          currency_id: model.currency_id,
+          currency_name: model.currency_name,
+          currency_code: model.currency_code,
+          currency_decimal_places: model.currency_decimal_places,
+          allowed_types: this.transactions[index].source_account.allowed_types,
+          default_allowed_types: ['Asset account', 'Revenue account', 'Loan', 'Debt', 'Mortgage']
+        }; // force types on destination selector.
+
+        this.transactions[index].destination_account.allowed_types = window.allowedOpposingTypes.source[model.type];
+      } //console.log('Transactions:');
+      //console.log(this.transactions);
+
+    },
+    selectedDestinationAccount: function selectedDestinationAccount(index, model) {
+      // console.log('Now in selectedDestinationAccount()');
+      if (typeof model === 'string') {
+        // cant change types, only name.
+        this.transactions[index].destination_account.name = model;
+      } else {
+        this.transactions[index].destination_account = {
+          id: model.id,
+          name: model.name,
+          type: model.type,
+          currency_id: model.currency_id,
+          currency_name: model.currency_name,
+          currency_code: model.currency_code,
+          currency_decimal_places: model.currency_decimal_places,
+          allowed_types: this.transactions[index].destination_account.allowed_types,
+          default_allowed_types: ['Asset account', 'Expense account', 'Loan', 'Debt', 'Mortgage']
+        }; // force types on destination selector.
+
+        this.transactions[index].source_account.allowed_types = window.allowedOpposingTypes.destination[model.type];
+      }
+    },
+    clearSource: function clearSource(index) {
+      // console.log('clearSource(' + index + ')');
+      // reset source account:
+      this.transactions[index].source_account = {
+        id: 0,
+        name: '',
+        type: '',
+        currency_id: 0,
+        currency_name: '',
+        currency_code: '',
+        currency_decimal_places: 2,
+        allowed_types: this.transactions[index].source_account.allowed_types,
+        default_allowed_types: ['Asset account', 'Revenue account', 'Loan', 'Debt', 'Mortgage']
+      }; // reset destination allowed account types.
+
+      this.transactions[index].destination_account.allowed_types = []; // if there is a destination model, reset the types of the source
+      // by pretending we selected it again.
+
+      if (this.transactions[index].destination_account) {
+        this.selectedDestinationAccount(index, this.transactions[index].destination_account);
+      }
+    },
+    clearDestination: function clearDestination(index) {
+      // console.log('clearDestination(' + index + ')');
+      // reset destination account:
+      this.transactions[index].destination_account = {
+        id: 0,
+        name: '',
+        type: '',
+        currency_id: 0,
+        currency_name: '',
+        currency_code: '',
+        currency_decimal_places: 2,
+        allowed_types: this.transactions[index].destination_account.allowed_types,
+        default_allowed_types: ['Asset account', 'Expense account', 'Loan', 'Debt', 'Mortgage']
+      }; // reset destination allowed account types.
+
+      this.transactions[index].source_account.allowed_types = []; // if there is a source model, reset the types of the destination
+      // by pretending we selected it again.
+
+      if (this.transactions[index].source_account) {
+        this.selectedSourceAccount(index, this.transactions[index].source_account);
+      }
+    }
+  },
+
+  /*
+   * The component's data.
+   */
+  data: function data() {
+    return {
+      transactionType: null,
+      group_title: "",
+      transactions: [],
+      group_title_errors: [],
+      error_message: "",
+      success_message: "",
+      cash_account_id: 0,
+      createAnother: false,
+      resetFormAfter: false,
+      resetButtonDisabled: true,
+      attachmentCount: 0,
+      visibleMore: false
+    };
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomAttachments.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomAttachments.vue?vue&type=script&lang=js& ***!
@@ -2977,92 +4247,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     hasError: function hasError() {
       return this.error.length > 0;
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomDate.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomDate.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "CustomDate",
-  props: {
-    value: String,
-    title: String,
-    name: String,
-    error: Array
-  },
-  methods: {
-    handleInput: function handleInput(e) {
-      this.$emit('input', this.$refs.date.value);
-    },
-    hasError: function hasError() {
-      return this.error.length > 0;
-    },
-    clearDate: function clearDate() {
-      //props.value = '';
-      this.name = '';
-      this.$refs.date.value = '';
-      this.$emit('input', this.$refs.date.value);
     }
   }
 });
@@ -3458,1073 +4642,6 @@ __webpack_require__.r(__webpack_exports__);
     hasError: function hasError() {
       return this.error.length > 0;
     }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/EditTransaction.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/EditTransaction.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "EditTransaction",
-  props: {
-    groupId: Number
-  },
-  mounted: function mounted() {
-    // console.log('EditTransaction: mounted()');
-    this.getGroup();
-  },
-  ready: function ready() {// console.log('EditTransaction: ready()');
-  },
-  methods: {
-    positiveAmount: function positiveAmount(amount) {
-      if (amount < 0) {
-        return amount * -1;
-      }
-
-      return amount;
-    },
-    roundNumber: function roundNumber(amount, decimals) {
-      var multiplier = Math.pow(10, decimals);
-      return Math.round(amount * multiplier) / multiplier;
-    },
-    selectedSourceAccount: function selectedSourceAccount(index, model) {
-      if (typeof model === 'string') {
-        // cant change types, only name.
-        // also clear ID
-        this.transactions[index].source_account.id = null;
-        this.transactions[index].source_account.name = model;
-        return;
-      }
-
-      this.transactions[index].source_account = {
-        id: model.id,
-        name: model.name,
-        type: model.type,
-        currency_id: model.currency_id,
-        currency_name: model.currency_name,
-        currency_code: model.currency_code,
-        currency_decimal_places: model.currency_decimal_places,
-        allowed_types: this.transactions[index].source_account.allowed_types
-      };
-    },
-    selectedDestinationAccount: function selectedDestinationAccount(index, model) {
-      if (typeof model === 'string') {
-        // cant change types, only name.
-        // also clear ID
-        this.transactions[index].destination_account.id = null;
-        this.transactions[index].destination_account.name = model;
-        return;
-      }
-
-      this.transactions[index].destination_account = {
-        id: model.id,
-        name: model.name,
-        type: model.type,
-        currency_id: model.currency_id,
-        currency_name: model.currency_name,
-        currency_code: model.currency_code,
-        currency_decimal_places: model.currency_decimal_places,
-        allowed_types: this.transactions[index].destination_account.allowed_types
-      };
-    },
-    clearSource: function clearSource(index) {
-      // reset source account:
-      this.transactions[index].source_account = {
-        id: 0,
-        name: '',
-        type: '',
-        currency_id: 0,
-        currency_name: '',
-        currency_code: '',
-        currency_decimal_places: 2,
-        allowed_types: this.transactions[index].source_account.allowed_types
-      }; // if there is a destination model, reset the types of the source
-      // by pretending we selected it again.
-
-      if (this.transactions[index].destination_account) {
-        this.selectedDestinationAccount(index, this.transactions[index].destination_account);
-      }
-    },
-    setTransactionType: function setTransactionType(type) {
-      if (null !== type) {
-        this.transactionType = type;
-      }
-    },
-    deleteTransaction: function deleteTransaction(index, event) {
-      event.preventDefault();
-      this.transactions.splice(index, 1);
-    },
-    clearDestination: function clearDestination(index) {
-      // console.log('clearDestination(' + index + ')');
-      // reset destination account:
-      // console.log('Destination allowed types first:');
-      // console.log(this.transactions[index].destination_account.allowed_types);
-      this.transactions[index].destination_account = {
-        id: 0,
-        name: '',
-        type: '',
-        currency_id: 0,
-        currency_name: '',
-        currency_code: '',
-        currency_decimal_places: 2,
-        allowed_types: this.transactions[index].destination_account.allowed_types
-      }; // reset destination allowed account types.
-      //this.transactions[index].source_account.allowed_types = [];
-      // if there is a source model, reset the types of the destination
-      // by pretending we selected it again.
-
-      if (this.transactions[index].source_account) {
-        this.selectedSourceAccount(index, this.transactions[index].source_account);
-      } // console.log('Destination allowed types after:');
-      // console.log(this.transactions[index].destination_account.allowed_types);
-
-    },
-    getGroup: function getGroup() {
-      var _this = this;
-
-      // console.log('EditTransaction: getGroup()');
-      var page = window.location.href.split('/');
-      var groupId = page[page.length - 1];
-      var uri = './api/v1/transactions/' + groupId; // console.log(uri);
-      // fill in transactions array.
-
-      axios.get(uri).then(function (response) {
-        _this.processIncomingGroup(response.data.data);
-      })["catch"](function (error) {
-        console.error('Some error when getting axios');
-        console.error(error);
-      });
-    },
-    processIncomingGroup: function processIncomingGroup(data) {
-      // console.log('EditTransaction: processIncomingGroup()');
-      this.group_title = data.attributes.group_title;
-      var transactions = data.attributes.transactions.reverse();
-
-      for (var key in transactions) {
-        if (transactions.hasOwnProperty(key) && /^0$|^[1-9]\d*$/.test(key) && key <= 4294967294) {
-          var transaction = transactions[key];
-          this.processIncomingGroupRow(transaction);
-        }
-      }
-    },
-    ucFirst: function ucFirst(string) {
-      if (typeof string === 'string') {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-      }
-
-      return null;
-    },
-    processIncomingGroupRow: function processIncomingGroupRow(transaction) {
-      //console.log('EditTransaction: processIncomingGroupRow()');
-      this.setTransactionType(transaction.type);
-      var newTags = [];
-
-      for (var key in transaction.tags) {
-        if (transaction.tags.hasOwnProperty(key) && /^0$|^[1-9]\d*$/.test(key) && key <= 4294967294) {
-          newTags.push({
-            text: transaction.tags[key],
-            tiClasses: []
-          });
-        }
-      } // console.log('source allowed types for a ' + transaction.type);
-      //console.log(window.expectedSourceTypes.source[transaction.type]);
-      // console.log(window.expectedSourceTypes.source[this.ucFirst(transaction.type)]);
-      // console.log('destination allowed types for a ' + transaction.type);
-      // console.log(window.expectedSourceTypes.destination[this.ucFirst(transaction.type)]);
-
-
-      if (typeof window.expectedSourceTypes === 'undefined') {
-        console.error('window.expectedSourceTypes is unexpectedly empty.');
-      }
-
-      this.transactions.push({
-        transaction_journal_id: transaction.transaction_journal_id,
-        description: transaction.description,
-        date: transaction.date.substr(0, 10),
-        amount: this.roundNumber(this.positiveAmount(transaction.amount), transaction.currency_decimal_places),
-        category: transaction.category_name,
-        errors: {
-          source_account: [],
-          destination_account: [],
-          description: [],
-          amount: [],
-          date: [],
-          budget_id: [],
-          bill_id: [],
-          foreign_amount: [],
-          category: [],
-          piggy_bank: [],
-          tags: [],
-          // custom fields:
-          custom_errors: {
-            interest_date: [],
-            book_date: [],
-            process_date: [],
-            due_date: [],
-            payment_date: [],
-            invoice_date: [],
-            internal_reference: [],
-            notes: [],
-            attachments: [],
-            external_uri: []
-          }
-        },
-        budget: transaction.budget_id,
-        bill: transaction.bill_id,
-        tags: newTags,
-        custom_fields: {
-          interest_date: transaction.interest_date,
-          book_date: transaction.book_date,
-          process_date: transaction.process_date,
-          due_date: transaction.due_date,
-          payment_date: transaction.payment_date,
-          invoice_date: transaction.invoice_date,
-          internal_reference: transaction.internal_reference,
-          notes: transaction.notes,
-          external_uri: transaction.external_uri
-        },
-        foreign_amount: {
-          amount: this.roundNumber(this.positiveAmount(transaction.foreign_amount), transaction.foreign_currency_decimal_places),
-          currency_id: transaction.foreign_currency_id
-        },
-        source_account: {
-          id: transaction.source_id,
-          name: transaction.source_name,
-          type: transaction.source_type,
-          currency_id: transaction.currency_id,
-          currency_name: transaction.currency_name,
-          currency_code: transaction.currency_code,
-          currency_decimal_places: transaction.currency_decimal_places,
-          allowed_types: window.expectedSourceTypes.source[this.ucFirst(transaction.type)]
-        },
-        destination_account: {
-          id: transaction.destination_id,
-          name: transaction.destination_name,
-          type: transaction.destination_type,
-          currency_id: transaction.currency_id,
-          currency_name: transaction.currency_name,
-          currency_code: transaction.currency_code,
-          currency_decimal_places: transaction.currency_decimal_places,
-          allowed_types: window.expectedSourceTypes.destination[this.ucFirst(transaction.type)]
-        }
-      });
-    },
-    limitSourceType: function limitSourceType(type) {// let i;
-      // for (i = 0; i < this.transactions.length; i++) {
-      //     this.transactions[i].source_account.allowed_types = [type];
-      // }
-    },
-    limitDestinationType: function limitDestinationType(type) {// let i;
-      // for (i = 0; i < this.transactions.length; i++) {
-      //     this.transactions[i].destination_account.allowed_types = [type];
-      // }
-    },
-    convertData: function convertData() {
-      var data = {
-        'transactions': []
-      };
-      var transactionType;
-      var firstSource;
-      var firstDestination;
-
-      if (this.transactions.length > 1) {
-        data.group_title = this.group_title;
-      } // get transaction type from first transaction
-
-
-      transactionType = this.transactionType ? this.transactionType.toLowerCase() : 'invalid'; // if the transaction type is invalid, might just be that we can deduce it from
-      // the presence of a source or destination account
-
-      firstSource = this.transactions[0].source_account.type;
-      firstDestination = this.transactions[0].destination_account.type;
-
-      if ('invalid' === transactionType && ['Asset account', 'Loan', 'Debt', 'Mortgage'].includes(firstSource)) {
-        //console.log('Assumed this is a withdrawal.');
-        transactionType = 'withdrawal';
-      }
-
-      if ('invalid' === transactionType && ['Asset account', 'Loan', 'Debt', 'Mortgage'].includes(firstDestination)) {
-        //console.log('Assumed this is a deposit.');
-        transactionType = 'deposit';
-      }
-
-      for (var key in this.transactions) {
-        if (this.transactions.hasOwnProperty(key) && /^0$|^[1-9]\d*$/.test(key) && key <= 4294967294) {
-          data.transactions.push(this.convertDataRow(this.transactions[key], key, transactionType));
-        }
-      } //console.log(data);
-
-
-      return data;
-    },
-    convertDataRow: function convertDataRow(row, index, transactionType) {
-      var tagList = [];
-      var foreignAmount = null;
-      var foreignCurrency = null;
-      var currentArray;
-      var sourceId;
-      var sourceName;
-      var destId;
-      var destName;
-      var date;
-      sourceId = row.source_account.id;
-      sourceName = row.source_account.name;
-      destId = row.destination_account.id;
-      destName = row.destination_account.name; // depends on the transaction type, where we get the currency.
-
-      if ('withdrawal' === transactionType || 'transfer' === transactionType) {
-        row.currency_id = row.source_account.currency_id; // console.log('Overruled currency ID to ' + row.currency_id);
-      }
-
-      if ('deposit' === transactionType) {
-        row.currency_id = row.destination_account.currency_id; // console.log('Overruled currency ID to ' + row.currency_id);
-      }
-
-      date = row.date;
-
-      if (index > 0) {
-        date = this.transactions[0].date;
-      } // if type is 'withdrawal' and destination is empty, cash withdrawal.
-
-
-      if (transactionType === 'withdrawal' && '' === destName) {
-        destId = window.cashAccountId;
-      } // if type is 'deposit' and source is empty, cash deposit.
-
-
-      if (transactionType === 'deposit' && '' === sourceName) {
-        sourceId = window.cashAccountId;
-      } // if index is over 0 and type is withdrawal or transfer, take source from index 0.
-
-
-      if (index > 0 && (transactionType.toLowerCase() === 'withdrawal' || transactionType.toLowerCase() === 'transfer')) {
-        sourceId = this.transactions[0].source_account.id;
-        sourceName = this.transactions[0].source_account.name;
-      } // if index is over 0 and type is deposit or transfer, take destination from index 0.
-
-
-      if (index > 0 && (transactionType.toLowerCase() === 'deposit' || transactionType.toLowerCase() === 'transfer')) {
-        destId = this.transactions[0].destination_account.id;
-        destName = this.transactions[0].destination_account.name;
-      }
-
-      tagList = [];
-      foreignAmount = '0'; // loop tags
-
-      for (var tagKey in row.tags) {
-        if (row.tags.hasOwnProperty(tagKey) && /^0$|^[1-9]\d*$/.test(tagKey) && tagKey <= 4294967294) {
-          tagList.push(row.tags[tagKey].text);
-        }
-      } // set foreign currency info:
-
-
-      if (row.foreign_amount.amount !== '' && parseFloat(row.foreign_amount.amount) !== .00) {
-        foreignAmount = row.foreign_amount.amount;
-        foreignCurrency = row.foreign_amount.currency_id;
-      }
-
-      if (foreignCurrency === row.currency_id) {
-        foreignAmount = null;
-        foreignCurrency = null;
-      } // correct some id's
-
-
-      if (0 === destId) {
-        destId = null;
-      }
-
-      if (0 === sourceId) {
-        sourceId = null;
-      } // parse amount if has exactly one comma:
-      // solves issues with some locales.
-
-
-      if (1 === (String(row.amount).match(/\,/g) || []).length) {
-        row.amount = String(row.amount).replace(',', '.');
-      }
-
-      currentArray = {
-        transaction_journal_id: row.transaction_journal_id,
-        type: transactionType,
-        date: date,
-        amount: row.amount,
-        description: row.description,
-        source_id: sourceId,
-        source_name: sourceName,
-        destination_id: destId,
-        destination_name: destName,
-        category_name: row.category,
-        interest_date: row.custom_fields.interest_date,
-        book_date: row.custom_fields.book_date,
-        process_date: row.custom_fields.process_date,
-        due_date: row.custom_fields.due_date,
-        payment_date: row.custom_fields.payment_date,
-        invoice_date: row.custom_fields.invoice_date,
-        internal_reference: row.custom_fields.internal_reference,
-        external_uri: row.custom_fields.external_uri,
-        notes: row.custom_fields.notes,
-        tags: tagList
-      }; // always submit foreign amount info.
-
-      currentArray.foreign_amount = foreignAmount;
-      currentArray.foreign_currency_id = foreignCurrency; // only submit currency ID when not 0:
-
-      if (0 !== row.currency_id && null !== row.currency_id) {
-        currentArray.currency_id = row.currency_id;
-      } // set budget id and piggy ID.
-
-
-      currentArray.budget_id = parseInt(row.budget);
-
-      if (parseInt(row.bill) > 0) {
-        currentArray.bill_id = parseInt(row.bill);
-      }
-
-      if (0 === parseInt(row.bill)) {
-        currentArray.bill_id = null;
-      }
-
-      if (parseInt(row.piggy_bank) > 0) {
-        currentArray.piggy_bank_id = parseInt(row.piggy_bank);
-      }
-
-      return currentArray;
-    },
-    submit: function submit(e) {
-      var _this2 = this;
-
-      var button = $('#submitButton');
-      button.prop("disabled", true);
-      var page = window.location.href.split('/');
-      var groupId = page[page.length - 1];
-      var uri = './api/v1/transactions/' + groupId + '?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
-      var method = 'PUT';
-
-      if (this.storeAsNew) {
-        // other links.
-        uri = './api/v1/transactions?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
-        method = 'POST';
-      }
-
-      var data = this.convertData(); //axios.put(uri, data)
-
-      axios({
-        method: method,
-        url: uri,
-        data: data
-      }).then(function (response) {
-        if (0 === _this2.collectAttachmentData(response)) {
-          _this2.redirectUser(response.data.data.id);
-        }
-      })["catch"](function (error) {
-        // give user errors things back.
-        // something something render errors.
-        _this2.parseErrors(error.response.data); // something.
-
-      });
-
-      if (e) {
-        e.preventDefault();
-      }
-
-      button.removeAttr('disabled');
-    },
-    redirectUser: function redirectUser(groupId) {
-      if (this.returnAfter) {
-        this.setDefaultErrors(); // do message if update or new:
-
-        if (this.storeAsNew) {
-          this.success_message = this.$t('firefly.transaction_new_stored_link', {
-            ID: groupId
-          });
-          this.error_message = '';
-        } else {
-          this.success_message = this.$t('firefly.transaction_updated_link', {
-            ID: groupId
-          });
-          this.error_message = '';
-        }
-      } else {
-        if (this.storeAsNew) {
-          window.location.href = window.previousUri + '?transaction_group_id=' + groupId + '&message=created';
-        } else {
-          window.location.href = window.previousUri + '?transaction_group_id=' + groupId + '&message=updated';
-        }
-      }
-    },
-    collectAttachmentData: function collectAttachmentData(response) {
-      var _this3 = this;
-
-      // console.log('Now incollectAttachmentData()');
-      var groupId = response.data.data.id; // array of all files to be uploaded:
-
-      var toBeUploaded = []; // array with all file data.
-
-      var fileData = []; // all attachments
-
-      var attachments = $('input[name="attachments[]"]'); // loop over all attachments, and add references to this array:
-
-      for (var key in attachments) {
-        if (attachments.hasOwnProperty(key) && /^0$|^[1-9]\d*$/.test(key) && key <= 4294967294) {
-          for (var fileKey in attachments[key].files) {
-            if (attachments[key].files.hasOwnProperty(fileKey) && /^0$|^[1-9]\d*$/.test(fileKey) && fileKey <= 4294967294) {
-              // include journal thing.
-              var transactions = response.data.data.attributes.transactions.reverse();
-              toBeUploaded.push({
-                journal: transactions[key].transaction_journal_id,
-                file: attachments[key].files[fileKey]
-              });
-            }
-          }
-        }
-      }
-
-      var count = toBeUploaded.length; // console.log('Found ' + toBeUploaded.length + ' attachments.');
-      // loop all uploads.
-
-      var _loop = function _loop(_key) {
-        if (toBeUploaded.hasOwnProperty(_key) && /^0$|^[1-9]\d*$/.test(_key) && _key <= 4294967294) {
-          // create file reader thing that will read all of these uploads
-          (function (f, i, theParent) {
-            var fileReader = new FileReader();
-
-            fileReader.onloadend = function (evt) {
-              if (evt.target.readyState === FileReader.DONE) {
-                // DONE == 2
-                fileData.push({
-                  name: toBeUploaded[_key].file.name,
-                  journal: toBeUploaded[_key].journal,
-                  content: new Blob([evt.target.result])
-                });
-
-                if (fileData.length === count) {
-                  theParent.uploadFiles(fileData, groupId);
-                }
-              }
-            };
-
-            fileReader.readAsArrayBuffer(f.file);
-          })(toBeUploaded[_key], _key, _this3);
-        }
-      };
-
-      for (var _key in toBeUploaded) {
-        _loop(_key);
-      }
-
-      return count;
-    },
-    uploadFiles: function uploadFiles(fileData, groupId) {
-      var _this4 = this;
-
-      var count = fileData.length;
-      var uploads = 0;
-
-      var _loop2 = function _loop2(key) {
-        if (fileData.hasOwnProperty(key) && /^0$|^[1-9]\d*$/.test(key) && key <= 4294967294) {
-          // console.log('Creating attachment #' + key);
-          // axios thing, + then.
-          var uri = './api/v1/attachments';
-          var data = {
-            filename: fileData[key].name,
-            attachable_type: 'TransactionJournal',
-            attachable_id: fileData[key].journal
-          };
-          axios.post(uri, data).then(function (response) {
-            // console.log('Created attachment #' + key);
-            // console.log('Uploading attachment #' + key);
-            var uploadUri = './api/v1/attachments/' + response.data.data.id + '/upload';
-            axios.post(uploadUri, fileData[key].content).then(function (secondResponse) {
-              // console.log('Uploaded attachment #' + key);
-              uploads++;
-
-              if (uploads === count) {
-                // finally we can redirect the user onwards.
-                // console.log('FINAL UPLOAD');
-                _this4.redirectUser(groupId, null);
-              } // console.log('Upload complete!');
-
-
-              return true;
-            })["catch"](function (error) {
-              console.error('Could not upload file.');
-              console.error(error);
-              uploads++;
-              _this4.error_message = 'Could not upload attachment: ' + error;
-
-              if (uploads === count) {
-                _this4.redirectUser(groupId, null);
-              } // console.error(error);
-
-
-              return false;
-            });
-          })["catch"](function (error) {
-            console.error('Could not create upload.');
-            console.error(error);
-            uploads++;
-
-            if (uploads === count) {
-              // finally we can redirect the user onwards.
-              // console.log('FINAL UPLOAD');
-              _this4.redirectUser(groupId, null);
-            } // console.log('Upload complete!');
-
-
-            return false;
-          });
-        }
-      };
-
-      for (var key in fileData) {
-        _loop2(key);
-      }
-    },
-    addTransaction: function addTransaction(e) {
-      this.transactions.push({
-        transaction_journal_id: 0,
-        description: "",
-        date: "",
-        amount: "",
-        category: "",
-        piggy_bank: 0,
-        errors: {
-          source_account: [],
-          destination_account: [],
-          description: [],
-          amount: [],
-          date: [],
-          budget_id: [],
-          bill_id: [],
-          foreign_amount: [],
-          category: [],
-          piggy_bank: [],
-          tags: [],
-          // custom fields:
-          custom_errors: {
-            interest_date: [],
-            book_date: [],
-            process_date: [],
-            due_date: [],
-            payment_date: [],
-            invoice_date: [],
-            internal_reference: [],
-            notes: [],
-            attachments: [],
-            external_uri: []
-          }
-        },
-        budget: 0,
-        bill: 0,
-        tags: [],
-        custom_fields: {
-          "interest_date": "",
-          "book_date": "",
-          "process_date": "",
-          "due_date": "",
-          "payment_date": "",
-          "invoice_date": "",
-          "internal_reference": "",
-          "notes": "",
-          "attachments": [],
-          "external_uri": ""
-        },
-        foreign_amount: {
-          amount: "",
-          currency_id: 0
-        },
-        source_account: {
-          id: 0,
-          name: "",
-          type: "",
-          currency_id: 0,
-          currency_name: '',
-          currency_code: '',
-          currency_decimal_places: 2,
-          allowed_types: []
-        },
-        destination_account: {
-          id: 0,
-          name: "",
-          type: "",
-          currency_id: 0,
-          currency_name: '',
-          currency_code: '',
-          currency_decimal_places: 2,
-          allowed_types: []
-        }
-      });
-      var count = this.transactions.length; // console.log('Transactions length = ' + count);
-      // also set accounts from previous entry, if present.
-
-      if (this.transactions.length > 1) {
-        // console.log('Adding split.');
-        this.transactions[count - 1].source_account = this.transactions[count - 2].source_account;
-        this.transactions[count - 1].destination_account = this.transactions[count - 2].destination_account;
-        this.transactions[count - 1].date = this.transactions[count - 2].date;
-      } // console.log('Transactions length now = ' + this.transactions.length);
-
-
-      if (e) {
-        e.preventDefault();
-      }
-    },
-    parseErrors: function parseErrors(errors) {
-      this.setDefaultErrors();
-      this.error_message = "";
-
-      if (errors.message.length > 0) {
-        this.error_message = this.$t('firefly.errors_submission');
-      } else {
-        this.error_message = '';
-      }
-
-      var transactionIndex;
-      var fieldName;
-
-      for (var key in errors.errors) {
-        if (errors.errors.hasOwnProperty(key)) {
-          if (key === 'group_title') {
-            this.group_title_errors = errors.errors[key];
-          }
-
-          if (key !== 'group_title') {
-            // lol dumbest way to explode "transactions.0.something" ever.
-            transactionIndex = parseInt(key.split('.')[1]);
-            fieldName = key.split('.')[2]; // set error in this object thing.
-
-            switch (fieldName) {
-              case 'amount':
-              case 'date':
-              case 'budget_id':
-              case 'bill_id':
-              case 'description':
-              case 'tags':
-                this.transactions[transactionIndex].errors[fieldName] = errors.errors[key];
-                break;
-
-              case 'external_uri':
-                //console.log('Found ext error in field "' + fieldName + '": ' + errors.errors[key]);
-                this.transactions[transactionIndex].errors.custom_errors[fieldName] = errors.errors[key];
-                break;
-
-              case 'source_name':
-              case 'source_id':
-                this.transactions[transactionIndex].errors.source_account = this.transactions[transactionIndex].errors.source_account.concat(errors.errors[key]);
-                break;
-
-              case 'destination_name':
-              case 'destination_id':
-                this.transactions[transactionIndex].errors.destination_account = this.transactions[transactionIndex].errors.destination_account.concat(errors.errors[key]);
-                break;
-
-              case 'foreign_amount':
-              case 'foreign_currency_id':
-                this.transactions[transactionIndex].errors.foreign_amount = this.transactions[transactionIndex].errors.foreign_amount.concat(errors.errors[key]);
-                break;
-            } // unique some things
-
-
-            this.transactions[transactionIndex].errors.source_account = Array.from(new Set(this.transactions[transactionIndex].errors.source_account));
-            this.transactions[transactionIndex].errors.destination_account = Array.from(new Set(this.transactions[transactionIndex].errors.destination_account));
-          }
-        }
-      }
-    },
-    setDefaultErrors: function setDefaultErrors() {
-      for (var key in this.transactions) {
-        if (this.transactions.hasOwnProperty(key) && /^0$|^[1-9]\d*$/.test(key) && key <= 4294967294) {
-          this.transactions[key].errors = {
-            source_account: [],
-            destination_account: [],
-            description: [],
-            amount: [],
-            date: [],
-            budget_id: [],
-            bill_id: [],
-            foreign_amount: [],
-            category: [],
-            piggy_bank: [],
-            tags: [],
-            // custom fields:
-            custom_errors: {
-              interest_date: [],
-              book_date: [],
-              process_date: [],
-              due_date: [],
-              payment_date: [],
-              invoice_date: [],
-              internal_reference: [],
-              notes: [],
-              attachments: [],
-              external_uri: []
-            }
-          };
-        }
-      }
-    }
-  },
-  data: function data() {
-    return {
-      group: this.groupId,
-      error_message: "",
-      success_message: "",
-      transactions: [],
-      group_title: "",
-      returnAfter: false,
-      storeAsNew: false,
-      transactionType: null,
-      group_title_errors: [],
-      resetButtonDisabled: true
-    };
   }
 });
 
@@ -5766,6 +5883,84 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/real_estate_management/CustomDate.vue":
+/*!******************************************************************************!*\
+  !*** ./resources/assets/js/components/real_estate_management/CustomDate.vue ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _CustomDate_vue_vue_type_template_id_17fe421c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CustomDate.vue?vue&type=template&id=17fe421c& */ "./resources/assets/js/components/real_estate_management/CustomDate.vue?vue&type=template&id=17fe421c&");
+/* harmony import */ var _CustomDate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CustomDate.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/real_estate_management/CustomDate.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CustomDate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CustomDate_vue_vue_type_template_id_17fe421c___WEBPACK_IMPORTED_MODULE_0__.render,
+  _CustomDate_vue_vue_type_template_id_17fe421c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/real_estate_management/CustomDate.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/real_estate_management/YearlyOverview.vue":
+/*!**********************************************************************************!*\
+  !*** ./resources/assets/js/components/real_estate_management/YearlyOverview.vue ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _YearlyOverview_vue_vue_type_template_id_3c2d5ad6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./YearlyOverview.vue?vue&type=template&id=3c2d5ad6& */ "./resources/assets/js/components/real_estate_management/YearlyOverview.vue?vue&type=template&id=3c2d5ad6&");
+/* harmony import */ var _YearlyOverview_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./YearlyOverview.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/real_estate_management/YearlyOverview.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _YearlyOverview_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _YearlyOverview_vue_vue_type_template_id_3c2d5ad6___WEBPACK_IMPORTED_MODULE_0__.render,
+  _YearlyOverview_vue_vue_type_template_id_3c2d5ad6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/real_estate_management/YearlyOverview.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/transactions/AccountSelect.vue":
 /*!***********************************************************************!*\
   !*** ./resources/assets/js/components/transactions/AccountSelect.vue ***!
@@ -5961,6 +6156,45 @@ component.options.__file = "resources/assets/js/components/transactions/Category
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/transactions/CreateTransaction.vue":
+/*!***************************************************************************!*\
+  !*** ./resources/assets/js/components/transactions/CreateTransaction.vue ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _CreateTransaction_vue_vue_type_template_id_3c64c482___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateTransaction.vue?vue&type=template&id=3c64c482& */ "./resources/assets/js/components/transactions/CreateTransaction.vue?vue&type=template&id=3c64c482&");
+/* harmony import */ var _CreateTransaction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateTransaction.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/transactions/CreateTransaction.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CreateTransaction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CreateTransaction_vue_vue_type_template_id_3c64c482___WEBPACK_IMPORTED_MODULE_0__.render,
+  _CreateTransaction_vue_vue_type_template_id_3c64c482___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/transactions/CreateTransaction.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/transactions/CustomAttachments.vue":
 /*!***************************************************************************!*\
   !*** ./resources/assets/js/components/transactions/CustomAttachments.vue ***!
@@ -5996,45 +6230,6 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/assets/js/components/transactions/CustomAttachments.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/transactions/CustomDate.vue":
-/*!********************************************************************!*\
-  !*** ./resources/assets/js/components/transactions/CustomDate.vue ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _CustomDate_vue_vue_type_template_id_14f6b992___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CustomDate.vue?vue&type=template&id=14f6b992& */ "./resources/assets/js/components/transactions/CustomDate.vue?vue&type=template&id=14f6b992&");
-/* harmony import */ var _CustomDate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CustomDate.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/transactions/CustomDate.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _CustomDate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _CustomDate_vue_vue_type_template_id_14f6b992___WEBPACK_IMPORTED_MODULE_0__.render,
-  _CustomDate_vue_vue_type_template_id_14f6b992___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/transactions/CustomDate.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -6191,45 +6386,6 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/assets/js/components/transactions/CustomUri.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/transactions/EditTransaction.vue":
-/*!*************************************************************************!*\
-  !*** ./resources/assets/js/components/transactions/EditTransaction.vue ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _EditTransaction_vue_vue_type_template_id_16510831___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EditTransaction.vue?vue&type=template&id=16510831& */ "./resources/assets/js/components/transactions/EditTransaction.vue?vue&type=template&id=16510831&");
-/* harmony import */ var _EditTransaction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EditTransaction.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/transactions/EditTransaction.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _EditTransaction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _EditTransaction_vue_vue_type_template_id_16510831___WEBPACK_IMPORTED_MODULE_0__.render,
-  _EditTransaction_vue_vue_type_template_id_16510831___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/transactions/EditTransaction.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -6507,6 +6663,38 @@ component.options.__file = "resources/assets/js/components/transactions/Transact
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/real_estate_management/CustomDate.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/assets/js/components/real_estate_management/CustomDate.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomDate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CustomDate.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomDate.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomDate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/real_estate_management/YearlyOverview.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/assets/js/components/real_estate_management/YearlyOverview.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_YearlyOverview_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./YearlyOverview.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/YearlyOverview.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_YearlyOverview_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/transactions/AccountSelect.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************!*\
   !*** ./resources/assets/js/components/transactions/AccountSelect.vue?vue&type=script&lang=js& ***!
@@ -6587,6 +6775,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/transactions/CreateTransaction.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/assets/js/components/transactions/CreateTransaction.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateTransaction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CreateTransaction.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CreateTransaction.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateTransaction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/transactions/CustomAttachments.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************!*\
   !*** ./resources/assets/js/components/transactions/CustomAttachments.vue?vue&type=script&lang=js& ***!
@@ -6600,22 +6804,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomAttachments_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CustomAttachments.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomAttachments.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomAttachments_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/transactions/CustomDate.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************!*\
-  !*** ./resources/assets/js/components/transactions/CustomDate.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomDate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CustomDate.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomDate.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomDate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -6680,22 +6868,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomUri_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CustomUri.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomUri.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomUri_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/transactions/EditTransaction.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************!*\
-  !*** ./resources/assets/js/components/transactions/EditTransaction.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditTransaction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditTransaction.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/EditTransaction.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditTransaction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -6811,6 +6983,40 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/real_estate_management/CustomDate.vue?vue&type=template&id=17fe421c&":
+/*!*************************************************************************************************************!*\
+  !*** ./resources/assets/js/components/real_estate_management/CustomDate.vue?vue&type=template&id=17fe421c& ***!
+  \*************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomDate_vue_vue_type_template_id_17fe421c___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomDate_vue_vue_type_template_id_17fe421c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomDate_vue_vue_type_template_id_17fe421c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CustomDate.vue?vue&type=template&id=17fe421c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomDate.vue?vue&type=template&id=17fe421c&");
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/real_estate_management/YearlyOverview.vue?vue&type=template&id=3c2d5ad6&":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/assets/js/components/real_estate_management/YearlyOverview.vue?vue&type=template&id=3c2d5ad6& ***!
+  \*****************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_YearlyOverview_vue_vue_type_template_id_3c2d5ad6___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_YearlyOverview_vue_vue_type_template_id_3c2d5ad6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_YearlyOverview_vue_vue_type_template_id_3c2d5ad6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./YearlyOverview.vue?vue&type=template&id=3c2d5ad6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/YearlyOverview.vue?vue&type=template&id=3c2d5ad6&");
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/transactions/AccountSelect.vue?vue&type=template&id=be9f63f4&":
 /*!******************************************************************************************************!*\
   !*** ./resources/assets/js/components/transactions/AccountSelect.vue?vue&type=template&id=be9f63f4& ***!
@@ -6896,6 +7102,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/transactions/CreateTransaction.vue?vue&type=template&id=3c64c482&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/assets/js/components/transactions/CreateTransaction.vue?vue&type=template&id=3c64c482& ***!
+  \**********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateTransaction_vue_vue_type_template_id_3c64c482___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateTransaction_vue_vue_type_template_id_3c64c482___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateTransaction_vue_vue_type_template_id_3c64c482___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CreateTransaction.vue?vue&type=template&id=3c64c482& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CreateTransaction.vue?vue&type=template&id=3c64c482&");
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/transactions/CustomAttachments.vue?vue&type=template&id=75bc1a7c&":
 /*!**********************************************************************************************************!*\
   !*** ./resources/assets/js/components/transactions/CustomAttachments.vue?vue&type=template&id=75bc1a7c& ***!
@@ -6909,23 +7132,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomAttachments_vue_vue_type_template_id_75bc1a7c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomAttachments_vue_vue_type_template_id_75bc1a7c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CustomAttachments.vue?vue&type=template&id=75bc1a7c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomAttachments.vue?vue&type=template&id=75bc1a7c&");
-
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/transactions/CustomDate.vue?vue&type=template&id=14f6b992&":
-/*!***************************************************************************************************!*\
-  !*** ./resources/assets/js/components/transactions/CustomDate.vue?vue&type=template&id=14f6b992& ***!
-  \***************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomDate_vue_vue_type_template_id_14f6b992___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomDate_vue_vue_type_template_id_14f6b992___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomDate_vue_vue_type_template_id_14f6b992___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CustomDate.vue?vue&type=template&id=14f6b992& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomDate.vue?vue&type=template&id=14f6b992&");
 
 
 /***/ }),
@@ -6994,23 +7200,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomUri_vue_vue_type_template_id_f0ff6b90___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomUri_vue_vue_type_template_id_f0ff6b90___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CustomUri.vue?vue&type=template&id=f0ff6b90& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomUri.vue?vue&type=template&id=f0ff6b90&");
-
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/transactions/EditTransaction.vue?vue&type=template&id=16510831&":
-/*!********************************************************************************************************!*\
-  !*** ./resources/assets/js/components/transactions/EditTransaction.vue?vue&type=template&id=16510831& ***!
-  \********************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditTransaction_vue_vue_type_template_id_16510831___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditTransaction_vue_vue_type_template_id_16510831___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditTransaction_vue_vue_type_template_id_16510831___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditTransaction.vue?vue&type=template&id=16510831& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/EditTransaction.vue?vue&type=template&id=16510831&");
 
 
 /***/ }),
@@ -7130,6 +7319,379 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionType_vue_vue_type_template_id_3f0e7af5___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionType_vue_vue_type_template_id_3f0e7af5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TransactionType.vue?vue&type=template&id=3f0e7af5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/TransactionType.vue?vue&type=template&id=3f0e7af5&");
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomDate.vue?vue&type=template&id=17fe421c&":
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomDate.vue?vue&type=template&id=17fe421c& ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "form-group", class: { "has-error": _vm.hasError() } },
+    [
+      _c("div", { staticClass: "col-sm-12 text-sm" }, [
+        _vm._v("\n    " + _vm._s(_vm.$t("firefly.date")) + "\n  ")
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col-sm-12" },
+        [
+          _c("div", { staticClass: "input-group" }, [
+            _c("input", {
+              ref: "date",
+              staticClass: "form-control",
+              attrs: {
+                disabled: _vm.index > 0,
+                autocomplete: "off",
+                name: "date[]",
+                type: _vm.type,
+                placeholder: _vm.$t("firefly.date"),
+                title: _vm.$t("firefly.date")
+              },
+              domProps: { value: _vm.value },
+              on: { input: _vm.handleInput }
+            })
+          ]),
+          _vm._v(" "),
+          _vm._l(this.error, function(error) {
+            return _c("ul", { key: error, staticClass: "list-unstyled" }, [
+              _c("li", { staticClass: "text-danger" }, [_vm._v(_vm._s(error))])
+            ])
+          })
+        ],
+        2
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/YearlyOverview.vue?vue&type=template&id=3c2d5ad6&":
+/*!********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/YearlyOverview.vue?vue&type=template&id=3c2d5ad6& ***!
+  \********************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("input", { attrs: { name: "_token", type: "hidden", value: "xxx" } }),
+    _vm._v(" "),
+    _c("div", { staticClass: "box" }, [
+      _c("div", { staticClass: "box-header" }, [
+        _c(
+          "div",
+          {
+            staticStyle: {
+              width: "400px",
+              "max-width": "100%",
+              display: "flex",
+              "grid-gap": "12px"
+            }
+          },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.year,
+                  expression: "year"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "number", min: "1900", max: "2999" },
+              domProps: { value: _vm.year },
+              on: {
+                keyup: function($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.getApartments.apply(null, arguments)
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.year = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { name: "account", id: "account" },
+                on: { change: _vm.selectAccount }
+              },
+              _vm._l(_vm.accounts, function(account) {
+                return _c(
+                  "option",
+                  { key: account.id, domProps: { value: account.id } },
+                  [_vm._v(_vm._s(account.name))]
+                )
+              }),
+              0
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "box-body" }, [
+        _c("div", { staticStyle: { margin: "20px 0px 20px 0px" } }, [
+          _vm.selectedAccount
+            ? _c("div", [
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-responsive table-hover apartment_list_table",
+                    attrs: { id: "sortable-table" }
+                  },
+                  [
+                    _c("thead", [
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-left",
+                          staticStyle: { width: "10%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.apt")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-left",
+                          staticStyle: { width: "10%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.name")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-left",
+                          staticStyle: { width: "10%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.total_rent")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-center",
+                          staticStyle: { width: "4%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.jan")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-center",
+                          staticStyle: { width: "4%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.feb")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-center",
+                          staticStyle: { width: "4%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.mar")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-center",
+                          staticStyle: { width: "4%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.apr")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-center",
+                          staticStyle: { width: "4%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.may")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-center",
+                          staticStyle: { width: "4%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.jun")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-center",
+                          staticStyle: { width: "4%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.jul")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-center",
+                          staticStyle: { width: "4%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.aug")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-center",
+                          staticStyle: { width: "4%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.sep")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-center",
+                          staticStyle: { width: "4%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.oct")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-center",
+                          staticStyle: { width: "4%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.nov")))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticClass: "text-center",
+                          staticStyle: { width: "4%" }
+                        },
+                        [_vm._v(_vm._s(_vm.$t("firefly.dec")))]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.selectedAccount.apartments, function(apartment) {
+                      return _c(
+                        "tr",
+                        {
+                          key: apartment.id,
+                          staticClass: "sortable-object apartment_row"
+                        },
+                        [
+                          _c("td", { staticClass: "text-left" }, [
+                            _vm._v(_vm._s(apartment.id))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "text-left" }, [
+                            _vm._v(_vm._s(apartment.renter_account.name))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "text-left" }, [
+                            _vm._v(_vm._s(apartment.totalRent))
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(12, function(n) {
+                            return _c(
+                              "td",
+                              { key: n, staticClass: "text-center" },
+                              [
+                                _vm.isPaidMonth(apartment, n)
+                                  ? _c(
+                                      "div",
+                                      {
+                                        staticStyle: {
+                                          color: "green",
+                                          cursor: "pointer"
+                                        }
+                                      },
+                                      [_vm._v("Ok")]
+                                    )
+                                  : _c(
+                                      "div",
+                                      {
+                                        staticStyle: {
+                                          color: "red",
+                                          cursor: "pointer"
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.addTransaction(
+                                              apartment,
+                                              n
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("X")]
+                                    )
+                              ]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    })
+                  ],
+                  2
+                )
+              ])
+            : _vm._e()
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
 
 
 /***/ }),
@@ -7697,6 +8259,725 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CreateTransaction.vue?vue&type=template&id=3c64c482&":
+/*!*************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CreateTransaction.vue?vue&type=template&id=3c64c482& ***!
+  \*************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    {
+      staticClass: "form-horizontal",
+      attrs: { "accept-charset": "UTF-8", enctype: "multipart/form-data" }
+    },
+    [
+      _c("input", { attrs: { name: "_token", type: "hidden", value: "xxx" } }),
+      _vm._v(" "),
+      _vm.error_message !== ""
+        ? _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-lg-12" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "alert alert-danger alert-dismissible",
+                  attrs: { role: "alert" }
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close",
+                      attrs: {
+                        "data-dismiss": "alert",
+                        type: "button",
+                        "aria-label": _vm.$t("firefly.close")
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("×")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("strong", [_vm._v(_vm._s(_vm.$t("firefly.flash_error")))]),
+                  _vm._v(" " + _vm._s(_vm.error_message) + "\n      ")
+                ]
+              )
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.success_message !== ""
+        ? _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-lg-12" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "alert alert-success alert-dismissible",
+                  attrs: { role: "alert" }
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close",
+                      attrs: {
+                        "data-dismiss": "alert",
+                        type: "button",
+                        "aria-label": _vm.$t("firefly.close")
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("×")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("strong", [
+                    _vm._v(_vm._s(_vm.$t("firefly.flash_success")))
+                  ]),
+                  _vm._v(" "),
+                  _c("span", {
+                    domProps: { innerHTML: _vm._s(_vm.success_message) }
+                  })
+                ]
+              )
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        _vm._l(_vm.transactions, function(transaction, index) {
+          return _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-lg-12" }, [
+              _c("div", { staticClass: "box" }, [
+                _c("div", { staticClass: "box-header with-border" }, [
+                  _c("h3", { staticClass: "box-title splitTitle" }, [
+                    _vm.transactions.length > 1
+                      ? _c("span", [
+                          _vm._v(
+                            _vm._s(_vm.$t("firefly.single_split")) +
+                              " " +
+                              _vm._s(index + 1) +
+                              " / " +
+                              _vm._s(_vm.transactions.length)
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.transactions.length === 1
+                      ? _c("span", [
+                          _vm._v(
+                            _vm._s(
+                              _vm.$t("firefly.transaction_journal_information")
+                            )
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "split_add_btn btn btn-default",
+                        attrs: { type: "button" },
+                        on: { click: _vm.addTransactionToArray }
+                      },
+                      [
+                        _vm._v(
+                          "\n                  " +
+                            _vm._s(_vm.$t("firefly.add_another_split")) +
+                            "\n                "
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _vm.transactions.length > 1
+                    ? _c("div", { staticClass: "box-tools pull-right" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-xs btn-danger",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteTransaction(index, $event)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fa fa-trash" })]
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "box-body" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-lg-12",
+                        attrs: { id: "transaction-info" }
+                      },
+                      [
+                        _c("amount", {
+                          attrs: {
+                            destination: transaction.destination_account,
+                            error: transaction.errors.amount,
+                            source: transaction.source_account,
+                            transactionType: _vm.transactionType
+                          },
+                          model: {
+                            value: transaction.amount,
+                            callback: function($$v) {
+                              _vm.$set(transaction, "amount", $$v)
+                            },
+                            expression: "transaction.amount"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("transaction-description", {
+                          attrs: {
+                            error: transaction.errors.description,
+                            index: index
+                          },
+                          model: {
+                            value: transaction.description,
+                            callback: function($$v) {
+                              _vm.$set(transaction, "description", $$v)
+                            },
+                            expression: "transaction.description"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("account-select", {
+                          attrs: {
+                            accountName: transaction.source_account.name,
+                            accountTypeFilters:
+                              transaction.source_account.allowed_types,
+                            defaultAccountTypeFilters:
+                              transaction.source_account.default_allowed_types,
+                            error: transaction.errors.source_account,
+                            index: index,
+                            transactionType: _vm.transactionType,
+                            inputName: "source[]",
+                            inputDescription: _vm.$t("firefly.source_account")
+                          },
+                          on: {
+                            "clear:value": function($event) {
+                              return _vm.clearSource(index)
+                            },
+                            "select:account": function($event) {
+                              return _vm.selectedSourceAccount(index, $event)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("account-select", {
+                          attrs: {
+                            accountName: transaction.destination_account.name,
+                            accountTypeFilters:
+                              transaction.destination_account.allowed_types,
+                            defaultAccountTypeFilters:
+                              transaction.destination_account
+                                .default_allowed_types,
+                            error: transaction.errors.destination_account,
+                            index: index,
+                            transactionType: _vm.transactionType,
+                            inputName: "destination[]",
+                            inputDescription: _vm.$t(
+                              "firefly.destination_account"
+                            )
+                          },
+                          on: {
+                            "clear:value": function($event) {
+                              return _vm.clearDestination(index)
+                            },
+                            "select:account": function($event) {
+                              return _vm.selectedDestinationAccount(
+                                index,
+                                $event
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        0 !== index &&
+                        (null === _vm.transactionType ||
+                          "invalid" === _vm.transactionType ||
+                          "" === _vm.transactionType)
+                          ? _c("p", { staticClass: "text-warning" }, [
+                              _vm._v(
+                                "\n                  " +
+                                  _vm._s(
+                                    _vm.$t(
+                                      "firefly.multi_account_warning_unknown"
+                                    )
+                                  ) +
+                                  "\n                "
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        0 !== index && "Withdrawal" === _vm.transactionType
+                          ? _c("p", { staticClass: "text-warning" }, [
+                              _vm._v(
+                                "\n                  " +
+                                  _vm._s(
+                                    _vm.$t(
+                                      "firefly.multi_account_warning_withdrawal"
+                                    )
+                                  ) +
+                                  "\n                "
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        0 !== index && "Deposit" === _vm.transactionType
+                          ? _c("p", { staticClass: "text-warning" }, [
+                              _vm._v(
+                                "\n                  " +
+                                  _vm._s(
+                                    _vm.$t(
+                                      "firefly.multi_account_warning_deposit"
+                                    )
+                                  ) +
+                                  "\n                "
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        0 !== index && "Transfer" === _vm.transactionType
+                          ? _c("p", { staticClass: "text-warning" }, [
+                              _vm._v(
+                                "\n                  " +
+                                  _vm._s(
+                                    _vm.$t(
+                                      "firefly.multi_account_warning_transfer"
+                                    )
+                                  ) +
+                                  "\n                "
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        0 === index
+                          ? _c("standard-date", {
+                              attrs: {
+                                error: transaction.errors.date,
+                                index: index
+                              },
+                              model: {
+                                value: transaction.date,
+                                callback: function($$v) {
+                                  _vm.$set(transaction, "date", $$v)
+                                },
+                                expression: "transaction.date"
+                              }
+                            })
+                          : _vm._e(),
+                        _vm._v(" "),
+                        index === 0
+                          ? _c(
+                              "div",
+                              [
+                                _c("transaction-type", {
+                                  attrs: {
+                                    destination:
+                                      transaction.destination_account.type,
+                                    source: transaction.source_account.type
+                                  },
+                                  on: {
+                                    "set:transactionType": function($event) {
+                                      return _vm.setTransactionType($event)
+                                    },
+                                    "act:limitSourceType": function($event) {
+                                      return _vm.limitSourceType($event)
+                                    },
+                                    "act:limitDestinationType": function(
+                                      $event
+                                    ) {
+                                      return _vm.limitDestinationType($event)
+                                    }
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("category", {
+                          attrs: {
+                            error: transaction.errors.category,
+                            transactionType: _vm.transactionType
+                          },
+                          model: {
+                            value: transaction.category,
+                            callback: function($$v) {
+                              _vm.$set(transaction, "category", $$v)
+                            },
+                            expression: "transaction.category"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("tags", {
+                          attrs: { error: transaction.errors.tags },
+                          model: {
+                            value: transaction.tags,
+                            callback: function($$v) {
+                              _vm.$set(transaction, "tags", $$v)
+                            },
+                            expression: "transaction.tags"
+                          }
+                        }),
+                        _vm._v(" "),
+                        !_vm.visibleMore
+                          ? _c(
+                              "span",
+                              {
+                                staticClass: "create_transaction_see_more",
+                                on: {
+                                  click: function($event) {
+                                    _vm.visibleMore = true
+                                  }
+                                }
+                              },
+                              [_vm._v("See More")]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.visibleMore
+                          ? _c(
+                              "span",
+                              {
+                                staticClass: "create_transaction_see_more",
+                                on: {
+                                  click: function($event) {
+                                    _vm.visibleMore = false
+                                  }
+                                }
+                              },
+                              [_vm._v("See Less")]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.visibleMore
+                          ? _c(
+                              "div",
+                              [
+                                _c("foreign-amount", {
+                                  attrs: {
+                                    destination:
+                                      transaction.destination_account,
+                                    error: transaction.errors.foreign_amount,
+                                    source: transaction.source_account,
+                                    transactionType: _vm.transactionType,
+                                    title: _vm.$t("form.foreign_amount")
+                                  },
+                                  model: {
+                                    value: transaction.foreign_amount,
+                                    callback: function($$v) {
+                                      _vm.$set(
+                                        transaction,
+                                        "foreign_amount",
+                                        $$v
+                                      )
+                                    },
+                                    expression: "transaction.foreign_amount"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("budget", {
+                                  attrs: {
+                                    error: transaction.errors.budget_id,
+                                    no_budget: _vm.$t(
+                                      "firefly.none_in_select_list"
+                                    ),
+                                    transactionType: _vm.transactionType
+                                  },
+                                  model: {
+                                    value: transaction.budget,
+                                    callback: function($$v) {
+                                      _vm.$set(transaction, "budget", $$v)
+                                    },
+                                    expression: "transaction.budget"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("piggy-bank", {
+                                  attrs: {
+                                    error: transaction.errors.piggy_bank,
+                                    no_piggy_bank: _vm.$t(
+                                      "firefly.no_piggy_bank"
+                                    ),
+                                    transactionType: _vm.transactionType
+                                  },
+                                  model: {
+                                    value: transaction.piggy_bank,
+                                    callback: function($$v) {
+                                      _vm.$set(transaction, "piggy_bank", $$v)
+                                    },
+                                    expression: "transaction.piggy_bank"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("bill", {
+                                  attrs: {
+                                    error: transaction.errors.bill_id,
+                                    no_bill: _vm.$t(
+                                      "firefly.none_in_select_list"
+                                    ),
+                                    transactionType: _vm.transactionType
+                                  },
+                                  model: {
+                                    value: transaction.bill,
+                                    callback: function($$v) {
+                                      _vm.$set(transaction, "bill", $$v)
+                                    },
+                                    expression: "transaction.bill"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("custom-transaction-fields", {
+                                  attrs: {
+                                    error: transaction.errors.custom_errors
+                                  },
+                                  model: {
+                                    value: transaction.custom_fields,
+                                    callback: function($$v) {
+                                      _vm.$set(
+                                        transaction,
+                                        "custom_fields",
+                                        $$v
+                                      )
+                                    },
+                                    expression: "transaction.custom_fields"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          : _vm._e()
+                      ],
+                      1
+                    )
+                  ])
+                ])
+              ])
+            ])
+          ])
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _vm.transactions.length > 1
+        ? _c("div", { staticClass: "row" }, [
+            _c(
+              "div",
+              { staticClass: "col-lg-6 col-md-6 col-sm-12 col-xs-12" },
+              [
+                _c("div", { staticClass: "box" }, [
+                  _c("div", { staticClass: "box-header with-border" }, [
+                    _c("h3", { staticClass: "box-title" }, [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.$t("firefly.split_transaction_title")) +
+                          "\n          "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "box-body" },
+                    [
+                      _c("group-description", {
+                        attrs: { error: _vm.group_title_errors },
+                        model: {
+                          value: _vm.group_title,
+                          callback: function($$v) {
+                            _vm.group_title = $$v
+                          },
+                          expression: "group_title"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ])
+              ]
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-lg-6 col-md-6 col-sm-12 col-xs-12" }, [
+          _c("div", { staticClass: "box" }, [
+            _c("div", { staticClass: "box-header with-border" }, [
+              _c("h3", { staticClass: "box-title" }, [
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.$t("firefly.submission")) +
+                    "\n          "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "box-body" }, [
+              _c("div", { staticClass: "checkbox" }, [
+                _c("label", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.createAnother,
+                        expression: "createAnother"
+                      }
+                    ],
+                    attrs: { name: "create_another", type: "checkbox" },
+                    domProps: {
+                      checked: Array.isArray(_vm.createAnother)
+                        ? _vm._i(_vm.createAnother, null) > -1
+                        : _vm.createAnother
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.createAnother,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 && (_vm.createAnother = $$a.concat([$$v]))
+                          } else {
+                            $$i > -1 &&
+                              (_vm.createAnother = $$a
+                                .slice(0, $$i)
+                                .concat($$a.slice($$i + 1)))
+                          }
+                        } else {
+                          _vm.createAnother = $$c
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(
+                    "\n              " +
+                      _vm._s(_vm.$t("firefly.create_another")) +
+                      "\n            "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "checkbox" }, [
+                _c(
+                  "label",
+                  { class: { "text-muted": this.createAnother === false } },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.resetFormAfter,
+                          expression: "resetFormAfter"
+                        }
+                      ],
+                      attrs: {
+                        disabled: this.createAnother === false,
+                        name: "reset_form",
+                        type: "checkbox"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.resetFormAfter)
+                          ? _vm._i(_vm.resetFormAfter, null) > -1
+                          : _vm.resetFormAfter
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.resetFormAfter,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = null,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 &&
+                                (_vm.resetFormAfter = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.resetFormAfter = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.resetFormAfter = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.$t("firefly.reset_after")) +
+                        "\n\n            "
+                    )
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "box-footer" }, [
+              _c("div", { staticClass: "btn-group" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-success",
+                    attrs: { id: "submitButton" },
+                    on: { click: _vm.submit }
+                  },
+                  [_vm._v(_vm._s(_vm.$t("firefly.submit")))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("p", {
+                staticClass: "text-success",
+                domProps: { innerHTML: _vm._s(_vm.success_message) }
+              }),
+              _vm._v(" "),
+              _c("p", {
+                staticClass: "text-danger",
+                domProps: { innerHTML: _vm._s(_vm.error_message) }
+              })
+            ])
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomAttachments.vue?vue&type=template&id=75bc1a7c&":
 /*!*************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomAttachments.vue?vue&type=template&id=75bc1a7c& ***!
@@ -7746,80 +9027,6 @@ var render = function() {
                   staticClass: "btn btn-default",
                   attrs: { type: "button" },
                   on: { click: _vm.clearAtt }
-                },
-                [_c("i", { staticClass: "fa fa-trash-o" })]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _vm._l(this.error, function(error) {
-            return _c("ul", { staticClass: "list-unstyled" }, [
-              _c("li", { staticClass: "text-danger" }, [_vm._v(_vm._s(error))])
-            ])
-          })
-        ],
-        2
-      )
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomDate.vue?vue&type=template&id=14f6b992&":
-/*!******************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/CustomDate.vue?vue&type=template&id=14f6b992& ***!
-  \******************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "form-group", class: { "has-error": _vm.hasError() } },
-    [
-      _c("div", { staticClass: "col-sm-12 text-sm" }, [
-        _vm._v("\n    " + _vm._s(_vm.title) + "\n  ")
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-sm-12" },
-        [
-          _c("div", { staticClass: "input-group" }, [
-            _c("input", {
-              ref: "date",
-              staticClass: "form-control",
-              attrs: {
-                name: _vm.name,
-                placeholder: _vm.title,
-                title: _vm.title,
-                autocomplete: "off",
-                type: "date"
-              },
-              domProps: { value: _vm.value ? _vm.value.substr(0, 10) : "" },
-              on: { input: _vm.handleInput }
-            }),
-            _vm._v(" "),
-            _c("span", { staticClass: "input-group-btn" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-default",
-                  attrs: { tabIndex: "-1", type: "button" },
-                  on: { click: _vm.clearDate }
                 },
                 [_c("i", { staticClass: "fa fa-trash-o" })]
               )
@@ -8276,674 +9483,6 @@ var render = function() {
         ],
         2
       )
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/EditTransaction.vue?vue&type=template&id=16510831&":
-/*!***********************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/EditTransaction.vue?vue&type=template&id=16510831& ***!
-  \***********************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "form",
-    {
-      staticClass: "form-horizontal",
-      attrs: {
-        id: "store",
-        "accept-charset": "UTF-8",
-        action: "#",
-        enctype: "multipart/form-data",
-        method: "POST"
-      }
-    },
-    [
-      _c("input", { attrs: { name: "_token", type: "hidden", value: "xxx" } }),
-      _vm._v(" "),
-      _vm.error_message !== ""
-        ? _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "alert alert-danger alert-dismissible",
-                  attrs: { role: "alert" }
-                },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "close",
-                      attrs: {
-                        "data-dismiss": "alert",
-                        type: "button",
-                        "aria-label": _vm.$t("firefly.close")
-                      }
-                    },
-                    [
-                      _c("span", { attrs: { "aria-hidden": "true" } }, [
-                        _vm._v("×")
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("strong", [_vm._v(_vm._s(_vm.$t("firefly.flash_error")))]),
-                  _vm._v(" " + _vm._s(_vm.error_message) + "\n      ")
-                ]
-              )
-            ])
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.success_message !== ""
-        ? _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "alert alert-success alert-dismissible",
-                  attrs: { role: "alert" }
-                },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "close",
-                      attrs: {
-                        "data-dismiss": "alert",
-                        type: "button",
-                        "aria-label": _vm.$t("firefly.close")
-                      }
-                    },
-                    [
-                      _c("span", { attrs: { "aria-hidden": "true" } }, [
-                        _vm._v("×")
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("strong", [
-                    _vm._v(_vm._s(_vm.$t("firefly.flash_success")))
-                  ]),
-                  _vm._v(" "),
-                  _c("span", {
-                    domProps: { innerHTML: _vm._s(_vm.success_message) }
-                  })
-                ]
-              )
-            ])
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "div",
-        _vm._l(_vm.transactions, function(transaction, index) {
-          return _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c("div", { staticClass: "box" }, [
-                _c("div", { staticClass: "box-header with-border" }, [
-                  _c("h3", { staticClass: "box-title splitTitle" }, [
-                    _vm.transactions.length > 1
-                      ? _c("span", [
-                          _vm._v(
-                            _vm._s(_vm.$t("firefly.single_split")) +
-                              " " +
-                              _vm._s(index + 1) +
-                              " / " +
-                              _vm._s(_vm.transactions.length)
-                          )
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.transactions.length === 1
-                      ? _c("span", [
-                          _vm._v(
-                            _vm._s(
-                              _vm.$t("firefly.transaction_journal_information")
-                            )
-                          )
-                        ])
-                      : _vm._e()
-                  ]),
-                  _vm._v(" "),
-                  _vm.transactions.length > 1
-                    ? _c("div", { staticClass: "box-tools pull-right" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-xs btn-danger",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                return _vm.deleteTransaction(index, $event)
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "fa fa-trash" })]
-                        )
-                      ])
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "box-body" }, [
-                  _c("div", { staticClass: "row" }, [
-                    _c(
-                      "div",
-                      { staticClass: "col-lg-4" },
-                      [
-                        _vm.transactionType.toLowerCase() !== "reconciliation"
-                          ? _c("transaction-description", {
-                              attrs: {
-                                error: transaction.errors.description,
-                                index: index
-                              },
-                              model: {
-                                value: transaction.description,
-                                callback: function($$v) {
-                                  _vm.$set(transaction, "description", $$v)
-                                },
-                                expression: "transaction.description"
-                              }
-                            })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.transactionType.toLowerCase() !== "reconciliation"
-                          ? _c("account-select", {
-                              attrs: {
-                                accountName: transaction.source_account.name,
-                                accountTypeFilters:
-                                  transaction.source_account.allowed_types,
-                                error: transaction.errors.source_account,
-                                index: index,
-                                transactionType: _vm.transactionType,
-                                inputName: "source[]",
-                                inputDescription: _vm.$t(
-                                  "firefly.source_account"
-                                )
-                              },
-                              on: {
-                                "clear:value": function($event) {
-                                  return _vm.clearSource(index)
-                                },
-                                "select:account": function($event) {
-                                  return _vm.selectedSourceAccount(
-                                    index,
-                                    $event
-                                  )
-                                }
-                              }
-                            })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.transactionType.toLowerCase() === "reconciliation"
-                          ? _c("div", { staticClass: "form-group" }, [
-                              _c("div", { staticClass: "col-sm-12" }, [
-                                _c(
-                                  "p",
-                                  {
-                                    staticClass: "form-control-static",
-                                    attrs: { id: "ffInput_source" }
-                                  },
-                                  [
-                                    _c("em", [
-                                      _vm._v(
-                                        "\n                        " +
-                                          _vm._s(
-                                            _vm.$t(
-                                              "firefly.source_account_reconciliation"
-                                            )
-                                          ) +
-                                          "\n                      "
-                                      )
-                                    ])
-                                  ]
-                                )
-                              ])
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.transactionType.toLowerCase() !== "reconciliation"
-                          ? _c("account-select", {
-                              attrs: {
-                                accountName:
-                                  transaction.destination_account.name,
-                                accountTypeFilters:
-                                  transaction.destination_account.allowed_types,
-                                error: transaction.errors.destination_account,
-                                index: index,
-                                transactionType: _vm.transactionType,
-                                inputName: "destination[]",
-                                inputDescription: _vm.$t(
-                                  "firefly.destination_account"
-                                )
-                              },
-                              on: {
-                                "clear:value": function($event) {
-                                  return _vm.clearDestination(index)
-                                },
-                                "select:account": function($event) {
-                                  return _vm.selectedDestinationAccount(
-                                    index,
-                                    $event
-                                  )
-                                }
-                              }
-                            })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.transactionType.toLowerCase() === "reconciliation"
-                          ? _c("div", { staticClass: "form-group" }, [
-                              _c("div", { staticClass: "col-sm-12" }, [
-                                _c(
-                                  "p",
-                                  {
-                                    staticClass: "form-control-static",
-                                    attrs: { id: "ffInput_dest" }
-                                  },
-                                  [
-                                    _c("em", [
-                                      _vm._v(
-                                        "\n                        " +
-                                          _vm._s(
-                                            _vm.$t(
-                                              "firefly.destination_account_reconciliation"
-                                            )
-                                          ) +
-                                          "\n                      "
-                                      )
-                                    ])
-                                  ]
-                                )
-                              ])
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c("standard-date", {
-                          attrs: {
-                            error: transaction.errors.date,
-                            index: index
-                          },
-                          model: {
-                            value: transaction.date,
-                            callback: function($$v) {
-                              _vm.$set(transaction, "date", $$v)
-                            },
-                            expression: "transaction.date"
-                          }
-                        }),
-                        _vm._v(" "),
-                        index === 0
-                          ? _c(
-                              "div",
-                              [
-                                _c("transaction-type", {
-                                  attrs: {
-                                    destination:
-                                      transaction.destination_account.type,
-                                    source: transaction.source_account.type
-                                  },
-                                  on: {
-                                    "set:transactionType": function($event) {
-                                      return _vm.setTransactionType($event)
-                                    },
-                                    "act:limitSourceType": function($event) {
-                                      return _vm.limitSourceType($event)
-                                    },
-                                    "act:limitDestinationType": function(
-                                      $event
-                                    ) {
-                                      return _vm.limitDestinationType($event)
-                                    }
-                                  }
-                                })
-                              ],
-                              1
-                            )
-                          : _vm._e()
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "col-lg-4" },
-                      [
-                        _c("amount", {
-                          attrs: {
-                            destination: transaction.destination_account,
-                            error: transaction.errors.amount,
-                            source: transaction.source_account,
-                            transactionType: _vm.transactionType
-                          },
-                          model: {
-                            value: transaction.amount,
-                            callback: function($$v) {
-                              _vm.$set(transaction, "amount", $$v)
-                            },
-                            expression: "transaction.amount"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _vm.transactionType.toLowerCase() !== "reconciliation"
-                          ? _c("foreign-amount", {
-                              attrs: {
-                                destination: transaction.destination_account,
-                                error: transaction.errors.foreign_amount,
-                                no_currency: _vm.$t(
-                                  "firefly.none_in_select_list"
-                                ),
-                                source: transaction.source_account,
-                                transactionType: _vm.transactionType,
-                                title: _vm.$t("form.foreign_amount")
-                              },
-                              model: {
-                                value: transaction.foreign_amount,
-                                callback: function($$v) {
-                                  _vm.$set(transaction, "foreign_amount", $$v)
-                                },
-                                expression: "transaction.foreign_amount"
-                              }
-                            })
-                          : _vm._e()
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "col-lg-4" },
-                      [
-                        _c("budget", {
-                          attrs: {
-                            error: transaction.errors.budget_id,
-                            no_budget: _vm.$t("firefly.none_in_select_list"),
-                            transactionType: _vm.transactionType
-                          },
-                          model: {
-                            value: transaction.budget,
-                            callback: function($$v) {
-                              _vm.$set(transaction, "budget", $$v)
-                            },
-                            expression: "transaction.budget"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("category", {
-                          attrs: {
-                            error: transaction.errors.category,
-                            transactionType: _vm.transactionType
-                          },
-                          model: {
-                            value: transaction.category,
-                            callback: function($$v) {
-                              _vm.$set(transaction, "category", $$v)
-                            },
-                            expression: "transaction.category"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("tags", {
-                          attrs: {
-                            error: transaction.errors.tags,
-                            tags: transaction.tags,
-                            transactionType: _vm.transactionType
-                          },
-                          model: {
-                            value: transaction.tags,
-                            callback: function($$v) {
-                              _vm.$set(transaction, "tags", $$v)
-                            },
-                            expression: "transaction.tags"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("bill", {
-                          attrs: {
-                            error: transaction.errors.bill_id,
-                            no_bill: _vm.$t("firefly.none_in_select_list"),
-                            transactionType: _vm.transactionType
-                          },
-                          model: {
-                            value: transaction.bill,
-                            callback: function($$v) {
-                              _vm.$set(transaction, "bill", $$v)
-                            },
-                            expression: "transaction.bill"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("custom-transaction-fields", {
-                          attrs: { error: transaction.errors.custom_errors },
-                          model: {
-                            value: transaction.custom_fields,
-                            callback: function($$v) {
-                              _vm.$set(transaction, "custom_fields", $$v)
-                            },
-                            expression: "transaction.custom_fields"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _vm.transactions.length - 1 === index &&
-                _vm.transactionType.toLowerCase() !== "reconciliation"
-                  ? _c("div", { staticClass: "box-footer" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-default",
-                          attrs: { type: "button" },
-                          on: { click: _vm.addTransaction }
-                        },
-                        [
-                          _vm._v(
-                            _vm._s(_vm.$t("firefly.add_another_split")) +
-                              "\n            "
-                          )
-                        ]
-                      )
-                    ])
-                  : _vm._e()
-              ])
-            ])
-          ])
-        }),
-        0
-      ),
-      _vm._v(" "),
-      _vm.transactions.length > 1
-        ? _c("div", { staticClass: "row" }, [
-            _c(
-              "div",
-              { staticClass: "col-lg-6 col-md-6 col-sm-12 col-xs-12" },
-              [
-                _c("div", { staticClass: "box" }, [
-                  _c("div", { staticClass: "box-header with-border" }, [
-                    _c("h3", { staticClass: "box-title" }, [
-                      _vm._v(
-                        "\n            " +
-                          _vm._s(_vm.$t("firefly.split_transaction_title")) +
-                          "\n          "
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "box-body" },
-                    [
-                      _c("group-description", {
-                        attrs: { error: _vm.group_title_errors },
-                        model: {
-                          value: _vm.group_title,
-                          callback: function($$v) {
-                            _vm.group_title = $$v
-                          },
-                          expression: "group_title"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ])
-              ]
-            )
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-lg-6 col-md-6 col-sm-12 col-xs-12" }, [
-          _c("div", { staticClass: "box" }, [
-            _c("div", { staticClass: "box-header with-border" }, [
-              _c("h3", { staticClass: "box-title" }, [
-                _vm._v(
-                  "\n            " +
-                    _vm._s(_vm.$t("firefly.submission")) +
-                    "\n          "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "box-body" }, [
-              _c("div", { staticClass: "checkbox" }, [
-                _c("label", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.returnAfter,
-                        expression: "returnAfter"
-                      }
-                    ],
-                    attrs: { name: "return_after", type: "checkbox" },
-                    domProps: {
-                      checked: Array.isArray(_vm.returnAfter)
-                        ? _vm._i(_vm.returnAfter, null) > -1
-                        : _vm.returnAfter
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = _vm.returnAfter,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 && (_vm.returnAfter = $$a.concat([$$v]))
-                          } else {
-                            $$i > -1 &&
-                              (_vm.returnAfter = $$a
-                                .slice(0, $$i)
-                                .concat($$a.slice($$i + 1)))
-                          }
-                        } else {
-                          _vm.returnAfter = $$c
-                        }
-                      }
-                    }
-                  }),
-                  _vm._v(
-                    "\n              " +
-                      _vm._s(_vm.$t("firefly.after_update_create_another")) +
-                      "\n            "
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              null !== _vm.transactionType &&
-              _vm.transactionType.toLowerCase() !== "reconciliation"
-                ? _c("div", { staticClass: "checkbox" }, [
-                    _c("label", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.storeAsNew,
-                            expression: "storeAsNew"
-                          }
-                        ],
-                        attrs: { name: "store_as_new", type: "checkbox" },
-                        domProps: {
-                          checked: Array.isArray(_vm.storeAsNew)
-                            ? _vm._i(_vm.storeAsNew, null) > -1
-                            : _vm.storeAsNew
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.storeAsNew,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 && (_vm.storeAsNew = $$a.concat([$$v]))
-                              } else {
-                                $$i > -1 &&
-                                  (_vm.storeAsNew = $$a
-                                    .slice(0, $$i)
-                                    .concat($$a.slice($$i + 1)))
-                              }
-                            } else {
-                              _vm.storeAsNew = $$c
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(
-                        "\n              " +
-                          _vm._s(_vm.$t("firefly.store_as_new")) +
-                          "\n            "
-                      )
-                    ])
-                  ])
-                : _vm._e()
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "box-footer" }, [
-              _c("div", { staticClass: "btn-group" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-success",
-                    attrs: { id: "submitButton" },
-                    on: { click: _vm.submit }
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(_vm.$t("firefly.update_transaction")) +
-                        "\n            "
-                    )
-                  ]
-                )
-              ])
-            ])
-          ])
-        ])
-      ])
     ]
   )
 }
@@ -10008,31 +10547,32 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!*************************************************!*\
-  !*** ./resources/assets/js/edit_transaction.js ***!
-  \*************************************************/
+/*!************************************************!*\
+  !*** ./resources/assets/js/yearly_overview.js ***!
+  \************************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_transactions_CustomAttachments__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/transactions/CustomAttachments */ "./resources/assets/js/components/transactions/CustomAttachments.vue");
-/* harmony import */ var _components_transactions_EditTransaction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/transactions/EditTransaction */ "./resources/assets/js/components/transactions/EditTransaction.vue");
-/* harmony import */ var _components_transactions_CustomDate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/transactions/CustomDate */ "./resources/assets/js/components/transactions/CustomDate.vue");
-/* harmony import */ var _components_transactions_CustomString__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/transactions/CustomString */ "./resources/assets/js/components/transactions/CustomString.vue");
-/* harmony import */ var _components_transactions_CustomTextarea__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/transactions/CustomTextarea */ "./resources/assets/js/components/transactions/CustomTextarea.vue");
-/* harmony import */ var _components_transactions_StandardDate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/transactions/StandardDate */ "./resources/assets/js/components/transactions/StandardDate.vue");
-/* harmony import */ var _components_transactions_GroupDescription__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/transactions/GroupDescription */ "./resources/assets/js/components/transactions/GroupDescription.vue");
-/* harmony import */ var _components_transactions_TransactionDescription__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/transactions/TransactionDescription */ "./resources/assets/js/components/transactions/TransactionDescription.vue");
-/* harmony import */ var _components_transactions_CustomTransactionFields__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/transactions/CustomTransactionFields */ "./resources/assets/js/components/transactions/CustomTransactionFields.vue");
-/* harmony import */ var _components_transactions_PiggyBank__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/transactions/PiggyBank */ "./resources/assets/js/components/transactions/PiggyBank.vue");
-/* harmony import */ var _components_transactions_Tags__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/transactions/Tags */ "./resources/assets/js/components/transactions/Tags.vue");
-/* harmony import */ var _components_transactions_Category__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/transactions/Category */ "./resources/assets/js/components/transactions/Category.vue");
-/* harmony import */ var _components_transactions_Amount__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/transactions/Amount */ "./resources/assets/js/components/transactions/Amount.vue");
-/* harmony import */ var _components_transactions_ForeignAmountSelect__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/transactions/ForeignAmountSelect */ "./resources/assets/js/components/transactions/ForeignAmountSelect.vue");
-/* harmony import */ var _components_transactions_TransactionType__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/transactions/TransactionType */ "./resources/assets/js/components/transactions/TransactionType.vue");
-/* harmony import */ var _components_transactions_AccountSelect__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/transactions/AccountSelect */ "./resources/assets/js/components/transactions/AccountSelect.vue");
-/* harmony import */ var _components_transactions_Budget__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/transactions/Budget */ "./resources/assets/js/components/transactions/Budget.vue");
-/* harmony import */ var _components_transactions_CustomUri__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/transactions/CustomUri */ "./resources/assets/js/components/transactions/CustomUri.vue");
-/* harmony import */ var _components_transactions_Bill__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/transactions/Bill */ "./resources/assets/js/components/transactions/Bill.vue");
+/* harmony import */ var _components_real_estate_management_YearlyOverview__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/real_estate_management/YearlyOverview */ "./resources/assets/js/components/real_estate_management/YearlyOverview.vue");
+/* harmony import */ var _components_transactions_CustomAttachments__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/transactions/CustomAttachments */ "./resources/assets/js/components/transactions/CustomAttachments.vue");
+/* harmony import */ var _components_transactions_CreateTransaction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/transactions/CreateTransaction */ "./resources/assets/js/components/transactions/CreateTransaction.vue");
+/* harmony import */ var _components_real_estate_management_CustomDate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/real_estate_management/CustomDate */ "./resources/assets/js/components/real_estate_management/CustomDate.vue");
+/* harmony import */ var _components_transactions_CustomString__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/transactions/CustomString */ "./resources/assets/js/components/transactions/CustomString.vue");
+/* harmony import */ var _components_transactions_CustomTextarea__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/transactions/CustomTextarea */ "./resources/assets/js/components/transactions/CustomTextarea.vue");
+/* harmony import */ var _components_transactions_StandardDate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/transactions/StandardDate */ "./resources/assets/js/components/transactions/StandardDate.vue");
+/* harmony import */ var _components_transactions_GroupDescription__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/transactions/GroupDescription */ "./resources/assets/js/components/transactions/GroupDescription.vue");
+/* harmony import */ var _components_transactions_TransactionDescription__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/transactions/TransactionDescription */ "./resources/assets/js/components/transactions/TransactionDescription.vue");
+/* harmony import */ var _components_transactions_CustomTransactionFields__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/transactions/CustomTransactionFields */ "./resources/assets/js/components/transactions/CustomTransactionFields.vue");
+/* harmony import */ var _components_transactions_PiggyBank__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/transactions/PiggyBank */ "./resources/assets/js/components/transactions/PiggyBank.vue");
+/* harmony import */ var _components_transactions_Tags__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/transactions/Tags */ "./resources/assets/js/components/transactions/Tags.vue");
+/* harmony import */ var _components_transactions_Category__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/transactions/Category */ "./resources/assets/js/components/transactions/Category.vue");
+/* harmony import */ var _components_transactions_Amount__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/transactions/Amount */ "./resources/assets/js/components/transactions/Amount.vue");
+/* harmony import */ var _components_transactions_ForeignAmountSelect__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/transactions/ForeignAmountSelect */ "./resources/assets/js/components/transactions/ForeignAmountSelect.vue");
+/* harmony import */ var _components_transactions_TransactionType__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/transactions/TransactionType */ "./resources/assets/js/components/transactions/TransactionType.vue");
+/* harmony import */ var _components_transactions_AccountSelect__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/transactions/AccountSelect */ "./resources/assets/js/components/transactions/AccountSelect.vue");
+/* harmony import */ var _components_transactions_Budget__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/transactions/Budget */ "./resources/assets/js/components/transactions/Budget.vue");
+/* harmony import */ var _components_transactions_CustomUri__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/transactions/CustomUri */ "./resources/assets/js/components/transactions/CustomUri.vue");
+/* harmony import */ var _components_transactions_Bill__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/transactions/Bill */ "./resources/assets/js/components/transactions/Bill.vue");
 /*
- * edit_transactions.js
+ * create_transactions.js
  * Copyright (c) 2019 james@firefly-iii.org
  *
  * This file is part of Firefly III (https://github.com/firefly-iii).
@@ -10069,6 +10609,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /**
  * First we will load Axios via bootstrap.js
  * jquery and bootstrap-sass preloaded in app.js
@@ -10078,34 +10619,35 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__(/*! ./bootstrap */ "./resources/assets/js/bootstrap.js"); // components for create and edit transactions.
 
 
-Vue.component('budget', _components_transactions_Budget__WEBPACK_IMPORTED_MODULE_16__["default"]);
-Vue.component('bill', _components_transactions_Bill__WEBPACK_IMPORTED_MODULE_18__["default"]);
-Vue.component('custom-date', _components_transactions_CustomDate__WEBPACK_IMPORTED_MODULE_2__["default"]);
-Vue.component('custom-string', _components_transactions_CustomString__WEBPACK_IMPORTED_MODULE_3__["default"]);
-Vue.component('custom-attachments', _components_transactions_CustomAttachments__WEBPACK_IMPORTED_MODULE_0__["default"]);
-Vue.component('custom-textarea', _components_transactions_CustomTextarea__WEBPACK_IMPORTED_MODULE_4__["default"]);
-Vue.component('custom-uri', _components_transactions_CustomUri__WEBPACK_IMPORTED_MODULE_17__["default"]);
-Vue.component('standard-date', _components_transactions_StandardDate__WEBPACK_IMPORTED_MODULE_5__["default"]);
-Vue.component('group-description', _components_transactions_GroupDescription__WEBPACK_IMPORTED_MODULE_6__["default"]);
-Vue.component('transaction-description', _components_transactions_TransactionDescription__WEBPACK_IMPORTED_MODULE_7__["default"]);
-Vue.component('custom-transaction-fields', _components_transactions_CustomTransactionFields__WEBPACK_IMPORTED_MODULE_8__["default"]);
-Vue.component('piggy-bank', _components_transactions_PiggyBank__WEBPACK_IMPORTED_MODULE_9__["default"]);
-Vue.component('tags', _components_transactions_Tags__WEBPACK_IMPORTED_MODULE_10__["default"]);
-Vue.component('category', _components_transactions_Category__WEBPACK_IMPORTED_MODULE_11__["default"]);
-Vue.component('amount', _components_transactions_Amount__WEBPACK_IMPORTED_MODULE_12__["default"]);
-Vue.component('foreign-amount', _components_transactions_ForeignAmountSelect__WEBPACK_IMPORTED_MODULE_13__["default"]);
-Vue.component('transaction-type', _components_transactions_TransactionType__WEBPACK_IMPORTED_MODULE_14__["default"]);
-Vue.component('account-select', _components_transactions_AccountSelect__WEBPACK_IMPORTED_MODULE_15__["default"]);
-Vue.component('edit-transaction', _components_transactions_EditTransaction__WEBPACK_IMPORTED_MODULE_1__["default"]);
+Vue.component('budget', _components_transactions_Budget__WEBPACK_IMPORTED_MODULE_17__["default"]);
+Vue.component('bill', _components_transactions_Bill__WEBPACK_IMPORTED_MODULE_19__["default"]);
+Vue.component('custom-date', _components_real_estate_management_CustomDate__WEBPACK_IMPORTED_MODULE_3__["default"]);
+Vue.component('custom-string', _components_transactions_CustomString__WEBPACK_IMPORTED_MODULE_4__["default"]);
+Vue.component('custom-attachments', _components_transactions_CustomAttachments__WEBPACK_IMPORTED_MODULE_1__["default"]);
+Vue.component('custom-textarea', _components_transactions_CustomTextarea__WEBPACK_IMPORTED_MODULE_5__["default"]);
+Vue.component('custom-uri', _components_transactions_CustomUri__WEBPACK_IMPORTED_MODULE_18__["default"]);
+Vue.component('standard-date', _components_transactions_StandardDate__WEBPACK_IMPORTED_MODULE_6__["default"]);
+Vue.component('group-description', _components_transactions_GroupDescription__WEBPACK_IMPORTED_MODULE_7__["default"]);
+Vue.component('transaction-description', _components_transactions_TransactionDescription__WEBPACK_IMPORTED_MODULE_8__["default"]);
+Vue.component('custom-transaction-fields', _components_transactions_CustomTransactionFields__WEBPACK_IMPORTED_MODULE_9__["default"]);
+Vue.component('piggy-bank', _components_transactions_PiggyBank__WEBPACK_IMPORTED_MODULE_10__["default"]);
+Vue.component('tags', _components_transactions_Tags__WEBPACK_IMPORTED_MODULE_11__["default"]);
+Vue.component('category', _components_transactions_Category__WEBPACK_IMPORTED_MODULE_12__["default"]);
+Vue.component('amount', _components_transactions_Amount__WEBPACK_IMPORTED_MODULE_13__["default"]);
+Vue.component('foreign-amount', _components_transactions_ForeignAmountSelect__WEBPACK_IMPORTED_MODULE_14__["default"]);
+Vue.component('transaction-type', _components_transactions_TransactionType__WEBPACK_IMPORTED_MODULE_15__["default"]);
+Vue.component('account-select', _components_transactions_AccountSelect__WEBPACK_IMPORTED_MODULE_16__["default"]);
+Vue.component('create-transaction', _components_transactions_CreateTransaction__WEBPACK_IMPORTED_MODULE_2__["default"]);
+Vue.component('yearly-overview', _components_real_estate_management_YearlyOverview__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 var i18n = __webpack_require__(/*! ./i18n */ "./resources/assets/js/i18n.js");
 
 var props = {};
 new Vue({
   i18n: i18n,
-  el: "#edit_transaction",
+  el: "#yearly_overview",
   render: function render(createElement) {
-    return createElement(_components_transactions_EditTransaction__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    return createElement(_components_real_estate_management_YearlyOverview__WEBPACK_IMPORTED_MODULE_0__["default"], {
       props: props
     });
   }

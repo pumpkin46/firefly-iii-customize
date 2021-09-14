@@ -18,7 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import RealEstateManagement from './components/real_estate_management';
+import CustomInput from "./components/real_estate_management/CustomInput";
+import EditApartment from './components/real_estate_management/EditApartment';
+import CustomAutocomplete from "./components/real_estate_management/CustomAutocomplete";
 
 /**
  * First we will load Axios via bootstrap.js
@@ -27,17 +29,18 @@ import RealEstateManagement from './components/real_estate_management';
  */
 
 require('./bootstrap');
-
-// components for create and edit transactions.
-Vue.component('real-estate-management', RealEstateManagement);
+    
+Vue.component('edit-apartment', EditApartment);
+Vue.component('custom-input', CustomInput);
+Vue.component('custom-autocomplete', CustomAutocomplete);
 
 const i18n = require('./i18n');
 
 let props = {};
 new Vue({
     i18n,
-    el: "#real_estate_management",
+    el: "#edit_apartment",
     render: (createElement) => {
-        return createElement(RealEstateManagement, {props: props});
+        return createElement(EditApartment, {props: props});
     },
 });

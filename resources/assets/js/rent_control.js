@@ -18,7 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import RealEstateManagement from './components/real_estate_management';
+import RentControl from './components/real_estate_management/RentControl';
+import CustomDate from "./components/real_estate_management/CustomDate";
 
 /**
  * First we will load Axios via bootstrap.js
@@ -29,15 +30,16 @@ import RealEstateManagement from './components/real_estate_management';
 require('./bootstrap');
 
 // components for create and edit transactions.
-Vue.component('real-estate-management', RealEstateManagement);
+Vue.component('custom-date', CustomDate);
+Vue.component('rent-control', RentControl);
 
 const i18n = require('./i18n');
 
 let props = {};
 new Vue({
     i18n,
-    el: "#real_estate_management",
+    el: "#rent_control",
     render: (createElement) => {
-        return createElement(RealEstateManagement, {props: props});
+        return createElement(RentControl, {props: props});
     },
 });

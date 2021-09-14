@@ -24,36 +24,56 @@
     <div>
       <div class="box">
         <div class="box-body">
-          <a href="real-estate-management/create" class="btn btn-success"><i class="fa fa-plus fa-fw"></i> Add New Apartment</a>
-          <div v-for="account in accounts" v-bind:key="account.id" style="margin: 20px 0px 20px 0px">
-            <div style="display:flex; align-items:center; margin-bottom: 8px">
-                <i class="fa fa-fw fa-bars object-handle" style="margin-right: 30px"></i>
-                <span style="color: #87a6eb;font-size: 18px;font-weight: 500;">{{account.name}}</span>
-            </div>
-            <div>
-              <table class="table table-responsive table-hover apartment_list_table" id="sortable-table" style="margin-left:35px">
-                <thead>
-                  <th class="text-left">Apt</th>
-                  <th class="text-left">Name</th>
-                  <th class="text-right">Utilities %</th>
-                  <th class="text-right">Raw Rent</th>
-                  <th class="text-right">Utilities Total</th>
-                  <th class="text-center">Vat %</th>
-                  <th class="text-right">Total Rent</th>
-                </thead>
-                <tr v-for="apartment in account.apartments" v-bind:key="apartment.id" class="sortable-object apartment_row">
-                  <td class="text-left">{{apartment.id}}</td>
-                  <td class="text-left">{{apartment.renterName}}</td>
-                  <td class="text-right">{{apartment.utilities}}</td>
-                  <td class="text-right">{{apartment.rawRent}}</td>
-                  <td class="text-right">{{apartment.utilitiesTotal}}</td>
-                  <td class="text-center">{{apartment.vat}}</td>
-                  <td class="text-right">{{apartment.totalRent}}</td>
-                </tr>
-              </table>
+          <a href="real-estate-management/create" class="btn btn-success"><i class="fa fa-plus fa-fw"></i>{{ $t('firefly.add_new_apartment') }}</a>
+          <div style="margin: 20px 0px 20px 0px">
+            <div v-for="account in accounts" v-bind:key="account.id">
+              <div style="display:flex; align-items:center; margin-bottom: 8px">
+                  <i class="fa fa-fw fa-bars object-handle" style="margin-right: 30px"></i>
+                  <span style="color: #87a6eb;font-size: 18px;font-weight: 500;">{{account.name}}</span>
+              </div>
+              <div>
+                <table class="table table-responsive table-hover apartment_list_table" id="sortable-table">
+                  <thead>
+                    <th class="text-left" style="width: 10%;">{{$t('firefly.apt')}}</th>
+                    <th class="text-left" style="width: 20%;">{{$t('firefly.name')}}</th>
+                    <th class="text-right" style="width: 10%;">{{$t('firefly.utilities')}}</th>
+                    <th class="text-right" style="width: 10%;">{{$t('firefly.raw_rent')}}</th>
+                    <th class="text-right" style="width: 10%;">{{$t('firefly.utilities_total')}}</th>
+                    <th class="text-center" style="width: 10%;">{{$t('firefly.vat%')}}</th>
+                    <th class="text-right" style="width: 10%;">{{$t('firefly.total_rent')}}</th>
+                    <th class="text-right" style="width: 15%;">{{$t('firefly.deposit_account')}}</th>
+                    <th class="text-right" style="width: 5%;"></th>
+                  </thead>
+                  <tr v-for="apartment in account.apartments" v-bind:key="apartment.id" class="sortable-object apartment_row">
+                    <td class="text-left">{{apartment.id}}</td>
+                    <td class="text-left">{{apartment.renter_account.name}}</td>
+                    <td class="text-right">{{apartment.utilities}}</td>
+                    <td class="text-right">{{apartment.rawRent}}</td>
+                    <td class="text-right">{{apartment.utilitiesTotal}}</td>
+                    <td class="text-center">{{apartment.vat}}</td>
+                    <td class="text-right">{{apartment.totalRent}}</td>
+                    <td class="text-right">{{apartment.source_account.name}}</td>
+                    <td style="" class="hidden-xs">
+                        <div class="btn-group btn-group-xs pull-right">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              {{ $t('firefly.actions') }} <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li>
+                                  <a v-bind:href="'real-estate-management/edit/' + apartment.id">
+                                    <i class="fa fa-fw fa-pencil"></i> 
+                                    {{ $t('firefly.edit') }}
+                                  </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </div>
-          <a href="real-estate-management/create" class="btn btn-success"><i class="fa fa-plus fa-fw"></i> Add New Apartment</a>
+          <a href="real-estate-management/create" class="btn btn-success"><i class="fa fa-plus fa-fw"></i>{{ $t('firefly.add_new_apartment') }}</a>
         </div>
       </div>
     </div>

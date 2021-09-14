@@ -358,3 +358,6 @@ span.twitter-typeahead {
 .apartment_list_table th, .apartment_list_table td{
     padding: 5px 10px;
 }
+/* .apartment_list_table th:nth-child(1) {
+    background-color: red;
+} */

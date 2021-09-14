@@ -422,6 +422,11 @@ Route::group(
     static function () {
         Route::get('', ['uses' => 'RealEstateManagementController@getApartments', 'as' => 'index']);
         Route::post('', ['uses' => 'RealEstateManagementController@store', 'as' => 'store']);
+        Route::put('', ['uses' => 'RealEstateManagementController@update', 'as' => 'update']);
+        Route::post('apartment-payment', ['uses' => 'RealEstateManagementController@addApartmentPayment', 'as' => 'apartment-payment']);
+        Route::get('rent-status', ['uses' => 'RealEstateManagementController@getRentStatus', 'as' => 'rent-status']);
+        Route::get('rent-status-yearly', ['uses' => 'RealEstateManagementController@getRentStatusYearly', 'as' => 'rent-status-yearly']);
+        Route::get('apartment', ['uses' => 'RealEstateManagementController@get_apartment_by_id', 'as' => 'apartment']);
     }
 );
 

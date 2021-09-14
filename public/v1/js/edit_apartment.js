@@ -2054,511 +2054,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/ApartmentNo.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/ApartmentNo.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['error', 'value', 'index'],
-  name: "TransactionDescription",
-  mounted: function mounted() {
-    this.target = this.$refs.descr;
-    this.descriptionAutoCompleteURI = document.getElementsByTagName('base')[0].href + "api/v1/autocomplete/transactions?query=";
-    this.$refs.descr.focus();
-    console.log(this.value);
-  },
-  components: {},
-  data: function data() {
-    return {
-      descriptionAutoCompleteURI: null,
-      name: null,
-      description: null,
-      target: null
-    };
-  },
-  methods: {
-    aSyncFunction: function aSyncFunction(query, done) {
-      axios.get(this.descriptionAutoCompleteURI + query).then(function (res) {
-        done(res.data);
-      })["catch"](function (err) {// any error handler
-      });
-    },
-    betterHighlight: function betterHighlight(item) {
-      var inputValue = this.$refs.descr.value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-      var escapedName = this.escapeHtml(item.description);
-      return escapedName.replace(new RegExp("" + inputValue, 'i'), '<b>$&</b>');
-    },
-    escapeHtml: function escapeHtml(string) {
-      var entityMap = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;',
-        '/': '&#x2F;',
-        '`': '&#x60;',
-        '=': '&#x3D;'
-      };
-      return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap(s) {
-        return entityMap[s];
-      });
-    },
-    search: function search(input) {
-      return ['ab', 'cd'];
-    },
-    hasError: function hasError() {
-      return this.error.length > 0;
-    },
-    clearDescription: function clearDescription() {
-      //props.value = '';
-      this.description = '';
-      this.$refs.descr.value = '';
-      this.$emit('input', this.$refs.descr.value); // some event?
-
-      this.$emit('clear:description');
-    },
-    handleInput: function handleInput(e) {
-      this.$emit('input', this.$refs.descr.value);
-    },
-    handleEnter: function handleEnter(e) {
-      // todo feels sloppy
-      if (e.keyCode === 13) {//e.preventDefault();
-      }
-    },
-    selectedItem: function selectedItem(e) {
-      if (typeof this.name === 'undefined') {
-        return;
-      }
-
-      if (typeof this.name === 'string') {
-        return;
-      }
-
-      this.$refs.descr.value = this.name.description;
-      this.$emit('input', this.$refs.descr.value);
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CreatApartment.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CreatApartment.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "CreatApartment",
-  components: {},
-  created: function created() {},
-  methods: {
-    clearDestination: function clearDestination() {
-      this.sourceAccount = null;
-    },
-    selectedDestinationAccount: function selectedDestinationAccount(model) {
-      if (typeof model === "string") {
-        this.sourceAccount = {
-          name: model
-        };
-      } else {
-        this.sourceAccount = model;
-      }
-    },
-    clearRevenue: function clearRevenue() {
-      this.renterAccount = null;
-    },
-    selectedRevenueAccount: function selectedRevenueAccount(model) {
-      if (typeof model === "string") {
-        this.renterAccount = {
-          name: model
-        };
-      } else {
-        this.renterAccount = model;
-      }
-    },
-    clearExpense: function clearExpense() {
-      this.expenseAccount = null;
-    },
-    selectedExpenseAccount: function selectedExpenseAccount(model) {
-      if (typeof model === "string") {
-        this.expenseAccount = {
-          name: model
-        };
-      } else {
-        this.expenseAccount = model;
-      }
-    },
-    submit: function submit(e) {
-      var _this = this;
-
-      var uri = "./api/v1/real-estate-management?_token=" + document.head.querySelector('meta[name="csrf-token"]').content;
-      var data = {
-        apartmentNo: this.apartmentNo,
-        utilities: this.utilities,
-        rawRent: this.rawRent,
-        utilitiesTotal: this.utilitiesTotal,
-        vat: this.vat,
-        totalRent: this.totalRent,
-        sourceAccount: this.sourceAccount,
-        renterAccount: this.renterAccount,
-        expenseAccount: this.expenseAccount,
-        createAnother: this.createAnother,
-        resetFormAfter: this.resetFormAfter
-      };
-      var error = false;
-
-      if (this.apartmentNo === "") {
-        this.apartmentNoError = "Apartment No is invalid";
-        error = true;
-      } else {
-        this.apartmentNoError = "";
-      }
-
-      if (this.utilities === "") {
-        this.utilitiesError = "Utilities is invalid";
-        error = true;
-      } else {
-        this.utilitiesError = "";
-      }
-
-      if (this.rawRent === "") {
-        this.rawRentError = "Raw Rent is invalid";
-        error = true;
-      } else {
-        this.rawRentError = "";
-      }
-
-      if (this.utilitiesTotal === "") {
-        this.utilitiesTotalError = "Utilities Total is invalid";
-        error = true;
-      } else {
-        this.utilitiesTotalError = "";
-      }
-
-      if (this.vat === "") {
-        this.vatError = "Vat is invalid";
-        error = true;
-      } else {
-        this.vatError = "";
-      }
-
-      if (this.totalRent === "") {
-        this.totalRentError = "Total Rent is invalid";
-        error = true;
-      } else {
-        this.totalRentError = "";
-      }
-
-      if (this.sourceAccount === null) {
-        this.sourceAccountError = "Source Account is invalid";
-        error = true;
-      } else {
-        this.sourceAccountError = "";
-      }
-
-      if (this.renterAccount === null) {
-        this.renterAccountError = "Source Account is invalid";
-        error = true;
-      } else {
-        this.renterAccountError = "";
-      }
-
-      if (this.expenseAccount === null) {
-        this.expenseAccountError = "Source Account is invalid";
-        error = true;
-      } else {
-        this.expenseAccountError = "";
-      }
-
-      if (error) {
-        this.error = "There was something wrong with your submission. Please check out the errors.";
-        return;
-      }
-
-      var button = $("#submitButton");
-      button.prop("disabled", true);
-      axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, data).then(function () {
-        button.removeAttr("disabled");
-
-        if (!_this.createAnother) {
-          location.href = "/real-estate-management/index";
-        } else if (_this.resetFormAfter) {
-          _this.apartmentNo = "";
-          _this.utilities = 0;
-          _this.rawRent = "";
-          _this.utilitiesTotal = "";
-          _this.vat = "";
-          _this.totalRent = "";
-          _this.sourceAccount = null;
-          _this.renterAccount = null;
-          _this.expenseAccount = null;
-          _this.createAnother = false;
-          _this.resetFormAfter = true;
-        }
-      })["catch"](function (error) {
-        console.error(error);
-
-        _this.parseErrors(error.response.data);
-
-        button.removeAttr("disabled");
-      });
-
-      if (e) {
-        e.preventDefault();
-      }
-    }
-  },
-
-  /*
-   * The component's data.
-   */
-  data: function data() {
-    return {
-      error: "",
-      apartmentNo: "",
-      apartmentNoError: "",
-      utilities: 0,
-      utilitiesError: "",
-      rawRent: "",
-      rawRentError: "",
-      utilitiesTotal: "",
-      utilitiesTotalError: "",
-      vat: "",
-      vatError: "",
-      totalRent: "",
-      totalRentError: "",
-      sourceAccount: null,
-      sourceAccountError: "",
-      renterAccount: null,
-      renterAccountError: "",
-      expenseAccount: null,
-      expenseAccountError: "",
-      createAnother: "",
-      resetFormAfter: true
-    };
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomAutocomplete.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomAutocomplete.vue?vue&type=script&lang=js& ***!
@@ -2862,6 +2357,377 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs.descr.value = '';
       this.$emit('input', this.$refs.descr.value);
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/EditApartment.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/EditApartment.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "EditApartment",
+  components: {},
+  created: function created() {
+    this.id = location.href.substring(location.href.lastIndexOf('/') + 1).split('?')[0];
+
+    if (this.id) {
+      this.getApartmentData(this.id);
+    }
+  },
+  methods: {
+    getApartmentData: function getApartmentData(id) {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("./api/v1/real-estate-management/apartment?id=".concat(id)).then(function (_ref) {
+        var _data$apartment, _data$apartment2, _data$apartment3, _data$apartment4, _data$apartment5, _data$apartment6, _data$apartment7, _data$apartment8, _data$apartment9, _data$apartment10;
+
+        var data = _ref.data;
+        _this.id = (_data$apartment = data.apartment) === null || _data$apartment === void 0 ? void 0 : _data$apartment.id;
+        _this.apartmentNo = (_data$apartment2 = data.apartment) === null || _data$apartment2 === void 0 ? void 0 : _data$apartment2.apartmentNo;
+        _this.utilities = (_data$apartment3 = data.apartment) === null || _data$apartment3 === void 0 ? void 0 : _data$apartment3.utilities;
+        _this.rawRent = (_data$apartment4 = data.apartment) === null || _data$apartment4 === void 0 ? void 0 : _data$apartment4.rawRent;
+        _this.utilitiesTotal = (_data$apartment5 = data.apartment) === null || _data$apartment5 === void 0 ? void 0 : _data$apartment5.utilitiesTotal;
+        _this.vat = (_data$apartment6 = data.apartment) === null || _data$apartment6 === void 0 ? void 0 : _data$apartment6.vat;
+        _this.totalRent = (_data$apartment7 = data.apartment) === null || _data$apartment7 === void 0 ? void 0 : _data$apartment7.totalRent;
+        _this.sourceAccount = (_data$apartment8 = data.apartment) === null || _data$apartment8 === void 0 ? void 0 : _data$apartment8.source_account;
+        _this.renterAccount = (_data$apartment9 = data.apartment) === null || _data$apartment9 === void 0 ? void 0 : _data$apartment9.renter_account;
+        _this.expenseAccount = (_data$apartment10 = data.apartment) === null || _data$apartment10 === void 0 ? void 0 : _data$apartment10.expense_account;
+      });
+    },
+    clearDestination: function clearDestination() {
+      this.sourceAccount = null;
+    },
+    selectedDestinationAccount: function selectedDestinationAccount(model) {
+      if (typeof model === "string") {
+        this.sourceAccount = {
+          name: model
+        };
+      } else {
+        this.sourceAccount = model;
+      }
+    },
+    clearRevenue: function clearRevenue() {
+      this.renterAccount = null;
+    },
+    selectedRevenueAccount: function selectedRevenueAccount(model) {
+      if (typeof model === "string") {
+        this.renterAccount = {
+          name: model
+        };
+      } else {
+        this.renterAccount = model;
+      }
+    },
+    clearExpense: function clearExpense() {
+      this.expenseAccount = null;
+    },
+    selectedExpenseAccount: function selectedExpenseAccount(model) {
+      if (typeof model === "string") {
+        this.expenseAccount = {
+          name: model
+        };
+      } else {
+        this.expenseAccount = model;
+      }
+    },
+    submit: function submit(e) {
+      var _this2 = this;
+
+      var uri = "./api/v1/real-estate-management?_token=" + document.head.querySelector('meta[name="csrf-token"]').content;
+      var data = {
+        id: this.id,
+        apartmentNo: this.apartmentNo,
+        utilities: this.utilities,
+        rawRent: this.rawRent,
+        utilitiesTotal: this.utilitiesTotal,
+        vat: this.vat,
+        totalRent: this.totalRent,
+        sourceAccount: this.sourceAccount,
+        renterAccount: this.renterAccount,
+        expenseAccount: this.expenseAccount,
+        createAnother: this.createAnother,
+        resetFormAfter: this.resetFormAfter
+      };
+      var error = false;
+
+      if (this.apartmentNo === "") {
+        this.apartmentNoError = "Apartment No is invalid";
+        error = true;
+      } else {
+        this.apartmentNoError = "";
+      }
+
+      if (this.utilities === "") {
+        this.utilitiesError = "Utilities is invalid";
+        error = true;
+      } else {
+        this.utilitiesError = "";
+      }
+
+      if (this.rawRent === "") {
+        this.rawRentError = "Raw Rent is invalid";
+        error = true;
+      } else {
+        this.rawRentError = "";
+      }
+
+      if (this.utilitiesTotal === "") {
+        this.utilitiesTotalError = "Utilities Total is invalid";
+        error = true;
+      } else {
+        this.utilitiesTotalError = "";
+      }
+
+      if (this.vat === "") {
+        this.vatError = "Vat is invalid";
+        error = true;
+      } else {
+        this.vatError = "";
+      }
+
+      if (this.totalRent === "") {
+        this.totalRentError = "Total Rent is invalid";
+        error = true;
+      } else {
+        this.totalRentError = "";
+      }
+
+      if (this.sourceAccount === null) {
+        this.sourceAccountError = "Source Account is invalid";
+        error = true;
+      } else {
+        this.sourceAccountError = "";
+      }
+
+      if (this.renterAccount === null) {
+        this.renterAccountError = "Source Account is invalid";
+        error = true;
+      } else {
+        this.renterAccountError = "";
+      }
+
+      if (this.expenseAccount === null) {
+        this.expenseAccountError = "Source Account is invalid";
+        error = true;
+      } else {
+        this.expenseAccountError = "";
+      }
+
+      if (error) {
+        this.error = "There was something wrong with your submission. Please check out the errors.";
+        return;
+      }
+
+      var button = $("#submitButton");
+      button.prop("disabled", true);
+      axios__WEBPACK_IMPORTED_MODULE_0___default().put(uri, data).then(function () {
+        button.removeAttr("disabled");
+        location.href = "/real-estate-management/index";
+      })["catch"](function (error) {
+        console.error(error);
+
+        _this2.parseErrors(error.response.data);
+
+        button.removeAttr("disabled");
+      });
+
+      if (e) {
+        e.preventDefault();
+      }
+    }
+  },
+
+  /*
+   * The component's data.
+   */
+  data: function data() {
+    return {
+      id: '',
+      error: "",
+      apartmentNo: "",
+      apartmentNoError: "",
+      utilities: 0,
+      utilitiesError: "",
+      rawRent: "",
+      rawRentError: "",
+      utilitiesTotal: "",
+      utilitiesTotalError: "",
+      vat: "",
+      vatError: "",
+      totalRent: "",
+      totalRentError: "",
+      sourceAccount: null,
+      sourceAccountError: "",
+      renterAccount: null,
+      renterAccountError: "",
+      expenseAccount: null,
+      expenseAccountError: "",
+      createAnother: "",
+      resetFormAfter: true
+    };
   }
 });
 
@@ -3172,84 +3038,6 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/real_estate_management/ApartmentNo.vue":
-/*!*******************************************************************************!*\
-  !*** ./resources/assets/js/components/real_estate_management/ApartmentNo.vue ***!
-  \*******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _ApartmentNo_vue_vue_type_template_id_7b3b4820___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ApartmentNo.vue?vue&type=template&id=7b3b4820& */ "./resources/assets/js/components/real_estate_management/ApartmentNo.vue?vue&type=template&id=7b3b4820&");
-/* harmony import */ var _ApartmentNo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ApartmentNo.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/real_estate_management/ApartmentNo.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _ApartmentNo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ApartmentNo_vue_vue_type_template_id_7b3b4820___WEBPACK_IMPORTED_MODULE_0__.render,
-  _ApartmentNo_vue_vue_type_template_id_7b3b4820___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/real_estate_management/ApartmentNo.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/real_estate_management/CreatApartment.vue":
-/*!**********************************************************************************!*\
-  !*** ./resources/assets/js/components/real_estate_management/CreatApartment.vue ***!
-  \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _CreatApartment_vue_vue_type_template_id_6558d348___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreatApartment.vue?vue&type=template&id=6558d348& */ "./resources/assets/js/components/real_estate_management/CreatApartment.vue?vue&type=template&id=6558d348&");
-/* harmony import */ var _CreatApartment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreatApartment.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/real_estate_management/CreatApartment.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _CreatApartment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _CreatApartment_vue_vue_type_template_id_6558d348___WEBPACK_IMPORTED_MODULE_0__.render,
-  _CreatApartment_vue_vue_type_template_id_6558d348___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/real_estate_management/CreatApartment.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
 /***/ "./resources/assets/js/components/real_estate_management/CustomAutocomplete.vue":
 /*!**************************************************************************************!*\
   !*** ./resources/assets/js/components/real_estate_management/CustomAutocomplete.vue ***!
@@ -3328,10 +3116,10 @@ component.options.__file = "resources/assets/js/components/real_estate_managemen
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/real_estate_management/ApartmentNo.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************************!*\
-  !*** ./resources/assets/js/components/real_estate_management/ApartmentNo.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************/
+/***/ "./resources/assets/js/components/real_estate_management/EditApartment.vue":
+/*!*********************************************************************************!*\
+  !*** ./resources/assets/js/components/real_estate_management/EditApartment.vue ***!
+  \*********************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3339,24 +3127,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ApartmentNo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ApartmentNo.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/ApartmentNo.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ApartmentNo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _EditApartment_vue_vue_type_template_id_131e5836___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EditApartment.vue?vue&type=template&id=131e5836& */ "./resources/assets/js/components/real_estate_management/EditApartment.vue?vue&type=template&id=131e5836&");
+/* harmony import */ var _EditApartment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EditApartment.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/real_estate_management/EditApartment.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-/***/ }),
 
-/***/ "./resources/assets/js/components/real_estate_management/CreatApartment.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************!*\
-  !*** ./resources/assets/js/components/real_estate_management/CreatApartment.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreatApartment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CreatApartment.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CreatApartment.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreatApartment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _EditApartment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _EditApartment_vue_vue_type_template_id_131e5836___WEBPACK_IMPORTED_MODULE_0__.render,
+  _EditApartment_vue_vue_type_template_id_131e5836___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/real_estate_management/EditApartment.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
 
@@ -3392,37 +3187,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/real_estate_management/ApartmentNo.vue?vue&type=template&id=7b3b4820&":
-/*!**************************************************************************************************************!*\
-  !*** ./resources/assets/js/components/real_estate_management/ApartmentNo.vue?vue&type=template&id=7b3b4820& ***!
-  \**************************************************************************************************************/
+/***/ "./resources/assets/js/components/real_estate_management/EditApartment.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/assets/js/components/real_estate_management/EditApartment.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApartmentNo_vue_vue_type_template_id_7b3b4820___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApartmentNo_vue_vue_type_template_id_7b3b4820___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApartmentNo_vue_vue_type_template_id_7b3b4820___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ApartmentNo.vue?vue&type=template&id=7b3b4820& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/ApartmentNo.vue?vue&type=template&id=7b3b4820&");
-
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/real_estate_management/CreatApartment.vue?vue&type=template&id=6558d348&":
-/*!*****************************************************************************************************************!*\
-  !*** ./resources/assets/js/components/real_estate_management/CreatApartment.vue?vue&type=template&id=6558d348& ***!
-  \*****************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreatApartment_vue_vue_type_template_id_6558d348___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreatApartment_vue_vue_type_template_id_6558d348___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreatApartment_vue_vue_type_template_id_6558d348___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CreatApartment.vue?vue&type=template&id=6558d348& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CreatApartment.vue?vue&type=template&id=6558d348&");
-
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditApartment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditApartment.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/EditApartment.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditApartment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -3460,453 +3237,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/ApartmentNo.vue?vue&type=template&id=7b3b4820&":
-/*!*****************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/ApartmentNo.vue?vue&type=template&id=7b3b4820& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************/
+/***/ "./resources/assets/js/components/real_estate_management/EditApartment.vue?vue&type=template&id=131e5836&":
+/*!****************************************************************************************************************!*\
+  !*** ./resources/assets/js/components/real_estate_management/EditApartment.vue?vue&type=template&id=131e5836& ***!
+  \****************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditApartment_vue_vue_type_template_id_131e5836___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditApartment_vue_vue_type_template_id_131e5836___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "form-group", class: { "has-error": _vm.hasError() } },
-    [
-      _c("div", { staticClass: "col-sm-12 text-sm" }, [
-        _vm._v("\n    " + _vm._s(_vm.$t("firefly.description")) + "\n  ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-12" }, [
-        _c("div", { staticClass: "input-group" }, [
-          _c("input", {
-            ref: "descr",
-            staticClass: "form-control",
-            attrs: {
-              title: _vm.$t("firefly.description"),
-              autocomplete: "off",
-              name: "description[]",
-              type: "text",
-              placeholder: _vm.$t("firefly.description")
-            },
-            domProps: { value: _vm.value },
-            on: {
-              input: _vm.handleInput,
-              keypress: _vm.handleEnter,
-              submit: function($event) {
-                $event.preventDefault()
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "input-group-btn" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-default",
-                attrs: { tabIndex: "-1", type: "button" },
-                on: { click: _vm.clearDescription }
-              },
-              [_c("i", { staticClass: "fa fa-trash-o" })]
-            )
-          ])
-        ])
-      ])
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CreatApartment.vue?vue&type=template&id=6558d348&":
-/*!********************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CreatApartment.vue?vue&type=template&id=6558d348& ***!
-  \********************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "form",
-    {
-      staticClass: "form-horizontal",
-      attrs: { "accept-charset": "UTF-8", enctype: "multipart/form-data" }
-    },
-    [
-      _vm.error !== ""
-        ? _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "alert alert-danger alert-dismissible",
-                  attrs: { role: "alert" }
-                },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "close",
-                      attrs: {
-                        "data-dismiss": "alert",
-                        type: "button",
-                        "aria-label": _vm.$t("firefly.close")
-                      }
-                    },
-                    [
-                      _c("span", { attrs: { "aria-hidden": "true" } }, [
-                        _vm._v("×")
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("strong", [_vm._v(_vm._s(_vm.$t("firefly.flash_error")))]),
-                  _vm._v(" " + _vm._s(_vm.error) + "\n      ")
-                ]
-              )
-            ])
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c("div", { staticClass: "box" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "box-body" },
-          [
-            _c("custom-input", {
-              attrs: {
-                label: "Apartment No",
-                placeholder: "Apartment No",
-                value: "",
-                type: "text",
-                error: _vm.apartmentNoError
-              },
-              model: {
-                value: _vm.apartmentNo,
-                callback: function($$v) {
-                  _vm.apartmentNo = $$v
-                },
-                expression: "apartmentNo"
-              }
-            }),
-            _vm._v(" "),
-            _c("custom-autocomplete", {
-              attrs: {
-                accountName: "",
-                accountTypeFilters: ["Revenue account"],
-                defaultAccountTypeFilters: [],
-                error: _vm.renterAccountError,
-                transactionType: "",
-                inputDescription: _vm.$t("firefly.renter_name")
-              },
-              on: {
-                "clear:value": function($event) {
-                  return _vm.clearRevenue()
-                },
-                "select:account": function($event) {
-                  return _vm.selectedRevenueAccount($event)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c("custom-input", {
-              attrs: {
-                label: "Utilities %",
-                placeholder: "Utilities %",
-                value: "",
-                error: _vm.utilitiesError,
-                type: "text"
-              },
-              model: {
-                value: _vm.utilities,
-                callback: function($$v) {
-                  _vm.utilities = $$v
-                },
-                expression: "utilities"
-              }
-            }),
-            _vm._v(" "),
-            _c("custom-input", {
-              attrs: {
-                label: "Raw Rent",
-                placeholder: "Raw Rent",
-                value: "",
-                error: _vm.rawRentError,
-                type: "text"
-              },
-              model: {
-                value: _vm.rawRent,
-                callback: function($$v) {
-                  _vm.rawRent = $$v
-                },
-                expression: "rawRent"
-              }
-            }),
-            _vm._v(" "),
-            _c("custom-input", {
-              attrs: {
-                label: "Utilities Total",
-                placeholder: "Utilities Total",
-                value: "",
-                error: _vm.utilitiesTotalError,
-                type: "text"
-              },
-              model: {
-                value: _vm.utilitiesTotal,
-                callback: function($$v) {
-                  _vm.utilitiesTotal = $$v
-                },
-                expression: "utilitiesTotal"
-              }
-            }),
-            _vm._v(" "),
-            _c("custom-input", {
-              attrs: {
-                label: "Vat %",
-                placeholder: "Vat %",
-                value: "",
-                error: _vm.vatError,
-                type: "text"
-              },
-              model: {
-                value: _vm.vat,
-                callback: function($$v) {
-                  _vm.vat = $$v
-                },
-                expression: "vat"
-              }
-            }),
-            _vm._v(" "),
-            _c("custom-input", {
-              attrs: {
-                label: "Total Rent",
-                placeholder: "Total Rent",
-                value: "",
-                error: _vm.totalRentError,
-                type: "text"
-              },
-              model: {
-                value: _vm.totalRent,
-                callback: function($$v) {
-                  _vm.totalRent = $$v
-                },
-                expression: "totalRent"
-              }
-            }),
-            _vm._v(" "),
-            _c("custom-autocomplete", {
-              attrs: {
-                accountName: "",
-                accountTypeFilters: ["Asset account"],
-                defaultAccountTypeFilters: [],
-                error: _vm.sourceAccountError,
-                transactionType: "",
-                inputDescription: _vm.$t("firefly.diposit_account")
-              },
-              on: {
-                "clear:value": function($event) {
-                  return _vm.clearDestination()
-                },
-                "select:account": function($event) {
-                  return _vm.selectedDestinationAccount($event)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c("custom-autocomplete", {
-              attrs: {
-                accountName: "",
-                accountTypeFilters: ["Expense account"],
-                defaultAccountTypeFilters: [],
-                error: _vm.expenseAccountError,
-                transactionType: "",
-                inputDescription: _vm.$t("firefly.expense_account")
-              },
-              on: {
-                "clear:value": function($event) {
-                  return _vm.clearExpense()
-                },
-                "select:account": function($event) {
-                  return _vm.selectedExpenseAccount($event)
-                }
-              }
-            })
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "box" }, [
-        _c("div", { staticClass: "box-header with-border" }, [
-          _c("h3", { staticClass: "box-title" }, [
-            _vm._v(
-              "\n        " + _vm._s(_vm.$t("firefly.submission")) + "\n      "
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "box-body" }, [
-          _c("div", { staticClass: "checkbox" }, [
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.createAnother,
-                    expression: "createAnother"
-                  }
-                ],
-                attrs: { name: "create_another", type: "checkbox" },
-                domProps: {
-                  checked: Array.isArray(_vm.createAnother)
-                    ? _vm._i(_vm.createAnother, null) > -1
-                    : _vm.createAnother
-                },
-                on: {
-                  change: function($event) {
-                    var $$a = _vm.createAnother,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = null,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 && (_vm.createAnother = $$a.concat([$$v]))
-                      } else {
-                        $$i > -1 &&
-                          (_vm.createAnother = $$a
-                            .slice(0, $$i)
-                            .concat($$a.slice($$i + 1)))
-                      }
-                    } else {
-                      _vm.createAnother = $$c
-                    }
-                  }
-                }
-              }),
-              _vm._v(
-                "\n          " +
-                  _vm._s(_vm.$t("firefly.create_another")) +
-                  "\n        "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "checkbox" }, [
-            _c(
-              "label",
-              { class: { "text-muted": this.createAnother === false } },
-              [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.resetFormAfter,
-                      expression: "resetFormAfter"
-                    }
-                  ],
-                  attrs: {
-                    disabled: this.createAnother === false,
-                    name: "reset_form",
-                    type: "checkbox"
-                  },
-                  domProps: {
-                    checked: Array.isArray(_vm.resetFormAfter)
-                      ? _vm._i(_vm.resetFormAfter, null) > -1
-                      : _vm.resetFormAfter
-                  },
-                  on: {
-                    change: function($event) {
-                      var $$a = _vm.resetFormAfter,
-                        $$el = $event.target,
-                        $$c = $$el.checked ? true : false
-                      if (Array.isArray($$a)) {
-                        var $$v = null,
-                          $$i = _vm._i($$a, $$v)
-                        if ($$el.checked) {
-                          $$i < 0 && (_vm.resetFormAfter = $$a.concat([$$v]))
-                        } else {
-                          $$i > -1 &&
-                            (_vm.resetFormAfter = $$a
-                              .slice(0, $$i)
-                              .concat($$a.slice($$i + 1)))
-                        }
-                      } else {
-                        _vm.resetFormAfter = $$c
-                      }
-                    }
-                  }
-                }),
-                _vm._v(
-                  "\n          " +
-                    _vm._s(_vm.$t("firefly.reset_after")) +
-                    "\n        "
-                )
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "box-footer" }, [
-          _c("div", { staticClass: "btn-group" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-success",
-                attrs: { id: "submitButton", type: "button" },
-                on: { click: _vm.submit }
-              },
-              [
-                _vm._v(
-                  "\n          " +
-                    _vm._s(_vm.$t("firefly.submit")) +
-                    "\n        "
-                )
-              ]
-            )
-          ])
-        ])
-      ])
-    ]
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "box-header" }, [
-      _c("h3", { staticClass: "box-title splitTitle" }, [
-        _vm._v("Create Apartment")
-      ])
-    ])
-  }
-]
-render._withStripped = true
-
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditApartment_vue_vue_type_template_id_131e5836___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditApartment.vue?vue&type=template&id=131e5836& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/EditApartment.vue?vue&type=template&id=131e5836&");
 
 
 /***/ }),
@@ -4112,6 +3455,287 @@ var render = function() {
   )
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/EditApartment.vue?vue&type=template&id=131e5836&":
+/*!*******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/EditApartment.vue?vue&type=template&id=131e5836& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    {
+      staticClass: "form-horizontal",
+      attrs: { "accept-charset": "UTF-8", enctype: "multipart/form-data" }
+    },
+    [
+      _vm.error !== ""
+        ? _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-lg-12" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "alert alert-danger alert-dismissible",
+                  attrs: { role: "alert" }
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close",
+                      attrs: {
+                        "data-dismiss": "alert",
+                        type: "button",
+                        "aria-label": _vm.$t("firefly.close")
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("×")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("strong", [_vm._v(_vm._s(_vm.$t("firefly.flash_error")))]),
+                  _vm._v(" " + _vm._s(_vm.error) + "\n      ")
+                ]
+              )
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "box" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "box-body" },
+          [
+            _c("custom-input", {
+              attrs: {
+                label: "Apartment No",
+                placeholder: "Apartment No",
+                value: "",
+                type: "text",
+                error: _vm.apartmentNoError
+              },
+              model: {
+                value: _vm.apartmentNo,
+                callback: function($$v) {
+                  _vm.apartmentNo = $$v
+                },
+                expression: "apartmentNo"
+              }
+            }),
+            _vm._v(" "),
+            _c("custom-autocomplete", {
+              attrs: {
+                accountName: "",
+                accountTypeFilters: ["Revenue account"],
+                defaultAccountTypeFilters: [],
+                error: _vm.renterAccountError,
+                transactionType: "",
+                inputDescription: _vm.$t("firefly.renter_name"),
+                defaultValue: _vm.renterAccount ? _vm.renterAccount.name : ""
+              },
+              on: {
+                "clear:value": function($event) {
+                  return _vm.clearRevenue()
+                },
+                "select:account": function($event) {
+                  return _vm.selectedRevenueAccount($event)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("custom-input", {
+              attrs: {
+                label: "Utilities %",
+                placeholder: "Utilities %",
+                value: "",
+                error: _vm.utilitiesError,
+                type: "text"
+              },
+              model: {
+                value: _vm.utilities,
+                callback: function($$v) {
+                  _vm.utilities = $$v
+                },
+                expression: "utilities"
+              }
+            }),
+            _vm._v(" "),
+            _c("custom-input", {
+              attrs: {
+                label: "Raw Rent",
+                placeholder: "Raw Rent",
+                value: "",
+                error: _vm.rawRentError,
+                type: "text"
+              },
+              model: {
+                value: _vm.rawRent,
+                callback: function($$v) {
+                  _vm.rawRent = $$v
+                },
+                expression: "rawRent"
+              }
+            }),
+            _vm._v(" "),
+            _c("custom-input", {
+              attrs: {
+                label: "Utilities Total",
+                placeholder: "Utilities Total",
+                value: "",
+                error: _vm.utilitiesTotalError,
+                type: "text"
+              },
+              model: {
+                value: _vm.utilitiesTotal,
+                callback: function($$v) {
+                  _vm.utilitiesTotal = $$v
+                },
+                expression: "utilitiesTotal"
+              }
+            }),
+            _vm._v(" "),
+            _c("custom-input", {
+              attrs: {
+                label: "Vat %",
+                placeholder: "Vat %",
+                value: "",
+                error: _vm.vatError,
+                type: "text"
+              },
+              model: {
+                value: _vm.vat,
+                callback: function($$v) {
+                  _vm.vat = $$v
+                },
+                expression: "vat"
+              }
+            }),
+            _vm._v(" "),
+            _c("custom-input", {
+              attrs: {
+                label: "Total Rent",
+                placeholder: "Total Rent",
+                value: "",
+                error: _vm.totalRentError,
+                type: "text"
+              },
+              model: {
+                value: _vm.totalRent,
+                callback: function($$v) {
+                  _vm.totalRent = $$v
+                },
+                expression: "totalRent"
+              }
+            }),
+            _vm._v(" "),
+            _c("custom-autocomplete", {
+              attrs: {
+                accountName: "",
+                accountTypeFilters: ["Asset account"],
+                defaultAccountTypeFilters: [],
+                error: _vm.sourceAccountError,
+                transactionType: "",
+                inputDescription: _vm.$t("firefly.diposit_account"),
+                defaultValue: _vm.sourceAccount ? _vm.sourceAccount.name : ""
+              },
+              on: {
+                "clear:value": function($event) {
+                  return _vm.clearDestination()
+                },
+                "select:account": function($event) {
+                  return _vm.selectedDestinationAccount($event)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("custom-autocomplete", {
+              attrs: {
+                accountName: "",
+                accountTypeFilters: ["Expense account"],
+                defaultAccountTypeFilters: [],
+                error: _vm.expenseAccountError,
+                transactionType: "",
+                inputDescription: _vm.$t("firefly.expense_account"),
+                defaultValue: _vm.expenseAccount ? _vm.expenseAccount.name : ""
+              },
+              on: {
+                "clear:value": function($event) {
+                  return _vm.clearExpense()
+                },
+                "select:account": function($event) {
+                  return _vm.selectedExpenseAccount($event)
+                }
+              }
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "box" }, [
+        _c("div", { staticClass: "box-header with-border" }, [
+          _c("h3", { staticClass: "box-title" }, [
+            _vm._v(
+              "\n        " + _vm._s(_vm.$t("firefly.submission")) + "\n      "
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "box-footer" }, [
+          _c("div", { staticClass: "btn-group" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-success",
+                attrs: { id: "submitButton", type: "button" },
+                on: { click: _vm.submit }
+              },
+              [
+                _vm._v(
+                  "\n          " +
+                    _vm._s(_vm.$t("firefly.submit")) +
+                    "\n        "
+                )
+              ]
+            )
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-header" }, [
+      _c("h3", { staticClass: "box-title splitTitle" }, [
+        _vm._v("Edit Apartment")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -4567,14 +4191,13 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!*************************************************!*\
-  !*** ./resources/assets/js/create_apartment.js ***!
-  \*************************************************/
+/*!***********************************************!*\
+  !*** ./resources/assets/js/edit_apartment.js ***!
+  \***********************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_real_estate_management_CustomInput__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/real_estate_management/CustomInput */ "./resources/assets/js/components/real_estate_management/CustomInput.vue");
-/* harmony import */ var _components_real_estate_management_CreatApartment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/real_estate_management/CreatApartment */ "./resources/assets/js/components/real_estate_management/CreatApartment.vue");
-/* harmony import */ var _components_real_estate_management_ApartmentNo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/real_estate_management/ApartmentNo */ "./resources/assets/js/components/real_estate_management/ApartmentNo.vue");
-/* harmony import */ var _components_real_estate_management_CustomAutocomplete__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/real_estate_management/CustomAutocomplete */ "./resources/assets/js/components/real_estate_management/CustomAutocomplete.vue");
+/* harmony import */ var _components_real_estate_management_EditApartment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/real_estate_management/EditApartment */ "./resources/assets/js/components/real_estate_management/EditApartment.vue");
+/* harmony import */ var _components_real_estate_management_CustomAutocomplete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/real_estate_management/CustomAutocomplete */ "./resources/assets/js/components/real_estate_management/CustomAutocomplete.vue");
 /*
  * create_transactions.js
  * Copyright (c) 2019 james@firefly-iii.org
@@ -4597,7 +4220,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 /**
  * First we will load Axios via bootstrap.js
  * jquery and bootstrap-sass preloaded in app.js
@@ -4606,19 +4228,18 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__(/*! ./bootstrap */ "./resources/assets/js/bootstrap.js");
 
-Vue.component('apartment-no', _components_real_estate_management_ApartmentNo__WEBPACK_IMPORTED_MODULE_2__["default"]);
-Vue.component('create-apartment', _components_real_estate_management_CreatApartment__WEBPACK_IMPORTED_MODULE_1__["default"]);
+Vue.component('edit-apartment', _components_real_estate_management_EditApartment__WEBPACK_IMPORTED_MODULE_1__["default"]);
 Vue.component('custom-input', _components_real_estate_management_CustomInput__WEBPACK_IMPORTED_MODULE_0__["default"]);
-Vue.component('custom-autocomplete', _components_real_estate_management_CustomAutocomplete__WEBPACK_IMPORTED_MODULE_3__["default"]);
+Vue.component('custom-autocomplete', _components_real_estate_management_CustomAutocomplete__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
 var i18n = __webpack_require__(/*! ./i18n */ "./resources/assets/js/i18n.js");
 
 var props = {};
 new Vue({
   i18n: i18n,
-  el: "#create_apartment",
+  el: "#edit_apartment",
   render: function render(createElement) {
-    return createElement(_components_real_estate_management_CreatApartment__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    return createElement(_components_real_estate_management_EditApartment__WEBPACK_IMPORTED_MODULE_1__["default"], {
       props: props
     });
   }

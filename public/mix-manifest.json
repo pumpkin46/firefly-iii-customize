@@ -5,5 +5,8 @@
     "/v1/js/edit_transaction.js": "/v1/js/edit_transaction.js",
     "/v1/js/profile.js": "/v1/js/profile.js",
     "/v1/js/create_apartment.js": "/v1/js/create_apartment.js",
-    "/v1/js/real_estate_management.js": "/v1/js/real_estate_management.js"
+    "/v1/js/edit_apartment.js": "/v1/js/edit_apartment.js",
+    "/v1/js/real_estate_management.js": "/v1/js/real_estate_management.js",
+    "/v1/js/rent_control.js": "/v1/js/rent_control.js",
+    "/v1/js/yearly_overview.js": "/v1/js/yearly_overview.js"
 }

@@ -462,12 +462,13 @@ export default {
     // submit transaction
     submit(e) {
       // console.log('Now in submit()');
+      // e.preventDefault();
       const uri = './api/v1/transactions?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
       const data = this.convertData();
-
+      // console.log(data);
+      // return;
       let button = $('#submitButton');
       button.prop("disabled", true);
-
       axios.post(uri, data).then(response => {
         // console.log('Did a succesfull POST');
         // this method will ultimately send the user on (or not).

@@ -41,7 +41,7 @@
     </div>
     <div class="box">
       <div class="box-header">
-        <h3 class="box-title splitTitle">Create Apartment</h3>
+        <h3 class="box-title splitTitle">Edit Apartment</h3>
       </div>
       <div class="box-body">
         <custom-input
@@ -61,6 +61,7 @@
           :inputDescription="$t('firefly.renter_name')"
           v-on:clear:value="clearRevenue()"
           v-on:select:account="selectedRevenueAccount($event)"
+          :defaultValue="renterAccount ?  renterAccount.name : ''"
         ></custom-autocomplete>
         <custom-input
           v-model="utilities"
@@ -111,6 +112,7 @@
           :inputDescription="$t('firefly.diposit_account')"
           v-on:clear:value="clearDestination()"
           v-on:select:account="selectedDestinationAccount($event)"
+          :defaultValue="sourceAccount ?  sourceAccount.name : ''"
         ></custom-autocomplete>
         <custom-autocomplete
           accountName=""
@@ -121,6 +123,7 @@
           :inputDescription="$t('firefly.expense_account')"
           v-on:clear:value="clearExpense()"
           v-on:select:account="selectedExpenseAccount($event)"
+          :defaultValue="expenseAccount ?  expenseAccount.name : ''"
         ></custom-autocomplete>
       </div>
     </div>
@@ -129,29 +132,6 @@
         <h3 class="box-title">
           {{ $t("firefly.submission") }}
         </h3>
-      </div>
-      <div class="box-body">
-        <div class="checkbox">
-          <label>
-            <input
-              v-model="createAnother"
-              name="create_another"
-              type="checkbox"
-            />
-            {{ $t("firefly.create_another") }}
-          </label>
-        </div>
-        <div class="checkbox">
-          <label v-bind:class="{ 'text-muted': this.createAnother === false }">
-            <input
-              v-model="resetFormAfter"
-              :disabled="this.createAnother === false"
-              name="reset_form"
-              type="checkbox"
-            />
-            {{ $t("firefly.reset_after") }}
-          </label>
-        </div>
       </div>
       <div class="box-footer">
         <div class="btn-group">
@@ -172,10 +152,29 @@
 <script>
 import axios from "axios";
 export default {
-  name: "CreatApartment",
+  name: "EditApartment",
   components: {},
-  created() {},
+  created() {
+    this.id = location.href.substring(location.href.lastIndexOf('/') + 1).split('?')[0];
+    if(this.id) {
+      this.getApartmentData(this.id);
+    }
+  },
   methods: {
+    getApartmentData(id) {
+      axios.get(`./api/v1/real-estate-management/apartment?id=${id}`).then(({data}) => {
+        this.id =  data.apartment?.id;
+        this.apartmentNo =  data.apartment?.apartmentNo;
+        this.utilities =  data.apartment?.utilities;
+        this.rawRent =  data.apartment?.rawRent;
+        this.utilitiesTotal =  data.apartment?.utilitiesTotal;
+        this.vat =  data.apartment?.vat;
+        this.totalRent =  data.apartment?.totalRent;
+        this.sourceAccount =  data.apartment?.source_account;
+        this.renterAccount =  data.apartment?.renter_account;
+        this.expenseAccount =  data.apartment?.expense_account;
+      })
+    },
     clearDestination() {
       this.sourceAccount = null;
     },
@@ -211,6 +210,7 @@ export default {
         "./api/v1/real-estate-management?_token=" +
         document.head.querySelector('meta[name="csrf-token"]').content;
       const data = {
+        id: this.id,
         apartmentNo: this.apartmentNo,
         utilities: this.utilities,
         rawRent: this.rawRent,
@@ -289,24 +289,10 @@ export default {
       button.prop("disabled", true);
 
       axios
-        .post(uri, data)
+        .put(uri, data)
         .then(() => {
           button.removeAttr("disabled");
-          if (!this.createAnother) {
-            location.href = "/real-estate-management/index";
-          } else if (this.resetFormAfter) {
-            this.apartmentNo = "";
-            this.utilities = 0;
-            this.rawRent = "";
-            this.utilitiesTotal = "";
-            this.vat = "";
-            this.totalRent = "";
-            this.sourceAccount = null;
-            this.renterAccount = null;
-            this.expenseAccount = null;
-            this.createAnother = false;
-            this.resetFormAfter = true;
-          }
+          location.href = "/real-estate-management/index";
         })
         .catch((error) => {
           console.error(error);
@@ -325,6 +311,7 @@ export default {
    */
   data() {
     return {
+      id: '',
       error: "",
       apartmentNo: "",
       apartmentNoError: "",

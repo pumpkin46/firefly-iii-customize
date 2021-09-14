@@ -1,0 +1,13 @@
+{% set VUE_SCRIPT_NAME = 'yearly_overview' %}
+{% extends './v1/layout/default' %}
+{% block breadcrumbs %}
+    {{ Breadcrumbs.render(Route.getCurrentRoute.getName, objectType) }}
+{% endblock %}
+
+{% block content %}
+    <div id="yearly_overview"></div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" nonce="{{ JS_NONCE }}">
+    </script>
+{% endblock %}

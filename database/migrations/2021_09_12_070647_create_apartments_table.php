@@ -17,8 +17,9 @@ class CreateApartmentsTable extends Migration
             $table->id();
             $table->string('apartmentNo')->nullable();
             $table->string('rawRent')->nullable();
-            $table->string('renterName')->nullable();
             $table->string('sourceAccount')->nullable();
+            $table->string('expenseAccount')->nullable();
+            $table->string('renterAccount')->nullable();
             $table->string('totalRent')->nullable();
             $table->string('utilities')->nullable();
             $table->string('utilitiesTotal')->nullable();

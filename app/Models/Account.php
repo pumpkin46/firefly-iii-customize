@@ -268,7 +268,7 @@ class Account extends Model
      */
     public function transactions(): HasMany
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class, 'account_id', 'id');
     }
 
     /**
@@ -285,6 +285,14 @@ class Account extends Model
      * @codeCoverageIgnore
      */
     public function apartments() {
-        return $this->hasMany(Apartment::class, 'sourceAccount', 'id');
+        return $this->hasMany(Apartment::class, 'expenseAccount', 'id');
+    }
+
+    /**
+     * @return BelongsTo
+     * @codeCoverageIgnore
+     */
+    public function apartment() {
+        return $this->belongsTo(Apartment::class, 'id');
     }
 }

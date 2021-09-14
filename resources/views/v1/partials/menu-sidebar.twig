@@ -125,15 +125,6 @@
             </li>
         </ul>
     </li>
-                
-    <li class="nav-item">
-        <a href="{{ route('real-estate-management.index') }}" class="nav-link {{ activeRoutePartial('real-estate-management') }}">
-            <i class="nav-icon fas fa-piggy-bank"></i>
-            <p>
-                {{ 'realEstateManagement'|_ }}
-            </p>
-        </a>
-    </li>
 
     <li class="{{ activeRoutePartial('categories') }} {{ activeRoutePartial('tags') }} treeview">
         <a href="#">
@@ -161,6 +152,37 @@
                 <a href="{{ route('object-groups.index') }}">
                     <i class="fa fa-angle-right fa-fw"></i>
                     <span>{{ 'object_groups_menu_bar'|_ }}</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    
+    <li class="{{ activeRoutePartial('real-estate-management') }} {{ activeRoutePartial('tags') }} treeview">
+        <a href="#">
+            <i class="fa fa-tags fa-fw"></i>
+            <span>{{ 'realEstateManagement'|_ }}</span>
+            <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+      </span>
+        </a>
+
+        <ul class="treeview-menu">
+            <li class="{{ activeRoutePartial('tags') }}">
+                <a href="{{ route('real-estate-management.index') }}">
+                    <i class="fa fa-angle-right fa-fw"></i>
+                    <span>{{ 'apartments'|_ }}</span>
+                </a>
+            </li>
+            <li class="{{ activeRoutePartial('tags') }}">
+                <a href="{{ route('real-estate-management.rent_control') }}">
+                    <i class="fa fa-angle-right fa-fw"></i>
+                    <span>{{ 'rentControl'|_ }}</span>
+                </a>
+            </li>
+            <li class="{{ activeRoutePartial('tags') }}">
+                <a href="{{ route('real-estate-management.yearly_overview') }}">
+                    <i class="fa fa-angle-right fa-fw"></i>
+                    <span>{{ 'yearlyOverview'|_ }}</span>
                 </a>
             </li>
         </ul>

@@ -35,6 +35,7 @@
             class="form-control"
             data-role="input"
             type="text"
+            :value="defaultValue"
             v-on:keypress="handleEnter"
             v-on:submit.prevent>
         <span class="input-group-btn">
@@ -62,9 +63,7 @@
           </li>
         </template>
       </typeahead>
-      <ul v-for="error in this.error" class="list-unstyled" v-bind:key="error">
-        <li class="text-danger">{{ error }}</li>
-      </ul>
+      <div class="text-danger" v-if="hasError()">{{ error }}</div>
     </div>
   </div>
 
@@ -73,10 +72,11 @@
 export default {
   props: {
     inputName: String,
+    defaultValue: String,
     inputDescription: String,
     index: Number,
     transactionType: String,
-    error: Array,
+    error: String,
     accountName: {
       type: String,
       default: ''
@@ -179,7 +179,7 @@ export default {
           // console.log('Auto complete URI is now ' + this.accountAutoCompleteURI);
         },
         hasError: function () {
-          return this.error.length > 0;
+          return this.error !== '';
         },
         triggerTransactionType: function () {
           // console.log('On triggerTransactionType(' + this.inputName + ')');

@@ -12,8 +12,9 @@ class Apartment extends Model
     protected $fillable = [
         'apartmentNo',
         'rawRent',
-        'renterName',
         'sourceAccount',
+        'expenseAccount',
+        'renterAccount',
         'totalRent',
         'utilities',
         'utilitiesTotal',
@@ -22,6 +23,22 @@ class Apartment extends Model
 
     public function accounts()
     {
-        return $this->belongsTo(Account::class, 'sourceAccount', 'id');
+        return $this->belongsTo(Account::class, 'expenseAccount', 'id');
+    }
+
+    public function source_account() {
+        return $this->hasOne(Account::class, 'id', 'sourceAccount');
+    }
+
+    public function renter_account() {
+        return $this->hasOne(Account::class, 'id', 'renterAccount');
+    }
+
+    public function expense_account() {
+        return $this->hasOne(Account::class, 'id', 'expenseAccount');
+    }
+
+    public function payments() {
+        return $this->hasMany(ApartmentPayments::class, 'apartment_id', 'id');
     }
 }

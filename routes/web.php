@@ -671,21 +671,11 @@ Route::group(
     ['middleware' => 'user-full-auth', 'namespace' => 'FireflyIII\Http\Controllers', 'prefix' => 'real-estate-management', 'as' => 'real-estate-management.'],
     static function () {
         Route::get('index', ['uses' => 'RealEstateManagementController@index', 'as' => 'index']);
+        Route::get('rent_control', ['uses' => 'RealEstateManagementController@rent_control', 'as' => 'rent_control']);
+        Route::get('yearly_overview', ['uses' => 'RealEstateManagementController@yearly_overview', 'as' => 'yearly_overview']);
+        Route::get('index', ['uses' => 'RealEstateManagementController@index', 'as' => 'index']);
         Route::get('create', ['uses' => 'RealEstateManagementController@create', 'as' => 'create']);
-        // Route::get('remove/{RealEstateManagement}', ['uses' => 'RealEstateManagement\AmountController@remove', 'as' => 'remove-money']);
-        // Route::get('add-money/{RealEstateManagement}', ['uses' => 'RealEstateManagement\AmountController@addMobile', 'as' => 'add-money-mobile']);
-        // Route::get('remove-money/{RealEstateManagement}', ['uses' => 'RealEstateManagement\AmountController@removeMobile', 'as' => 'remove-money-mobile']);
-        // Route::get('create', ['uses' => 'RealEstateManagement\CreateController@create', 'as' => 'create']);
-        // Route::get('edit/{RealEstateManagement}', ['uses' => 'RealEstateManagement\EditController@edit', 'as' => 'edit']);
-        // Route::get('delete/{RealEstateManagement}', ['uses' => 'RealEstateManagement\DeleteController@delete', 'as' => 'delete']);
-        // Route::get('show/{RealEstateManagement}', ['uses' => 'RealEstateManagement\ShowController@show', 'as' => 'show']);
-        // Route::post('store', ['uses' => 'RealEstateManagement\CreateController@store', 'as' => 'store']);
-        // Route::post('update/{RealEstateManagement}', ['uses' => 'RealEstateManagement\EditController@update', 'as' => 'update']);
-        // Route::post('destroy/{RealEstateManagement}', ['uses' => 'RealEstateManagement\DeleteController@destroy', 'as' => 'destroy']);
-        // Route::post('add/{RealEstateManagement}', ['uses' => 'RealEstateManagement\AmountController@postAdd', 'as' => 'add']);
-        // Route::post('remove/{RealEstateManagement}', ['uses' => 'RealEstateManagement\AmountController@postRemove', 'as' => 'remove']);
-
-        // Route::post('set-order/{RealEstateManagement}', ['uses' => 'RealEstateManagement\IndexController@setOrder', 'as' => 'set-order']);
+        Route::get('edit/{id}', ['uses' => 'RealEstateManagementController@edit', 'as' => 'edit']);
     }
 );
 

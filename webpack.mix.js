@@ -34,4 +34,7 @@ mix.js('resources/assets/js/create_transaction.js', 'public/v1/js').vue({version
 mix.js('resources/assets/js/edit_transaction.js', 'public/v1/js').vue({version: 2});
 mix.js('resources/assets/js/profile.js', 'public/v1/js').vue({version: 2});
 mix.js('resources/assets/js/create_apartment.js', 'public/v1/js').vue({version: 2});
+mix.js('resources/assets/js/edit_apartment.js', 'public/v1/js').vue({version: 2});
 mix.js('resources/assets/js/real_estate_management.js', 'public/v1/js').vue({version: 2});
+mix.js('resources/assets/js/rent_control.js', 'public/v1/js').vue({version: 2});
+mix.js('resources/assets/js/yearly_overview.js', 'public/v1/js').vue({version: 2});
