@@ -2630,7 +2630,7 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
-                  _c("div", [
+                  _c("div", { staticClass: "apartment_list_table_container" }, [
                     _c(
                       "table",
                       {
@@ -2644,7 +2644,7 @@ var render = function() {
                             "th",
                             {
                               staticClass: "text-left",
-                              staticStyle: { width: "10%" }
+                              staticStyle: { width: "11%" }
                             },
                             [_vm._v(_vm._s(_vm.$t("firefly.apt")))]
                           ),
@@ -2653,7 +2653,7 @@ var render = function() {
                             "th",
                             {
                               staticClass: "text-left",
-                              staticStyle: { width: "20%" }
+                              staticStyle: { width: "12%" }
                             },
                             [_vm._v(_vm._s(_vm.$t("firefly.name")))]
                           ),
@@ -2662,7 +2662,7 @@ var render = function() {
                             "th",
                             {
                               staticClass: "text-right",
-                              staticStyle: { width: "10%" }
+                              staticStyle: { width: "11%" }
                             },
                             [_vm._v(_vm._s(_vm.$t("firefly.utilities")))]
                           ),
@@ -2671,7 +2671,7 @@ var render = function() {
                             "th",
                             {
                               staticClass: "text-right",
-                              staticStyle: { width: "10%" }
+                              staticStyle: { width: "11%" }
                             },
                             [_vm._v(_vm._s(_vm.$t("firefly.raw_rent")))]
                           ),
@@ -2680,7 +2680,7 @@ var render = function() {
                             "th",
                             {
                               staticClass: "text-right",
-                              staticStyle: { width: "10%" }
+                              staticStyle: { width: "11%" }
                             },
                             [_vm._v(_vm._s(_vm.$t("firefly.utilities_total")))]
                           ),
@@ -2689,7 +2689,7 @@ var render = function() {
                             "th",
                             {
                               staticClass: "text-center",
-                              staticStyle: { width: "10%" }
+                              staticStyle: { width: "11%" }
                             },
                             [_vm._v(_vm._s(_vm.$t("firefly.vat%")))]
                           ),
@@ -2698,7 +2698,7 @@ var render = function() {
                             "th",
                             {
                               staticClass: "text-right",
-                              staticStyle: { width: "10%" }
+                              staticStyle: { width: "11%" }
                             },
                             [_vm._v(_vm._s(_vm.$t("firefly.total_rent")))]
                           ),
@@ -2707,14 +2707,14 @@ var render = function() {
                             "th",
                             {
                               staticClass: "text-right",
-                              staticStyle: { width: "15%" }
+                              staticStyle: { width: "12%" }
                             },
                             [_vm._v(_vm._s(_vm.$t("firefly.deposit_account")))]
                           ),
                           _vm._v(" "),
                           _c("th", {
                             staticClass: "text-right",
-                            staticStyle: { width: "5%" }
+                            staticStyle: { width: "10%" }
                           })
                         ]),
                         _vm._v(" "),
@@ -2758,7 +2758,7 @@ var render = function() {
                                 _vm._v(_vm._s(apartment.source_account.name))
                               ]),
                               _vm._v(" "),
-                              _c("td", { staticClass: "hidden-xs" }, [
+                              _c("td", { staticStyle: {} }, [
                                 _c(
                                   "div",
                                   {

@@ -122,6 +122,10 @@ class GroupCollector implements GroupCollectorInterface
 
             # destination account info (always present)
             'destination.account_id as destination_account_id',
+            'destination.vat as vat',
+            'destination.vat_percent as vat_percent',
+            'destination.netto as netto',
+            'destination.booking_number as booking_number',
         ];
     }
 

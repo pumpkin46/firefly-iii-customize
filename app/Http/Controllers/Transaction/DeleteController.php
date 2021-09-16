@@ -27,6 +27,7 @@ use FireflyIII\Http\Controllers\Controller;
 use FireflyIII\Models\TransactionGroup;
 use FireflyIII\Repositories\TransactionGroup\TransactionGroupRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Redirector;
 use Log;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -116,4 +117,32 @@ class DeleteController extends Controller
 
         return redirect($this->getPreviousUri('transactions.delete.uri'));
     }
+
+    /**
+     * Actually destroys the journal.
+     *
+     * @param TransactionGroup $group
+     *
+     * @return JsonResponse
+     */
+    public function destroy_custom(TransactionGroup $group): JsonResponse
+    {
+        if (!$this->isEditableGroup($group)) {
+            return $this->redirectGroupToAccount($group); 
+        }
+
+        $journal = $group->transactionJournals->first();
+        if (null === $journal) {
+            throw new NotFoundHttpException;
+        }
+        $objectType = strtolower($journal->transaction_type_type ?? $journal->transactionType->type);
+        session()->flash('success', (string)trans('firefly.deleted_' . strtolower($objectType), ['description' => $group->title ?? $journal->description]));
+
+        $this->repository->destroy($group);
+
+        app('preferences')->mark();
+
+        return response()->json(['status' => 'success']);
+    }
+
 }

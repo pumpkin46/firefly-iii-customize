@@ -76,7 +76,6 @@ export default {
   mounted() {
     this.target = this.$refs.descr;
     this.descriptionAutoCompleteURI = document.getElementsByTagName('base')[0].href + "api/v1/autocomplete/transactions?query=";
-    this.$refs.descr.focus();
   },
   components: {},
   data() {

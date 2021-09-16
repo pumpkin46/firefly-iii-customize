@@ -19,6 +19,7 @@
  */
 
 import CustomAttachments from "./components/transactions/CustomAttachments";
+import CustomInput from "./components/real_estate_management/CustomInput";
 import CreateTransaction from './components/transactions/CreateTransaction';
 import CustomDate from "./components/transactions/CustomDate";
 import CustomString from "./components/transactions/CustomString";
@@ -63,6 +64,7 @@ Vue.component('tags', Tags);
 Vue.component('category', Category);
 Vue.component('amount', Amount);
 Vue.component('foreign-amount', ForeignAmountSelect);
+Vue.component('custom-input', CustomInput);
 Vue.component('transaction-type', TransactionType);
 Vue.component('account-select', AccountSelect);
 

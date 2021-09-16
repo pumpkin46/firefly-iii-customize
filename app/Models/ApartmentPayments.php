@@ -10,7 +10,7 @@ class ApartmentPayments extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['apartment_id', 'account_id', 'date'];
+    protected $fillable = ['apartment_id', 'account_id', 'date', 'transaction_id'];
 
     public function apartment() {
         return $this->belongsTo(Apartment::class, 'apartment_id', 'id');

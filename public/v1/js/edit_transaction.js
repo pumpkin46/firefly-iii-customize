@@ -2383,7 +2383,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Amount",
-  props: ['source', 'destination', 'transactionType', 'value', 'error'],
+  props: ['source', 'destination', 'transactionType', 'value', 'error', "index"],
   data: function data() {
     return {
       sourceAccount: this.source,
@@ -2394,6 +2394,10 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     handleInput: function handleInput(e) {
       this.$emit('input', this.$refs.amount.value);
+      this.$emit('customInput', {
+        value: this.$refs.amount.value,
+        index: this.index
+      });
     },
     clearAmount: function clearAmount() {
       this.$refs.amount.value = '';
@@ -5285,7 +5289,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.target = this.$refs.descr;
     this.descriptionAutoCompleteURI = document.getElementsByTagName('base')[0].href + "api/v1/autocomplete/transactions?query=";
-    this.$refs.descr.focus();
   },
   components: {},
   data: function data() {

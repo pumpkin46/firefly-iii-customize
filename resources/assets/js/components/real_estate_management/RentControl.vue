@@ -56,8 +56,8 @@
                                     <td class="text-left">{{apartment.totalRent}}</td>
                                     <td class="text-left">{{apartment.source_account.name}}</td>
                                     <td class="text-center">
-                                        <div v-if="isPaidMonth(apartment)" style="color:green;cursor:pointer">Ok</div>
-                                        <div v-else style="color:red;cursor:pointer" @click="addTransaction(apartment)">X</div>
+                                        <div v-if="isPaidMonth(apartment)" style="color:green;cursor:pointer" @click="deleteTransaction(apartment)">Ok</div>
+                                        <div v-else style="color:red;cursor:pointer" @click="addTransaction(apartment, account.id)">X</div>
                                     </td>
                                 </tr>
                                 </table>
@@ -93,16 +93,24 @@ export default {
     getApartments() {
       axios.get(`/api/v1/real-estate-management/rent-status?month=${this.date}`).then(({ data }) => {
         this.accounts = data.accounts;
+        this.disablePaidAlert = data.disablePaidAlert;
       });
     },
-    addTransaction(apartment) {
-        if(confirm('Do you really want to do paid rent?')){
+    addTransaction(apartment, account_id) {
+        let pay = true;
+        if(!this.disablePaidAlert){
+          pay = confirm('Do you really want to do paid rent?');
+        }
+        if(pay){
           let uri = './api/v1/transactions?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
           let data = {
               transactions:
               [
                   {
                       amount: apartment.totalRent,
+                      vat_percent: 0,
+                      vat: 0,
+                      netto: apartment.totalRent,
                       book_date: "",
                       category_name: "",
                       currency_id: undefined,
@@ -123,20 +131,46 @@ export default {
                   }
               ]
           };
-          axios.post(uri, data).then(() => {
+          axios.post(uri, data).then(({data}) => {
               uri = './api/v1/real-estate-management/apartment-payment?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
               let submitData = {
                   apartment_id: apartment.id,
                   account_id: apartment.renter_account.id,
+                  transaction_id: parseInt(data.data.id),
                   date: new Date().getDate(),
                   month: parseInt(this.date.split('-')[1]),
                   year: parseInt(this.date.split('-')[0]),
               };
-              axios.post(uri, submitData).then(() => {
-                  location.reload();
+              axios.post(uri, submitData).then(({data}) => {
+                let updatedAccount = this.accounts.find((e) => e.id === account_id);
+                updatedAccount.apartments.forEach((element) => {
+                  element.payments.push(data['payment']);
+                });
+                this.accounts = this.accounts.map((e) => e.id === updatedAccount.id ? updatedAccount : e);
               })
           })
         }
+    },
+    deleteTransaction(apartment) {
+      let pay = true;
+      if(!this.disablePaidAlert){
+        pay = confirm('Do you really want to delete this payments?');
+      }
+      if(pay){
+        let transactionPyments = apartment.payments.filter((e) => new Date(e.date).getMonth() === parseInt(this.date.split('-')[1]) - 1);
+        if(transactionPyments.length) {
+          axios.post(`transactions/destroy-custom/${transactionPyments[0].transaction_id}`, {_token: document.head.querySelector('meta[name="csrf-token"]').content}).then(() => {
+            let uri = './api/v1/real-estate-management/delete-apartment-payment?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
+            axios.post(uri, {id: transactionPyments[0].id}).then(() => {
+              this.accounts.forEach((account) => {
+                account.apartments.forEach(apartment => {
+                  apartment.payments = apartment.payments.filter((e) => e.id !== transactionPyments[0].id);
+                });
+              });
+            })
+          })
+        }
+      }
     },
     isPaidMonth(apartment) {
       if(apartment.payments.find((e) => e.apartment_id === apartment.id)) {
@@ -154,6 +188,7 @@ export default {
     return {
       date: new Date(),
       accounts: [],
+      disablePaidAlert: true,
     };
   },
 };

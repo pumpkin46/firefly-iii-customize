@@ -55,7 +55,7 @@
 <script>
 export default {
   name: "Amount",
-  props: ['source', 'destination', 'transactionType', 'value', 'error'],
+  props: ['source', 'destination', 'transactionType', 'value', 'error', "index"],
   data() {
     return {
       sourceAccount: this.source,
@@ -66,6 +66,7 @@ export default {
   methods: {
     handleInput(e) {
       this.$emit('input', this.$refs.amount.value);
+      this.$emit('customInput', {value:this.$refs.amount.value, index: this.index});
     },
     clearAmount: function () {
       this.$refs.amount.value = '';

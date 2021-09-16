@@ -1011,6 +1011,7 @@ Route::group(
         // delete group
         Route::get('delete/{transactionGroup}', ['uses' => 'Transaction\DeleteController@delete', 'as' => 'delete']);
         Route::post('destroy/{transactionGroup}', ['uses' => 'Transaction\DeleteController@destroy', 'as' => 'destroy']);
+        Route::post('destroy-custom/{transactionGroup}', ['uses' => 'Transaction\DeleteController@destroy_custom', 'as' => 'destroy-custom']);
 
         Route::get('show/{transactionGroup}', ['uses' => 'Transaction\ShowController@show', 'as' => 'show']);
         Route::get('debug/{transactionGroup}', ['uses' => 'Transaction\ShowController@debugShow', 'as' => 'debug']);

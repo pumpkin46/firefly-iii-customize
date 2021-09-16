@@ -31,8 +31,12 @@
     </tr>
     <tr>
         <th class="hidden-xs">&nbsp;</th>
+        <th>{{ trans('list.booking_number') }}</th>
         <th>{{ trans('list.description') }}</th>
         <th>{{ trans('list.amount') }}</th>
+        <th>{{ trans('list.vat%') }}</th>
+        <th>{{ trans('list.vat') }}</th>
+        <th>{{ trans('list.netto') }}</th>
         <th class="hidden-xs">{{ trans('list.date') }}</th>
         <th>{{ trans('list.source_account') }}</th>
         <th>{{ trans('list.destination_account') }}</th>
@@ -120,6 +124,7 @@
                     {% endif %}
 
                 </td>
+                <td colspan="1">{{transaction.booking_number}}</td>
                 <td style=" {{ style|raw }}">
                     {% if transaction.reconciled %}
                         <i class="fa fa-check"></i>
@@ -177,6 +182,17 @@
                         {% if null != transaction.foreign_amount %}
                             ({{ formatAmountBySymbol(transaction.foreign_amount, transaction.foreign_currency_symbol, transaction.foreign_currency_decimal_places) }})
                         {% endif %}
+                    {% endif %}
+                </td>
+                <td colspan="1">{{transaction.vat_percent}}</td>
+                <td colspan="1">
+                    {% if null != transaction.vat %}
+                        {{ formatAmountBySymbol(transaction.vat, transaction.currency_symbol, transaction.currency_decimal_places) }}
+                    {% endif %}
+                </td>
+                <td colspan="1">
+                    {% if null != transaction.vat %}
+                        {{ formatAmountBySymbol(transaction.netto, transaction.currency_symbol, transaction.currency_decimal_places) }}
                     {% endif %}
                 </td>
                 <td style=" {{ style|raw }}" class="hidden-xs">

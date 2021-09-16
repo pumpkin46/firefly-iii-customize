@@ -424,6 +424,7 @@ Route::group(
         Route::post('', ['uses' => 'RealEstateManagementController@store', 'as' => 'store']);
         Route::put('', ['uses' => 'RealEstateManagementController@update', 'as' => 'update']);
         Route::post('apartment-payment', ['uses' => 'RealEstateManagementController@addApartmentPayment', 'as' => 'apartment-payment']);
+        Route::post('delete-apartment-payment', ['uses' => 'RealEstateManagementController@deleteApartmentPayment', 'as' => 'delete-apartment-payment']);
         Route::get('rent-status', ['uses' => 'RealEstateManagementController@getRentStatus', 'as' => 'rent-status']);
         Route::get('rent-status-yearly', ['uses' => 'RealEstateManagementController@getRentStatusYearly', 'as' => 'rent-status-yearly']);
         Route::get('apartment', ['uses' => 'RealEstateManagementController@get_apartment_by_id', 'as' => 'apartment']);

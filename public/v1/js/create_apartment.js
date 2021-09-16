@@ -2848,14 +2848,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {};
   },
-  props: ["label", "type", "placeholder", "value", "requried", "error"],
+  props: ["label", "type", "placeholder", "value", "requried", "error", "disabled", "index"],
   methods: {
     handleInput: function handleInput() {
       this.$emit("input", this.$refs.descr.value);
+      this.$emit("customInput", {
+        value: this.$refs.descr.value,
+        index: this.index
+      });
     },
     clearDescription: function clearDescription() {
       this.description = '';
@@ -4083,22 +4089,29 @@ var render = function() {
               name: "description[]",
               placeholder: _vm.placeholder,
               "required:": "",
-              required: ""
+              required: "",
+              disabled: _vm.disabled
             },
             domProps: { value: _vm.value },
             on: { input: _vm.handleInput }
           }),
           _vm._v(" "),
           _c("span", { staticClass: "input-group-btn" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-default",
-                attrs: { tabIndex: "-1", type: "button" },
-                on: { click: _vm.clearDescription }
-              },
-              [_c("i", { staticClass: "fa fa-trash-o" })]
-            )
+            !_vm.disabled
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-default",
+                    attrs: {
+                      tabIndex: "-1",
+                      type: "button",
+                      disabled: _vm.disabled
+                    },
+                    on: { click: _vm.clearDescription }
+                  },
+                  [_c("i", { staticClass: "fa fa-trash-o" })]
+                )
+              : _vm._e()
           ])
         ])
       ]),

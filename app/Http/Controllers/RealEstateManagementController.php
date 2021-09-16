@@ -81,7 +81,7 @@ class RealEstateManagementController extends Controller
                 ->whereYear('date', $date->year);
             }]);
         }]);
-        return response()->json(['accounts' => $accounts]);
+        return response()->json(['accounts' => $accounts, 'disablePaidAlert' => app('preferences')->get('disablePaidAlert', 0)->data]);
     }
 
     public function getRentStatusYearly(Request $request) {
@@ -92,16 +92,22 @@ class RealEstateManagementController extends Controller
                 $subQuery->whereYear('date', $request->get('year'));
             }]);
         }]);
-        return response()->json(['accounts' => $accounts]);
+        return response()->json(['accounts' => $accounts, 'disablePaidAlert' => app('preferences')->get('disablePaidAlert', 0)->data]);
     }
 
     public function addApartmentPayment(Request $request) {
-        ApartmentPayments::create([
+        $payment = ApartmentPayments::create([
             'apartment_id' => $request->get('apartment_id'),
+            'transaction_id' => $request->get('transaction_id'),
             'account_id' => $request->get('account_id'),
             'date' => date('Y-m-d H:i:s', mktime(0, 0, 0, $request->get('month'), $request->get('date'), $request->get('year'))),
         ]);
-        return response()->json(['status' => 'success']);
+        return response()->json(['payment' => $payment]);
+    }
+
+    public function deleteApartmentPayment(Request $request) {
+        ApartmentPayments::destroy($request->get('id'));
+        return response()->json(['success' => true]);
     }
     
     public function yearly_overview() {

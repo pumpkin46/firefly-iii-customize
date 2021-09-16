@@ -91,6 +91,9 @@ class StoreRequest extends FormRequest
 
                 // amount and foreign amount. Cannot be 0.
                 'amount'                => $this->clearString((string)$object['amount'], false),
+                'vat'                   => $this->clearString((string)$object['vat'], false),
+                'vat_percent'           => $this->clearString((string)$object['vat_percent'], false),
+                'netto'                 => $this->clearString((string)$object['netto'], false),
                 'foreign_amount'        => $this->clearString((string)$object['foreign_amount'], false),
 
                 // description.

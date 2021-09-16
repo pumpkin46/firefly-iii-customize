@@ -31,18 +31,18 @@
                   <i class="fa fa-fw fa-bars object-handle" style="margin-right: 30px"></i>
                   <span style="color: #87a6eb;font-size: 18px;font-weight: 500;">{{account.name}}</span>
               </div>
-              <div>
+              <div class="apartment_list_table_container">
                 <table class="table table-responsive table-hover apartment_list_table" id="sortable-table">
                   <thead>
-                    <th class="text-left" style="width: 10%;">{{$t('firefly.apt')}}</th>
-                    <th class="text-left" style="width: 20%;">{{$t('firefly.name')}}</th>
-                    <th class="text-right" style="width: 10%;">{{$t('firefly.utilities')}}</th>
-                    <th class="text-right" style="width: 10%;">{{$t('firefly.raw_rent')}}</th>
-                    <th class="text-right" style="width: 10%;">{{$t('firefly.utilities_total')}}</th>
-                    <th class="text-center" style="width: 10%;">{{$t('firefly.vat%')}}</th>
-                    <th class="text-right" style="width: 10%;">{{$t('firefly.total_rent')}}</th>
-                    <th class="text-right" style="width: 15%;">{{$t('firefly.deposit_account')}}</th>
-                    <th class="text-right" style="width: 5%;"></th>
+                    <th class="text-left" style="width: 11%;">{{$t('firefly.apt')}}</th>
+                    <th class="text-left" style="width: 12%;">{{$t('firefly.name')}}</th>
+                    <th class="text-right" style="width: 11%;">{{$t('firefly.utilities')}}</th>
+                    <th class="text-right" style="width: 11%;">{{$t('firefly.raw_rent')}}</th>
+                    <th class="text-right" style="width: 11%;">{{$t('firefly.utilities_total')}}</th>
+                    <th class="text-center" style="width: 11%;">{{$t('firefly.vat%')}}</th>
+                    <th class="text-right" style="width: 11%;">{{$t('firefly.total_rent')}}</th>
+                    <th class="text-right" style="width: 12%;">{{$t('firefly.deposit_account')}}</th>
+                    <th class="text-right" style="width: 10%;"></th>
                   </thead>
                   <tr v-for="apartment in account.apartments" v-bind:key="apartment.id" class="sortable-object apartment_row">
                     <td class="text-left">{{apartment.id}}</td>
@@ -53,7 +53,7 @@
                     <td class="text-center">{{apartment.vat}}</td>
                     <td class="text-right">{{apartment.totalRent}}</td>
                     <td class="text-right">{{apartment.source_account.name}}</td>
-                    <td style="" class="hidden-xs">
+                    <td style="text-right">
                         <div class="btn-group btn-group-xs pull-right">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               {{ $t('firefly.actions') }} <span class="caret"></span>

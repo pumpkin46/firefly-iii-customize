@@ -31,9 +31,9 @@
           </div>
       </div>
       <div class="box-body">
-          <div style="margin: 20px 0px 20px 0px">
+          <div style="margin: 20px 0px 20px 0px" class="rent_control_list_table_container">
               <div v-if="selectedAccount">
-                  <table class="table table-responsive table-hover apartment_list_table" id="sortable-table">
+                  <table class="table table-responsive table-hover rent_control_list_table" id="sortable-table">
                   <thead>
                       <th class="text-left" style="width: 10%;">{{$t('firefly.apt')}}</th>
                       <th class="text-left" style="width: 10%;">{{$t('firefly.name')}}</th>
@@ -56,7 +56,7 @@
                       <td class="text-left">{{apartment.renter_account.name}}</td>
                       <td class="text-left">{{apartment.totalRent}}</td>
                       <td class="text-center" v-for="n in 12" v-bind:key="n">
-                        <div v-if="isPaidMonth(apartment, n)" style="color:green;cursor:pointer">Ok</div>
+                        <div v-if="isPaidMonth(apartment, n)" style="color:green;cursor:pointer" @click="deleteTransaction(apartment, n)">Ok</div>
                         <div v-else style="color:red;cursor:pointer" @click="addTransaction(apartment, n)">X</div>
                       </td>
                   </tr>
@@ -87,19 +87,27 @@ export default {
     getApartments() {
       axios.get(`/api/v1/real-estate-management/rent-status-yearly?year=${this.year}`).then(({ data }) => {
         this.accounts = data.accounts;
+        this.disablePaidAlert = data.disablePaidAlert;
         if(this.accounts.length) {
           this.selectedAccount = this.accounts[0];
         }
       });
     },
     addTransaction(apartment, month) {
-        if(confirm('Do you really want to do paid rent?')){
+        let pay = true;
+        if(!this.disablePaidAlert){
+          pay = confirm('Do you really want to do paid rent?');
+        }
+        if(pay){
           let uri = './api/v1/transactions?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
           let data = {
               transactions:
               [
                   {
                       amount: apartment.totalRent,
+                      vat_percent: 0,
+                      vat: 0,
+                      netto: apartment.totalRent,
                       book_date: "",
                       category_name: "",
                       currency_id: undefined,
@@ -120,23 +128,45 @@ export default {
                   }
               ]
           };
-          axios.post(uri, data).then(() => {
+          axios.post(uri, data).then(({data}) => {
               uri = './api/v1/real-estate-management/apartment-payment?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
               let submitData = {
                   apartment_id: apartment.id,
                   account_id: apartment.renter_account.id,
+                  transaction_id: parseInt(data.data.id),
                   date: 1,
                   month: month,
                   year: this.year,
               };
-              axios.post(uri, submitData).then(() => {
-                  location.reload();
+              axios.post(uri, submitData).then(({ data }) => {
+                this.selectedAccount.apartments.forEach((element) => {
+                  element.payments.push(data['payment']);
+                });
               })
           })
         }
     },
+    deleteTransaction(apartment, month) {
+      let pay = true;
+      if(!this.disablePaidAlert){
+        pay = confirm('Do you really want to delete this payments?');
+      }
+      if(pay){
+        let transactionPyments = apartment.payments.filter((e) => new Date(e.date).getMonth() === month - 1);
+        if(transactionPyments.length) {
+          axios.post(`transactions/destroy-custom/${transactionPyments[0].transaction_id}`, {_token: document.head.querySelector('meta[name="csrf-token"]').content}).then(() => {
+            let uri = './api/v1/real-estate-management/delete-apartment-payment?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
+            axios.post(uri, {id: transactionPyments[0].id}).then(() => {
+              this.selectedAccount.apartments.forEach(apartment => {
+                apartment.payments = apartment.payments.filter((e) => e.id !== transactionPyments[0].id);
+              });
+            })
+          })
+        }
+      }
+    },
     isPaidMonth(apartment, month) {
-      if(apartment.payments.find((e) => (new Date(e.date).getMonth() === month - 1) && e.apartment_id === apartment.id)){
+      if(apartment.payments.find((e) => new Date(e.date).getMonth() === month - 1)){
         return true;
       } else {
         return false;
@@ -156,6 +186,7 @@ export default {
       year: new Date(),
       accounts: [],
       selectedAccount: null,
+      disablePaidAlert: true,
     };
   },
 };

@@ -2237,16 +2237,26 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/v1/real-estate-management/rent-status?month=".concat(this.date)).then(function (_ref) {
         var data = _ref.data;
         _this.accounts = data.accounts;
+        _this.disablePaidAlert = data.disablePaidAlert;
       });
     },
-    addTransaction: function addTransaction(apartment) {
+    addTransaction: function addTransaction(apartment, account_id) {
       var _this2 = this;
 
-      if (confirm('Do you really want to do paid rent?')) {
+      var pay = true;
+
+      if (!this.disablePaidAlert) {
+        pay = confirm('Do you really want to do paid rent?');
+      }
+
+      if (pay) {
         var uri = './api/v1/transactions?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
         var data = {
           transactions: [{
             amount: apartment.totalRent,
+            vat_percent: 0,
+            vat: 0,
+            netto: apartment.totalRent,
             book_date: "",
             category_name: "",
             currency_id: undefined,
@@ -2266,19 +2276,66 @@ __webpack_require__.r(__webpack_exports__);
             type: "deposit"
           }]
         };
-        axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, data).then(function () {
+        axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, data).then(function (_ref2) {
+          var data = _ref2.data;
           uri = './api/v1/real-estate-management/apartment-payment?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
           var submitData = {
             apartment_id: apartment.id,
             account_id: apartment.renter_account.id,
+            transaction_id: parseInt(data.data.id),
             date: new Date().getDate(),
             month: parseInt(_this2.date.split('-')[1]),
             year: parseInt(_this2.date.split('-')[0])
           };
-          axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, submitData).then(function () {
-            location.reload();
+          axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, submitData).then(function (_ref3) {
+            var data = _ref3.data;
+
+            var updatedAccount = _this2.accounts.find(function (e) {
+              return e.id === account_id;
+            });
+
+            updatedAccount.apartments.forEach(function (element) {
+              element.payments.push(data['payment']);
+            });
+            _this2.accounts = _this2.accounts.map(function (e) {
+              return e.id === updatedAccount.id ? updatedAccount : e;
+            });
           });
         });
+      }
+    },
+    deleteTransaction: function deleteTransaction(apartment) {
+      var _this3 = this;
+
+      var pay = true;
+
+      if (!this.disablePaidAlert) {
+        pay = confirm('Do you really want to delete this payments?');
+      }
+
+      if (pay) {
+        var transactionPyments = apartment.payments.filter(function (e) {
+          return new Date(e.date).getMonth() === parseInt(_this3.date.split('-')[1]) - 1;
+        });
+
+        if (transactionPyments.length) {
+          axios__WEBPACK_IMPORTED_MODULE_0___default().post("transactions/destroy-custom/".concat(transactionPyments[0].transaction_id), {
+            _token: document.head.querySelector('meta[name="csrf-token"]').content
+          }).then(function () {
+            var uri = './api/v1/real-estate-management/delete-apartment-payment?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
+            axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, {
+              id: transactionPyments[0].id
+            }).then(function () {
+              _this3.accounts.forEach(function (account) {
+                account.apartments.forEach(function (apartment) {
+                  apartment.payments = apartment.payments.filter(function (e) {
+                    return e.id !== transactionPyments[0].id;
+                  });
+                });
+              });
+            });
+          });
+        }
       }
     },
     isPaidMonth: function isPaidMonth(apartment) {
@@ -2298,7 +2355,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       date: new Date(),
-      accounts: []
+      accounts: [],
+      disablePaidAlert: true
     };
   }
 });
@@ -2997,6 +3055,13 @@ var render = function() {
                                             staticStyle: {
                                               color: "green",
                                               cursor: "pointer"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.deleteTransaction(
+                                                  apartment
+                                                )
+                                              }
                                             }
                                           },
                                           [_vm._v("Ok")]
@@ -3011,7 +3076,8 @@ var render = function() {
                                             on: {
                                               click: function($event) {
                                                 return _vm.addTransaction(
-                                                  apartment
+                                                  apartment,
+                                                  account.id
                                                 )
                                               }
                                             }

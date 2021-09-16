@@ -593,6 +593,10 @@ class CreateMainTables extends Migration
                     $table->integer('transaction_journal_id', false, true);
                     $table->string('description', 1024)->nullable();
                     $table->decimal('amount', 36, 24);
+                    $table->integer('booking_number');
+                    $table->integer('vat_percent');
+                    $table->decimal('vat', 36, 24);
+                    $table->decimal('netto', 36, 24);
 
                     $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
                     $table->foreign('transaction_journal_id')->references('id')->on('transaction_journals')->onDelete('cascade');

@@ -98,6 +98,7 @@ class PreferencesController extends Controller
         $locale             = app('preferences')->get('locale', config('firefly.default_locale', 'equal'))->data;
         $listPageSize       = app('preferences')->get('listPageSize', 50)->data;
         $customFiscalYear   = app('preferences')->get('customFiscalYear', 0)->data;
+        $disablePaidAlert =   app('preferences')->get('disablePaidAlert', 0)->data;
         $fiscalYearStartStr = app('preferences')->get('fiscalYearStart', '01-01')->data;
         $fiscalYearStart    = date('Y') . '-' . $fiscalYearStartStr;
         $tjOptionalFields   = app('preferences')->get('transaction_journal_optional_fields', [])->data;
@@ -133,7 +134,8 @@ class PreferencesController extends Controller
                 'viewRange',
                 'customFiscalYear',
                 'listPageSize',
-                'fiscalYearStart'
+                'fiscalYearStart',
+                'disablePaidAlert'
             )
         );
     }
@@ -166,8 +168,10 @@ class PreferencesController extends Controller
 
         // custom fiscal year
         $customFiscalYear = 1 === (int)$request->get('customFiscalYear');
+        $disablePaidAlert = 1 === (int)$request->get('disablePaidAlert');
         $fiscalYearStart  = date('m-d', strtotime((string)$request->get('fiscalYearStart')));
         app('preferences')->set('customFiscalYear', $customFiscalYear);
+        app('preferences')->set('disablePaidAlert', $disablePaidAlert);
         app('preferences')->set('fiscalYearStart', $fiscalYearStart);
 
         // save page size:

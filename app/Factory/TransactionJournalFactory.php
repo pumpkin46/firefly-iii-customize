@@ -234,7 +234,7 @@ class TransactionJournalFactory
         $transactionFactory->setForeignCurrency($foreignCurrency);
         $transactionFactory->setReconciled($row['reconciled'] ?? false);
         try {
-            $negative = $transactionFactory->createNegative((string)$row['amount'], (string)$row['foreign_amount']);
+            $negative = $transactionFactory->createNegative((string)$row['amount'], (string)$row['vat'], (string)$row['vat_percent'], (string)$row['netto'], (string)$row['foreign_amount'], (string)$row['vat'], (string)$row['vat_percent'], (string)$row['netto']);
         } catch (FireflyException $e) {
             Log::error('Exception creating negative transaction.');
             Log::error($e->getMessage());
@@ -253,7 +253,7 @@ class TransactionJournalFactory
         $transactionFactory->setForeignCurrency($foreignCurrency);
         $transactionFactory->setReconciled($row['reconciled'] ?? false);
         try {
-            $transactionFactory->createPositive((string)$row['amount'], (string)$row['foreign_amount']);
+            $transactionFactory->createPositive((string)$row['amount'], (string)$row['vat'],(string)$row['vat_percent'],(string)$row['netto'], (string)$row['foreign_amount'], (string)$row['vat'], (string)$row['vat_percent'], (string)$row['netto']);
         } catch (FireflyException $e) {
             Log::error('Exception creating positive transaction.');
             Log::error($e->getMessage());

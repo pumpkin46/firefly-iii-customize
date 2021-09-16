@@ -2065,6 +2065,69 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomInput.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomInput.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {};
+  },
+  props: ["label", "type", "placeholder", "value", "requried", "error", "disabled", "index"],
+  methods: {
+    handleInput: function handleInput() {
+      this.$emit("input", this.$refs.descr.value);
+      this.$emit("customInput", {
+        value: this.$refs.descr.value,
+        index: this.index
+      });
+    },
+    clearDescription: function clearDescription() {
+      this.description = '';
+      this.$refs.descr.value = '';
+      this.$emit('input', this.$refs.descr.value);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/AccountSelect.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/AccountSelect.vue?vue&type=script&lang=js& ***!
@@ -2383,7 +2446,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Amount",
-  props: ['source', 'destination', 'transactionType', 'value', 'error'],
+  props: ['source', 'destination', 'transactionType', 'value', 'error', "index"],
   data: function data() {
     return {
       sourceAccount: this.source,
@@ -2394,6 +2457,10 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     handleInput: function handleInput(e) {
       this.$emit('input', this.$refs.amount.value);
+      this.$emit('customInput', {
+        value: this.$refs.amount.value,
+        index: this.index
+      });
     },
     clearAmount: function clearAmount() {
       this.$refs.amount.value = '';
@@ -3144,6 +3211,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "CreateTransaction",
   components: {},
@@ -3161,6 +3258,26 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    changedVat: function changedVat(e) {
+      e.value = parseInt(e.value);
+      this.transactions.forEach(function (transaction, index) {
+        if (index === e.index) {
+          transaction.vat_percent = e.value;
+          transaction.vat = transaction.amount * (e.value / 100);
+          transaction.netto = transaction.amount - transaction.amount * e.value / 100;
+        }
+      });
+    },
+    changedAmount: function changedAmount(e) {
+      e.value = parseInt(e.value);
+      this.transactions.forEach(function (transaction, index) {
+        if (index === e.index) {
+          transaction.amount = e.value;
+          transaction.vat = e.value * (transaction.vat_percent / 100);
+          transaction.netto = e.value - e.value * transaction.vat_percent / 100;
+        }
+      });
+    },
     prefillSourceAccount: function prefillSourceAccount() {
       if (0 === window.sourceId) {
         return;
@@ -3329,14 +3446,14 @@ __webpack_require__.r(__webpack_exports__);
       // solves issues with some locales.
 
 
-      if (1 === (row.amount.match(/\,/g) || []).length) {
+      if (1 === (toString(row.amount).match(/\,/g) || []).length) {
         row.amount = row.amount.replace(',', '.');
       }
 
       currentArray = {
         type: transactionType,
         date: date,
-        amount: row.amount,
+        amount: row.amount.toString(),
         currency_id: row.currency_id,
         description: row.description,
         source_id: sourceId,
@@ -3344,6 +3461,9 @@ __webpack_require__.r(__webpack_exports__);
         destination_id: destId,
         destination_name: destName,
         category_name: row.category,
+        vat: row.vat.toString(),
+        vat_percent: row.vat_percent.toString(),
+        netto: row.netto.toString(),
         interest_date: row.custom_fields.interest_date,
         book_date: row.custom_fields.book_date,
         process_date: row.custom_fields.process_date,
@@ -3385,11 +3505,10 @@ __webpack_require__.r(__webpack_exports__);
       // console.log('Now in submit()');
       // e.preventDefault();
       var uri = './api/v1/transactions?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
-      var data = this.convertData(); // console.log(data);
-      // return;
-
+      var data = this.convertData();
       var button = $('#submitButton');
       button.prop("disabled", true);
+      console.log(data);
       axios.post(uri, data).then(function (response) {
         // console.log('Did a succesfull POST');
         // this method will ultimately send the user on (or not).
@@ -3690,9 +3809,13 @@ __webpack_require__.r(__webpack_exports__);
       this.transactions.push({
         description: "",
         date: "",
-        amount: "",
+        amount: 0,
+        vat_percent: 0,
+        vat: 0,
+        netto: 0,
         category: "",
         piggy_bank: 0,
+        seeMore: false,
         errors: {
           source_account: [],
           destination_account: [],
@@ -3894,6 +4017,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       transactionType: null,
+      vat_percent: 0,
+      vatPercentError: '',
       group_title: "",
       transactions: [],
       group_title_errors: [],
@@ -5232,7 +5357,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.target = this.$refs.descr;
     this.descriptionAutoCompleteURI = document.getElementsByTagName('base')[0].href + "api/v1/autocomplete/transactions?query=";
-    this.$refs.descr.focus();
   },
   components: {},
   data: function data() {
@@ -5710,6 +5834,45 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/real_estate_management/CustomInput.vue":
+/*!*******************************************************************************!*\
+  !*** ./resources/assets/js/components/real_estate_management/CustomInput.vue ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _CustomInput_vue_vue_type_template_id_034ec736___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CustomInput.vue?vue&type=template&id=034ec736& */ "./resources/assets/js/components/real_estate_management/CustomInput.vue?vue&type=template&id=034ec736&");
+/* harmony import */ var _CustomInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CustomInput.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/real_estate_management/CustomInput.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CustomInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CustomInput_vue_vue_type_template_id_034ec736___WEBPACK_IMPORTED_MODULE_0__.render,
+  _CustomInput_vue_vue_type_template_id_034ec736___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/real_estate_management/CustomInput.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
 
@@ -6454,6 +6617,22 @@ component.options.__file = "resources/assets/js/components/transactions/Transact
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/real_estate_management/CustomInput.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/assets/js/components/real_estate_management/CustomInput.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CustomInput.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomInput.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/transactions/AccountSelect.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************!*\
   !*** ./resources/assets/js/components/transactions/AccountSelect.vue?vue&type=script&lang=js& ***!
@@ -6755,6 +6934,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionType_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TransactionType.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/TransactionType.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionType_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/real_estate_management/CustomInput.vue?vue&type=template&id=034ec736&":
+/*!**************************************************************************************************************!*\
+  !*** ./resources/assets/js/components/real_estate_management/CustomInput.vue?vue&type=template&id=034ec736& ***!
+  \**************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomInput_vue_vue_type_template_id_034ec736___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomInput_vue_vue_type_template_id_034ec736___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CustomInput_vue_vue_type_template_id_034ec736___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CustomInput.vue?vue&type=template&id=034ec736& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomInput.vue?vue&type=template&id=034ec736&");
+
 
 /***/ }),
 
@@ -7077,6 +7273,84 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionType_vue_vue_type_template_id_3f0e7af5___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionType_vue_vue_type_template_id_3f0e7af5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TransactionType.vue?vue&type=template&id=3f0e7af5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/transactions/TransactionType.vue?vue&type=template&id=3f0e7af5&");
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomInput.vue?vue&type=template&id=034ec736&":
+/*!*****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/real_estate_management/CustomInput.vue?vue&type=template&id=034ec736& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "form-group", class: { "has-error": _vm.error !== "" } },
+    [
+      _c("div", { staticClass: "col-sm-12 text-sm" }, [
+        _vm._v("\n    " + _vm._s(_vm.label) + "\n  ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-12" }, [
+        _c("div", { staticClass: "input-group" }, [
+          _c("input", {
+            ref: "descr",
+            staticClass: "form-control",
+            attrs: {
+              title: _vm.label,
+              type: _vm.type ? _vm.type : "text",
+              autocomplete: "off",
+              name: "description[]",
+              placeholder: _vm.placeholder,
+              "required:": "",
+              required: "",
+              disabled: _vm.disabled
+            },
+            domProps: { value: _vm.value },
+            on: { input: _vm.handleInput }
+          }),
+          _vm._v(" "),
+          _c("span", { staticClass: "input-group-btn" }, [
+            !_vm.disabled
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-default",
+                    attrs: {
+                      tabIndex: "-1",
+                      type: "button",
+                      disabled: _vm.disabled
+                    },
+                    on: { click: _vm.clearDescription }
+                  },
+                  [_c("i", { staticClass: "fa fa-trash-o" })]
+                )
+              : _vm._e()
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _vm.error !== ""
+        ? _c("div", { staticClass: "text-danger col-sm-12" }, [
+            _vm._v(_vm._s(_vm.error))
+          ])
+        : _vm._e()
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
 
 
 /***/ }),
@@ -7747,7 +8021,7 @@ var render = function() {
       _c(
         "div",
         _vm._l(_vm.transactions, function(transaction, index) {
-          return _c("div", { staticClass: "row" }, [
+          return _c("div", { key: index, staticClass: "row" }, [
             _c("div", { staticClass: "col-lg-12" }, [
               _c("div", { staticClass: "box" }, [
                 _c("div", { staticClass: "box-header with-border" }, [
@@ -7824,8 +8098,10 @@ var render = function() {
                             destination: transaction.destination_account,
                             error: transaction.errors.amount,
                             source: transaction.source_account,
-                            transactionType: _vm.transactionType
+                            transactionType: _vm.transactionType,
+                            index: index
                           },
+                          on: { customInput: _vm.changedAmount },
                           model: {
                             value: transaction.amount,
                             callback: function($$v) {
@@ -8030,6 +8306,25 @@ var render = function() {
                           }
                         }),
                         _vm._v(" "),
+                        _c("custom-input", {
+                          attrs: {
+                            label: "Vat %",
+                            placeholder: "Vat %",
+                            value: "",
+                            type: "number",
+                            error: "",
+                            index: index
+                          },
+                          on: { customInput: _vm.changedVat },
+                          model: {
+                            value: transaction.vat_percent,
+                            callback: function($$v) {
+                              _vm.$set(transaction, "vat_percent", $$v)
+                            },
+                            expression: "transaction.vat_percent"
+                          }
+                        }),
+                        _vm._v(" "),
                         !_vm.visibleMore
                           ? _c(
                               "span",
@@ -8037,7 +8332,7 @@ var render = function() {
                                 staticClass: "create_transaction_see_more",
                                 on: {
                                   click: function($event) {
-                                    _vm.visibleMore = true
+                                    transaction.seeMore = true
                                   }
                                 }
                               },
@@ -8052,7 +8347,7 @@ var render = function() {
                                 staticClass: "create_transaction_see_more",
                                 on: {
                                   click: function($event) {
-                                    _vm.visibleMore = false
+                                    transaction.seeMore = false
                                   }
                                 }
                               },
@@ -8060,10 +8355,34 @@ var render = function() {
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.visibleMore
+                        transaction.seeMore
                           ? _c(
                               "div",
                               [
+                                _c("custom-input", {
+                                  attrs: {
+                                    value: transaction.vat,
+                                    label: "Vat",
+                                    placeholder: "Vat",
+                                    type: "number",
+                                    disabled: "",
+                                    error: "",
+                                    index: index
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("custom-input", {
+                                  attrs: {
+                                    value: transaction.netto,
+                                    label: "Netto",
+                                    placeholder: "Netto",
+                                    type: "number",
+                                    disabled: "",
+                                    error: "",
+                                    index: index
+                                  }
+                                }),
+                                _vm._v(" "),
                                 _c("foreign-amount", {
                                   attrs: {
                                     destination:
@@ -10011,24 +10330,25 @@ var __webpack_exports__ = {};
   \***************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_transactions_CustomAttachments__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/transactions/CustomAttachments */ "./resources/assets/js/components/transactions/CustomAttachments.vue");
-/* harmony import */ var _components_transactions_CreateTransaction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/transactions/CreateTransaction */ "./resources/assets/js/components/transactions/CreateTransaction.vue");
-/* harmony import */ var _components_transactions_CustomDate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/transactions/CustomDate */ "./resources/assets/js/components/transactions/CustomDate.vue");
-/* harmony import */ var _components_transactions_CustomString__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/transactions/CustomString */ "./resources/assets/js/components/transactions/CustomString.vue");
-/* harmony import */ var _components_transactions_CustomTextarea__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/transactions/CustomTextarea */ "./resources/assets/js/components/transactions/CustomTextarea.vue");
-/* harmony import */ var _components_transactions_StandardDate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/transactions/StandardDate */ "./resources/assets/js/components/transactions/StandardDate.vue");
-/* harmony import */ var _components_transactions_GroupDescription__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/transactions/GroupDescription */ "./resources/assets/js/components/transactions/GroupDescription.vue");
-/* harmony import */ var _components_transactions_TransactionDescription__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/transactions/TransactionDescription */ "./resources/assets/js/components/transactions/TransactionDescription.vue");
-/* harmony import */ var _components_transactions_CustomTransactionFields__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/transactions/CustomTransactionFields */ "./resources/assets/js/components/transactions/CustomTransactionFields.vue");
-/* harmony import */ var _components_transactions_PiggyBank__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/transactions/PiggyBank */ "./resources/assets/js/components/transactions/PiggyBank.vue");
-/* harmony import */ var _components_transactions_Tags__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/transactions/Tags */ "./resources/assets/js/components/transactions/Tags.vue");
-/* harmony import */ var _components_transactions_Category__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/transactions/Category */ "./resources/assets/js/components/transactions/Category.vue");
-/* harmony import */ var _components_transactions_Amount__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/transactions/Amount */ "./resources/assets/js/components/transactions/Amount.vue");
-/* harmony import */ var _components_transactions_ForeignAmountSelect__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/transactions/ForeignAmountSelect */ "./resources/assets/js/components/transactions/ForeignAmountSelect.vue");
-/* harmony import */ var _components_transactions_TransactionType__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/transactions/TransactionType */ "./resources/assets/js/components/transactions/TransactionType.vue");
-/* harmony import */ var _components_transactions_AccountSelect__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/transactions/AccountSelect */ "./resources/assets/js/components/transactions/AccountSelect.vue");
-/* harmony import */ var _components_transactions_Budget__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/transactions/Budget */ "./resources/assets/js/components/transactions/Budget.vue");
-/* harmony import */ var _components_transactions_CustomUri__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/transactions/CustomUri */ "./resources/assets/js/components/transactions/CustomUri.vue");
-/* harmony import */ var _components_transactions_Bill__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/transactions/Bill */ "./resources/assets/js/components/transactions/Bill.vue");
+/* harmony import */ var _components_real_estate_management_CustomInput__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/real_estate_management/CustomInput */ "./resources/assets/js/components/real_estate_management/CustomInput.vue");
+/* harmony import */ var _components_transactions_CreateTransaction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/transactions/CreateTransaction */ "./resources/assets/js/components/transactions/CreateTransaction.vue");
+/* harmony import */ var _components_transactions_CustomDate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/transactions/CustomDate */ "./resources/assets/js/components/transactions/CustomDate.vue");
+/* harmony import */ var _components_transactions_CustomString__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/transactions/CustomString */ "./resources/assets/js/components/transactions/CustomString.vue");
+/* harmony import */ var _components_transactions_CustomTextarea__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/transactions/CustomTextarea */ "./resources/assets/js/components/transactions/CustomTextarea.vue");
+/* harmony import */ var _components_transactions_StandardDate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/transactions/StandardDate */ "./resources/assets/js/components/transactions/StandardDate.vue");
+/* harmony import */ var _components_transactions_GroupDescription__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/transactions/GroupDescription */ "./resources/assets/js/components/transactions/GroupDescription.vue");
+/* harmony import */ var _components_transactions_TransactionDescription__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/transactions/TransactionDescription */ "./resources/assets/js/components/transactions/TransactionDescription.vue");
+/* harmony import */ var _components_transactions_CustomTransactionFields__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/transactions/CustomTransactionFields */ "./resources/assets/js/components/transactions/CustomTransactionFields.vue");
+/* harmony import */ var _components_transactions_PiggyBank__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/transactions/PiggyBank */ "./resources/assets/js/components/transactions/PiggyBank.vue");
+/* harmony import */ var _components_transactions_Tags__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/transactions/Tags */ "./resources/assets/js/components/transactions/Tags.vue");
+/* harmony import */ var _components_transactions_Category__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/transactions/Category */ "./resources/assets/js/components/transactions/Category.vue");
+/* harmony import */ var _components_transactions_Amount__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/transactions/Amount */ "./resources/assets/js/components/transactions/Amount.vue");
+/* harmony import */ var _components_transactions_ForeignAmountSelect__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/transactions/ForeignAmountSelect */ "./resources/assets/js/components/transactions/ForeignAmountSelect.vue");
+/* harmony import */ var _components_transactions_TransactionType__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/transactions/TransactionType */ "./resources/assets/js/components/transactions/TransactionType.vue");
+/* harmony import */ var _components_transactions_AccountSelect__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/transactions/AccountSelect */ "./resources/assets/js/components/transactions/AccountSelect.vue");
+/* harmony import */ var _components_transactions_Budget__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/transactions/Budget */ "./resources/assets/js/components/transactions/Budget.vue");
+/* harmony import */ var _components_transactions_CustomUri__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/transactions/CustomUri */ "./resources/assets/js/components/transactions/CustomUri.vue");
+/* harmony import */ var _components_transactions_Bill__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/transactions/Bill */ "./resources/assets/js/components/transactions/Bill.vue");
 /*
  * create_transactions.js
  * Copyright (c) 2019 james@firefly-iii.org
@@ -10067,6 +10387,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /**
  * First we will load Axios via bootstrap.js
  * jquery and bootstrap-sass preloaded in app.js
@@ -10076,25 +10397,26 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__(/*! ./bootstrap */ "./resources/assets/js/bootstrap.js"); // components for create and edit transactions.
 
 
-Vue.component('budget', _components_transactions_Budget__WEBPACK_IMPORTED_MODULE_16__["default"]);
-Vue.component('bill', _components_transactions_Bill__WEBPACK_IMPORTED_MODULE_18__["default"]);
-Vue.component('custom-date', _components_transactions_CustomDate__WEBPACK_IMPORTED_MODULE_2__["default"]);
-Vue.component('custom-string', _components_transactions_CustomString__WEBPACK_IMPORTED_MODULE_3__["default"]);
+Vue.component('budget', _components_transactions_Budget__WEBPACK_IMPORTED_MODULE_17__["default"]);
+Vue.component('bill', _components_transactions_Bill__WEBPACK_IMPORTED_MODULE_19__["default"]);
+Vue.component('custom-date', _components_transactions_CustomDate__WEBPACK_IMPORTED_MODULE_3__["default"]);
+Vue.component('custom-string', _components_transactions_CustomString__WEBPACK_IMPORTED_MODULE_4__["default"]);
 Vue.component('custom-attachments', _components_transactions_CustomAttachments__WEBPACK_IMPORTED_MODULE_0__["default"]);
-Vue.component('custom-textarea', _components_transactions_CustomTextarea__WEBPACK_IMPORTED_MODULE_4__["default"]);
-Vue.component('custom-uri', _components_transactions_CustomUri__WEBPACK_IMPORTED_MODULE_17__["default"]);
-Vue.component('standard-date', _components_transactions_StandardDate__WEBPACK_IMPORTED_MODULE_5__["default"]);
-Vue.component('group-description', _components_transactions_GroupDescription__WEBPACK_IMPORTED_MODULE_6__["default"]);
-Vue.component('transaction-description', _components_transactions_TransactionDescription__WEBPACK_IMPORTED_MODULE_7__["default"]);
-Vue.component('custom-transaction-fields', _components_transactions_CustomTransactionFields__WEBPACK_IMPORTED_MODULE_8__["default"]);
-Vue.component('piggy-bank', _components_transactions_PiggyBank__WEBPACK_IMPORTED_MODULE_9__["default"]);
-Vue.component('tags', _components_transactions_Tags__WEBPACK_IMPORTED_MODULE_10__["default"]);
-Vue.component('category', _components_transactions_Category__WEBPACK_IMPORTED_MODULE_11__["default"]);
-Vue.component('amount', _components_transactions_Amount__WEBPACK_IMPORTED_MODULE_12__["default"]);
-Vue.component('foreign-amount', _components_transactions_ForeignAmountSelect__WEBPACK_IMPORTED_MODULE_13__["default"]);
-Vue.component('transaction-type', _components_transactions_TransactionType__WEBPACK_IMPORTED_MODULE_14__["default"]);
-Vue.component('account-select', _components_transactions_AccountSelect__WEBPACK_IMPORTED_MODULE_15__["default"]);
-Vue.component('create-transaction', _components_transactions_CreateTransaction__WEBPACK_IMPORTED_MODULE_1__["default"]);
+Vue.component('custom-textarea', _components_transactions_CustomTextarea__WEBPACK_IMPORTED_MODULE_5__["default"]);
+Vue.component('custom-uri', _components_transactions_CustomUri__WEBPACK_IMPORTED_MODULE_18__["default"]);
+Vue.component('standard-date', _components_transactions_StandardDate__WEBPACK_IMPORTED_MODULE_6__["default"]);
+Vue.component('group-description', _components_transactions_GroupDescription__WEBPACK_IMPORTED_MODULE_7__["default"]);
+Vue.component('transaction-description', _components_transactions_TransactionDescription__WEBPACK_IMPORTED_MODULE_8__["default"]);
+Vue.component('custom-transaction-fields', _components_transactions_CustomTransactionFields__WEBPACK_IMPORTED_MODULE_9__["default"]);
+Vue.component('piggy-bank', _components_transactions_PiggyBank__WEBPACK_IMPORTED_MODULE_10__["default"]);
+Vue.component('tags', _components_transactions_Tags__WEBPACK_IMPORTED_MODULE_11__["default"]);
+Vue.component('category', _components_transactions_Category__WEBPACK_IMPORTED_MODULE_12__["default"]);
+Vue.component('amount', _components_transactions_Amount__WEBPACK_IMPORTED_MODULE_13__["default"]);
+Vue.component('foreign-amount', _components_transactions_ForeignAmountSelect__WEBPACK_IMPORTED_MODULE_14__["default"]);
+Vue.component('custom-input', _components_real_estate_management_CustomInput__WEBPACK_IMPORTED_MODULE_1__["default"]);
+Vue.component('transaction-type', _components_transactions_TransactionType__WEBPACK_IMPORTED_MODULE_15__["default"]);
+Vue.component('account-select', _components_transactions_AccountSelect__WEBPACK_IMPORTED_MODULE_16__["default"]);
+Vue.component('create-transaction', _components_transactions_CreateTransaction__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
 var i18n = __webpack_require__(/*! ./i18n */ "./resources/assets/js/i18n.js");
 
@@ -10103,7 +10425,7 @@ new Vue({
   i18n: i18n,
   el: "#create_transaction",
   render: function render(createElement) {
-    return createElement(_components_transactions_CreateTransaction__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    return createElement(_components_transactions_CreateTransaction__WEBPACK_IMPORTED_MODULE_2__["default"], {
       props: props
     });
   }

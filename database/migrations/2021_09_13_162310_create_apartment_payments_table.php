@@ -17,6 +17,7 @@ class CreateApartmentPaymentsTable extends Migration
             $table->id();
             $table->integer('apartment_id');
             $table->integer('account_id');
+            $table->integer('transaction_id')->nullable();
             $table->string('date');
             $table->timestamps();
         });

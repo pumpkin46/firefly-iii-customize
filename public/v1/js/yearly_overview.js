@@ -2242,6 +2242,7 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/v1/real-estate-management/rent-status-yearly?year=".concat(this.year)).then(function (_ref) {
         var data = _ref.data;
         _this.accounts = data.accounts;
+        _this.disablePaidAlert = data.disablePaidAlert;
 
         if (_this.accounts.length) {
           _this.selectedAccount = _this.accounts[0];
@@ -2251,11 +2252,20 @@ __webpack_require__.r(__webpack_exports__);
     addTransaction: function addTransaction(apartment, month) {
       var _this2 = this;
 
-      if (confirm('Do you really want to do paid rent?')) {
+      var pay = true;
+
+      if (!this.disablePaidAlert) {
+        pay = confirm('Do you really want to do paid rent?');
+      }
+
+      if (pay) {
         var uri = './api/v1/transactions?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
         var data = {
           transactions: [{
             amount: apartment.totalRent,
+            vat_percent: 0,
+            vat: 0,
+            netto: apartment.totalRent,
             book_date: "",
             category_name: "",
             currency_id: undefined,
@@ -2275,24 +2285,62 @@ __webpack_require__.r(__webpack_exports__);
             type: "deposit"
           }]
         };
-        axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, data).then(function () {
+        axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, data).then(function (_ref2) {
+          var data = _ref2.data;
           uri = './api/v1/real-estate-management/apartment-payment?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
           var submitData = {
             apartment_id: apartment.id,
             account_id: apartment.renter_account.id,
+            transaction_id: parseInt(data.data.id),
             date: 1,
             month: month,
             year: _this2.year
           };
-          axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, submitData).then(function () {
-            location.reload();
+          axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, submitData).then(function (_ref3) {
+            var data = _ref3.data;
+
+            _this2.selectedAccount.apartments.forEach(function (element) {
+              element.payments.push(data['payment']);
+            });
           });
         });
       }
     },
+    deleteTransaction: function deleteTransaction(apartment, month) {
+      var _this3 = this;
+
+      var pay = true;
+
+      if (!this.disablePaidAlert) {
+        pay = confirm('Do you really want to delete this payments?');
+      }
+
+      if (pay) {
+        var transactionPyments = apartment.payments.filter(function (e) {
+          return new Date(e.date).getMonth() === month - 1;
+        });
+
+        if (transactionPyments.length) {
+          axios__WEBPACK_IMPORTED_MODULE_0___default().post("transactions/destroy-custom/".concat(transactionPyments[0].transaction_id), {
+            _token: document.head.querySelector('meta[name="csrf-token"]').content
+          }).then(function () {
+            var uri = './api/v1/real-estate-management/delete-apartment-payment?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
+            axios__WEBPACK_IMPORTED_MODULE_0___default().post(uri, {
+              id: transactionPyments[0].id
+            }).then(function () {
+              _this3.selectedAccount.apartments.forEach(function (apartment) {
+                apartment.payments = apartment.payments.filter(function (e) {
+                  return e.id !== transactionPyments[0].id;
+                });
+              });
+            });
+          });
+        }
+      }
+    },
     isPaidMonth: function isPaidMonth(apartment, month) {
       if (apartment.payments.find(function (e) {
-        return new Date(e.date).getMonth() === month - 1 && e.apartment_id === apartment.id;
+        return new Date(e.date).getMonth() === month - 1;
       })) {
         return true;
       } else {
@@ -2314,7 +2362,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       year: new Date(),
       accounts: [],
-      selectedAccount: null
+      selectedAccount: null,
+      disablePaidAlert: true
     };
   }
 });
@@ -2639,7 +2688,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Amount",
-  props: ['source', 'destination', 'transactionType', 'value', 'error'],
+  props: ['source', 'destination', 'transactionType', 'value', 'error', "index"],
   data: function data() {
     return {
       sourceAccount: this.source,
@@ -2650,6 +2699,10 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     handleInput: function handleInput(e) {
       this.$emit('input', this.$refs.amount.value);
+      this.$emit('customInput', {
+        value: this.$refs.amount.value,
+        index: this.index
+      });
     },
     clearAmount: function clearAmount() {
       this.$refs.amount.value = '';
@@ -3400,6 +3453,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "CreateTransaction",
   components: {},
@@ -3417,6 +3500,26 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    changedVat: function changedVat(e) {
+      e.value = parseInt(e.value);
+      this.transactions.forEach(function (transaction, index) {
+        if (index === e.index) {
+          transaction.vat_percent = e.value;
+          transaction.vat = transaction.amount * (e.value / 100);
+          transaction.netto = transaction.amount - transaction.amount * e.value / 100;
+        }
+      });
+    },
+    changedAmount: function changedAmount(e) {
+      e.value = parseInt(e.value);
+      this.transactions.forEach(function (transaction, index) {
+        if (index === e.index) {
+          transaction.amount = e.value;
+          transaction.vat = e.value * (transaction.vat_percent / 100);
+          transaction.netto = e.value - e.value * transaction.vat_percent / 100;
+        }
+      });
+    },
     prefillSourceAccount: function prefillSourceAccount() {
       if (0 === window.sourceId) {
         return;
@@ -3585,14 +3688,14 @@ __webpack_require__.r(__webpack_exports__);
       // solves issues with some locales.
 
 
-      if (1 === (row.amount.match(/\,/g) || []).length) {
+      if (1 === (toString(row.amount).match(/\,/g) || []).length) {
         row.amount = row.amount.replace(',', '.');
       }
 
       currentArray = {
         type: transactionType,
         date: date,
-        amount: row.amount,
+        amount: row.amount.toString(),
         currency_id: row.currency_id,
         description: row.description,
         source_id: sourceId,
@@ -3600,6 +3703,9 @@ __webpack_require__.r(__webpack_exports__);
         destination_id: destId,
         destination_name: destName,
         category_name: row.category,
+        vat: row.vat.toString(),
+        vat_percent: row.vat_percent.toString(),
+        netto: row.netto.toString(),
         interest_date: row.custom_fields.interest_date,
         book_date: row.custom_fields.book_date,
         process_date: row.custom_fields.process_date,
@@ -3641,11 +3747,10 @@ __webpack_require__.r(__webpack_exports__);
       // console.log('Now in submit()');
       // e.preventDefault();
       var uri = './api/v1/transactions?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
-      var data = this.convertData(); // console.log(data);
-      // return;
-
+      var data = this.convertData();
       var button = $('#submitButton');
       button.prop("disabled", true);
+      console.log(data);
       axios.post(uri, data).then(function (response) {
         // console.log('Did a succesfull POST');
         // this method will ultimately send the user on (or not).
@@ -3946,9 +4051,13 @@ __webpack_require__.r(__webpack_exports__);
       this.transactions.push({
         description: "",
         date: "",
-        amount: "",
+        amount: 0,
+        vat_percent: 0,
+        vat: 0,
+        netto: 0,
         category: "",
         piggy_bank: 0,
+        seeMore: false,
         errors: {
           source_account: [],
           destination_account: [],
@@ -4150,6 +4259,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       transactionType: null,
+      vat_percent: 0,
+      vatPercentError: '',
       group_title: "",
       transactions: [],
       group_title_errors: [],
@@ -5402,7 +5513,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.target = this.$refs.descr;
     this.descriptionAutoCompleteURI = document.getElementsByTagName('base')[0].href + "api/v1/autocomplete/transactions?query=";
-    this.$refs.descr.focus();
   },
   components: {},
   data: function data() {
@@ -7470,221 +7580,238 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "box-body" }, [
-        _c("div", { staticStyle: { margin: "20px 0px 20px 0px" } }, [
-          _vm.selectedAccount
-            ? _c("div", [
-                _c(
-                  "table",
-                  {
-                    staticClass:
-                      "table table-responsive table-hover apartment_list_table",
-                    attrs: { id: "sortable-table" }
-                  },
-                  [
-                    _c("thead", [
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-left",
-                          staticStyle: { width: "10%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.apt")))]
-                      ),
+        _c(
+          "div",
+          {
+            staticClass: "rent_control_list_table_container",
+            staticStyle: { margin: "20px 0px 20px 0px" }
+          },
+          [
+            _vm.selectedAccount
+              ? _c("div", [
+                  _c(
+                    "table",
+                    {
+                      staticClass:
+                        "table table-responsive table-hover rent_control_list_table",
+                      attrs: { id: "sortable-table" }
+                    },
+                    [
+                      _c("thead", [
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-left",
+                            staticStyle: { width: "10%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.apt")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-left",
+                            staticStyle: { width: "10%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.name")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-left",
+                            staticStyle: { width: "10%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.total_rent")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            staticStyle: { width: "4%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.jan")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            staticStyle: { width: "4%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.feb")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            staticStyle: { width: "4%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.mar")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            staticStyle: { width: "4%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.apr")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            staticStyle: { width: "4%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.may")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            staticStyle: { width: "4%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.jun")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            staticStyle: { width: "4%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.jul")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            staticStyle: { width: "4%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.aug")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            staticStyle: { width: "4%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.sep")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            staticStyle: { width: "4%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.oct")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            staticStyle: { width: "4%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.nov")))]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            staticStyle: { width: "4%" }
+                          },
+                          [_vm._v(_vm._s(_vm.$t("firefly.dec")))]
+                        )
+                      ]),
                       _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-left",
-                          staticStyle: { width: "10%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.name")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-left",
-                          staticStyle: { width: "10%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.total_rent")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-center",
-                          staticStyle: { width: "4%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.jan")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-center",
-                          staticStyle: { width: "4%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.feb")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-center",
-                          staticStyle: { width: "4%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.mar")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-center",
-                          staticStyle: { width: "4%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.apr")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-center",
-                          staticStyle: { width: "4%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.may")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-center",
-                          staticStyle: { width: "4%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.jun")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-center",
-                          staticStyle: { width: "4%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.jul")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-center",
-                          staticStyle: { width: "4%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.aug")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-center",
-                          staticStyle: { width: "4%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.sep")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-center",
-                          staticStyle: { width: "4%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.oct")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-center",
-                          staticStyle: { width: "4%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.nov")))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "text-center",
-                          staticStyle: { width: "4%" }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("firefly.dec")))]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.selectedAccount.apartments, function(apartment) {
-                      return _c(
-                        "tr",
-                        {
-                          key: apartment.id,
-                          staticClass: "sortable-object apartment_row"
-                        },
-                        [
-                          _c("td", { staticClass: "text-left" }, [
-                            _vm._v(_vm._s(apartment.id))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "text-left" }, [
-                            _vm._v(_vm._s(apartment.renter_account.name))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "text-left" }, [
-                            _vm._v(_vm._s(apartment.totalRent))
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(12, function(n) {
-                            return _c(
-                              "td",
-                              { key: n, staticClass: "text-center" },
-                              [
-                                _vm.isPaidMonth(apartment, n)
-                                  ? _c(
-                                      "div",
-                                      {
-                                        staticStyle: {
-                                          color: "green",
-                                          cursor: "pointer"
-                                        }
-                                      },
-                                      [_vm._v("Ok")]
-                                    )
-                                  : _c(
-                                      "div",
-                                      {
-                                        staticStyle: {
-                                          color: "red",
-                                          cursor: "pointer"
-                                        },
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.addTransaction(
-                                              apartment,
-                                              n
-                                            )
+                      _vm._l(_vm.selectedAccount.apartments, function(
+                        apartment
+                      ) {
+                        return _c(
+                          "tr",
+                          {
+                            key: apartment.id,
+                            staticClass: "sortable-object apartment_row"
+                          },
+                          [
+                            _c("td", { staticClass: "text-left" }, [
+                              _vm._v(_vm._s(apartment.id))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "text-left" }, [
+                              _vm._v(_vm._s(apartment.renter_account.name))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "text-left" }, [
+                              _vm._v(_vm._s(apartment.totalRent))
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(12, function(n) {
+                              return _c(
+                                "td",
+                                { key: n, staticClass: "text-center" },
+                                [
+                                  _vm.isPaidMonth(apartment, n)
+                                    ? _c(
+                                        "div",
+                                        {
+                                          staticStyle: {
+                                            color: "green",
+                                            cursor: "pointer"
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.deleteTransaction(
+                                                apartment,
+                                                n
+                                              )
+                                            }
                                           }
-                                        }
-                                      },
-                                      [_vm._v("X")]
-                                    )
-                              ]
-                            )
-                          })
-                        ],
-                        2
-                      )
-                    })
-                  ],
-                  2
-                )
-              ])
-            : _vm._e()
-        ])
+                                        },
+                                        [_vm._v("Ok")]
+                                      )
+                                    : _c(
+                                        "div",
+                                        {
+                                          staticStyle: {
+                                            color: "red",
+                                            cursor: "pointer"
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.addTransaction(
+                                                apartment,
+                                                n
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("X")]
+                                      )
+                                ]
+                              )
+                            })
+                          ],
+                          2
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ])
+              : _vm._e()
+          ]
+        )
       ])
     ])
   ])
@@ -8362,7 +8489,7 @@ var render = function() {
       _c(
         "div",
         _vm._l(_vm.transactions, function(transaction, index) {
-          return _c("div", { staticClass: "row" }, [
+          return _c("div", { key: index, staticClass: "row" }, [
             _c("div", { staticClass: "col-lg-12" }, [
               _c("div", { staticClass: "box" }, [
                 _c("div", { staticClass: "box-header with-border" }, [
@@ -8439,8 +8566,10 @@ var render = function() {
                             destination: transaction.destination_account,
                             error: transaction.errors.amount,
                             source: transaction.source_account,
-                            transactionType: _vm.transactionType
+                            transactionType: _vm.transactionType,
+                            index: index
                           },
+                          on: { customInput: _vm.changedAmount },
                           model: {
                             value: transaction.amount,
                             callback: function($$v) {
@@ -8645,6 +8774,25 @@ var render = function() {
                           }
                         }),
                         _vm._v(" "),
+                        _c("custom-input", {
+                          attrs: {
+                            label: "Vat %",
+                            placeholder: "Vat %",
+                            value: "",
+                            type: "number",
+                            error: "",
+                            index: index
+                          },
+                          on: { customInput: _vm.changedVat },
+                          model: {
+                            value: transaction.vat_percent,
+                            callback: function($$v) {
+                              _vm.$set(transaction, "vat_percent", $$v)
+                            },
+                            expression: "transaction.vat_percent"
+                          }
+                        }),
+                        _vm._v(" "),
                         !_vm.visibleMore
                           ? _c(
                               "span",
@@ -8652,7 +8800,7 @@ var render = function() {
                                 staticClass: "create_transaction_see_more",
                                 on: {
                                   click: function($event) {
-                                    _vm.visibleMore = true
+                                    transaction.seeMore = true
                                   }
                                 }
                               },
@@ -8667,7 +8815,7 @@ var render = function() {
                                 staticClass: "create_transaction_see_more",
                                 on: {
                                   click: function($event) {
-                                    _vm.visibleMore = false
+                                    transaction.seeMore = false
                                   }
                                 }
                               },
@@ -8675,10 +8823,34 @@ var render = function() {
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.visibleMore
+                        transaction.seeMore
                           ? _c(
                               "div",
                               [
+                                _c("custom-input", {
+                                  attrs: {
+                                    value: transaction.vat,
+                                    label: "Vat",
+                                    placeholder: "Vat",
+                                    type: "number",
+                                    disabled: "",
+                                    error: "",
+                                    index: index
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("custom-input", {
+                                  attrs: {
+                                    value: transaction.netto,
+                                    label: "Netto",
+                                    placeholder: "Netto",
+                                    type: "number",
+                                    disabled: "",
+                                    error: "",
+                                    index: index
+                                  }
+                                }),
+                                _vm._v(" "),
                                 _c("foreign-amount", {
                                   attrs: {
                                     destination:

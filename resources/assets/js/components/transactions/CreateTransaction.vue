@@ -41,7 +41,7 @@
       </div>
     </div>
     <div>
-      <div v-for="(transaction, index) in transactions" class="row">
+      <div v-for="(transaction, index) in transactions" class="row" v-bind:key="index">
         <div class="col-lg-12">
           <div class="box">
             <div class="box-header with-border">
@@ -67,10 +67,12 @@
                   
                   <amount
                       v-model="transaction.amount"
+                      @customInput="changedAmount"
                       :destination="transaction.destination_account"
                       :error="transaction.errors.amount"
                       :source="transaction.source_account"
                       :transactionType="transactionType"
+                      :index="index"
                   ></amount>
                   <transaction-description
                       v-model="transaction.description"
@@ -139,9 +141,37 @@
                       v-model="transaction.tags"
                       :error="transaction.errors.tags"
                   ></tags>
-                  <span class="create_transaction_see_more" v-if="!visibleMore" @click="visibleMore=true">See More</span>
-                  <span class="create_transaction_see_more" v-if="visibleMore" @click="visibleMore=false">See Less</span>
-                  <div v-if="visibleMore">
+                  <custom-input
+                    v-model="transaction.vat_percent"
+                    @customInput="changedVat"
+                    label="Vat %"
+                    placeholder="Vat %"
+                    value=""
+                    type="number"
+                    error=""
+                    :index="index"
+                  ></custom-input>
+                  <span class="create_transaction_see_more" v-if="!visibleMore" @click="transaction.seeMore=true">See More</span>
+                  <span class="create_transaction_see_more" v-if="visibleMore" @click="transaction.seeMore=false">See Less</span>
+                  <div v-if="transaction.seeMore">
+                    <custom-input
+                      :value="transaction.vat"
+                      label="Vat"
+                      placeholder="Vat"
+                      type="number"
+                      disabled
+                      error=""
+                      :index="index"
+                    ></custom-input>
+                    <custom-input
+                      :value="transaction.netto"
+                      label="Netto"
+                      placeholder="Netto"
+                      type="number"
+                      disabled
+                      error=""
+                      :index="index"
+                    ></custom-input>
                     <foreign-amount
                         v-model="transaction.foreign_amount"
                         :destination="transaction.destination_account"
@@ -248,6 +278,26 @@ export default {
     }
   },
   methods: {
+    changedVat(e) {
+      e.value = parseInt(e.value);
+      this.transactions.forEach((transaction, index) => {
+        if(index === e.index) {
+          transaction.vat_percent = e.value;
+          transaction.vat = transaction.amount * (e.value / 100);
+          transaction.netto = transaction.amount - (transaction.amount * e.value / 100);
+        }
+      });
+    },
+    changedAmount(e) {
+      e.value = parseInt(e.value);
+      this.transactions.forEach((transaction, index) => {
+        if(index === e.index) {
+          transaction.amount = e.value;
+          transaction.vat = e.value * (transaction.vat_percent / 100);
+          transaction.netto = e.value - (e.value * transaction.vat_percent / 100);
+        }
+      });
+    },
     prefillSourceAccount() {
       if (0 === window.sourceId) {
         return;
@@ -407,7 +457,7 @@ export default {
       }
       // parse amount if has exactly one comma:
       // solves issues with some locales.
-      if (1 === (row.amount.match(/\,/g) || []).length) {
+      if (1 === (toString(row.amount).match(/\,/g) || []).length) {
         row.amount = row.amount.replace(',', '.');
       }
 
@@ -416,7 +466,7 @@ export default {
             type: transactionType,
             date: date,
 
-            amount: row.amount,
+            amount: row.amount.toString(),
             currency_id: row.currency_id,
 
             description: row.description,
@@ -429,6 +479,9 @@ export default {
 
 
             category_name: row.category,
+            vat: row.vat.toString(),
+            vat_percent: row.vat_percent.toString(),
+            netto: row.netto.toString(),
 
             interest_date: row.custom_fields.interest_date,
             book_date: row.custom_fields.book_date,
@@ -465,10 +518,9 @@ export default {
       // e.preventDefault();
       const uri = './api/v1/transactions?_token=' + document.head.querySelector('meta[name="csrf-token"]').content;
       const data = this.convertData();
-      // console.log(data);
-      // return;
       let button = $('#submitButton');
       button.prop("disabled", true);
+      console.log(data);
       axios.post(uri, data).then(response => {
         // console.log('Did a succesfull POST');
         // this method will ultimately send the user on (or not).
@@ -754,9 +806,13 @@ export default {
       this.transactions.push({
         description: "",
         date: "",
-        amount: "",
+        amount: 0,
+        vat_percent: 0,
+        vat: 0,
+        netto: 0,
         category: "",
         piggy_bank: 0,
+        seeMore: false,
         errors: {
           source_account: [],
           destination_account: [],
@@ -961,6 +1017,8 @@ export default {
   data() {
     return {
       transactionType: null,
+      vat_percent: 0,
+      vatPercentError: '',
       group_title: "",
       transactions: [],
       group_title_errors: [],

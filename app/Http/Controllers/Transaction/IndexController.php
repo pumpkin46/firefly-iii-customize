@@ -118,8 +118,8 @@ class IndexController extends Controller
                   ->withAccountInformation()
                   ->withAttachmentInformation();
         $groups = $collector->getPaginatedGroups();
+        // print_r($groups);exit;
         $groups->setPath($path);
-
         return prefixView('transactions.index', compact('subTitle', 'objectType', 'subTitleIcon', 'groups', 'periods', 'start', 'end'));
     }
 

@@ -64,7 +64,7 @@ class TransactionFactory
      * @return Transaction
      * @throws FireflyException
      */
-    public function createNegative(string $amount, ?string $foreignAmount): Transaction
+    public function createNegative(string $amount, string $vat, string $vat_percent, string $netto, ?string $foreignAmount): Transaction
     {
         if ('' === $foreignAmount) {
             $foreignAmount = null;
@@ -73,7 +73,7 @@ class TransactionFactory
             $foreignAmount = app('steam')->negative($foreignAmount);
         }
 
-        return $this->create(app('steam')->negative($amount), $foreignAmount);
+        return $this->create(app('steam')->negative($amount), $vat, $vat_percent, $netto, $foreignAmount);
     }
 
     /**
@@ -83,11 +83,17 @@ class TransactionFactory
      * @return Transaction
      * @throws FireflyException
      */
-    private function create(string $amount, ?string $foreignAmount): Transaction
+    private function create(string $amount, string $vat, string $vat_percent, string $netto, ?string $foreignAmount): Transaction
     {
         $result = null;
         if ('' === $foreignAmount) {
             $foreignAmount = null;
+        }
+        $booking_number = Transaction::where('account_id', '=', $this->account->id)->max('booking_number');
+        if(!$booking_number){
+            $booking_number = 1;
+        } else {
+            $booking_number = $booking_number+1;
         }
         $data = [
             'reconciled'              => $this->reconciled,
@@ -96,13 +102,17 @@ class TransactionFactory
             'description'             => null,
             'transaction_currency_id' => $this->currency->id,
             'amount'                  => $amount,
+            'vat'                     => $vat,
+            'vat_percent'             => $vat_percent,
+            'netto'                   => $netto,
+            'booking_number'          => $booking_number,
             'foreign_amount'          => null,
             'foreign_currency_id'     => null,
             'identifier'              => 0,
         ];
         try {
             $result = Transaction::create($data);
-
+            
         } catch (QueryException $e) {
             Log::error(sprintf('Could not create transaction: %s', $e->getMessage()), $data);
             Log::error($e->getMessage());
@@ -145,7 +155,7 @@ class TransactionFactory
      * @return Transaction
      * @throws FireflyException
      */
-    public function createPositive(string $amount, ?string $foreignAmount): Transaction
+    public function createPositive(string $amount, string $vat, string $vat_percent, string $netto, ?string $foreignAmount): Transaction
     {
         if ('' === $foreignAmount) {
             $foreignAmount = null;
@@ -154,7 +164,7 @@ class TransactionFactory
             $foreignAmount = app('steam')->positive($foreignAmount);
         }
 
-        return $this->create(app('steam')->positive($amount), $foreignAmount);
+        return $this->create(app('steam')->positive($amount), $vat, $vat_percent, $netto, $foreignAmount);
     }
 
     /**

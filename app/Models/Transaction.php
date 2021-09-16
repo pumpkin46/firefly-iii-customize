@@ -106,7 +106,7 @@ class Transaction extends Model
     /** @var array Fields that can be filled */
     protected $fillable
         = ['account_id', 'transaction_journal_id', 'description', 'amount', 'identifier', 'transaction_currency_id', 'foreign_currency_id',
-           'foreign_amount', 'reconciled'];
+           'foreign_amount', 'reconciled', 'vat_percent', 'vat', 'netto', 'booking_number'];
     /** @var array Hidden from view */
     protected $hidden = ['encrypted'];
 
