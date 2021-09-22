@@ -12,7 +12,8 @@ class RealEstateManagementController extends Controller
 {
     public function index() {
         $title = 'Real-Estate Management';
-        return prefixView('real-estate-management.index', compact('title'));
+        $expenseId      = (int)request()->get('expense');
+        return prefixView('real-estate-management.index', compact('title', 'expenseId'));
     }
 
     public function create() {

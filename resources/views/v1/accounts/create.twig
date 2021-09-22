@@ -34,6 +34,43 @@
                         {% endif %}
                     </div>
                 </div>
+                {% if objectType == 'expense' %}
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">{{ 'contact_details'|_ }}</h3>
+                        </div>
+                        <div class="box-body">
+                            {{ ExpandedForm.text('headline') }}
+                            {{ ExpandedForm.text('zip_code') }}
+                            {{ ExpandedForm.text('city') }}
+                            {{ ExpandedForm.text('signature') }}
+                        </div>
+                    </div>
+                {% endif %}
+                {% if objectType == 'revenue' %}
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">{{ 'contact_details'|_ }}</h3>
+                        </div>
+                        <div class="box-body">
+                            {{ ExpandedForm.text('phone_number') }}
+                            {{ ExpandedForm.text('email') }}
+                            {{ ExpandedForm.text('street') }}
+                            {{ ExpandedForm.text('emergency_contact') }}
+                        </div>
+                    </div>
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">{{ 'apartment_info'|_ }}</h3>
+                        </div>
+                        <div class="box-body">
+                            {{ ExpandedForm.date('rent_start_date') }}
+                            {{ ExpandedForm.date('rent_end_date') }}
+                            {{ ExpandedForm.text('apartment_nr') }}
+                            {{ ExpandedForm.text('expense_account') }}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
 
             <div class="col-lg-6 col-md-6 col-sm-12">

@@ -64,8 +64,6 @@ class ShowController extends Controller
         $this->middleware(
             function ($request, $next) {
                 app('view')->share('mainTitleIcon', 'fa-credit-card');
-                app('view')->share('title', (string)trans('firefly.accounts'));
-
                 $this->repository    = app(AccountRepositoryInterface::class);
                 $this->currencyRepos = app(CurrencyRepositoryInterface::class);
 
@@ -111,7 +109,7 @@ class ShowController extends Controller
         $currency         = $this->repository->getAccountCurrency($account) ?? app('amount')->getDefaultCurrency();
         $fStart           = $start->formatLocalized($this->monthAndDayFormat);
         $fEnd             = $end->formatLocalized($this->monthAndDayFormat);
-        $subTitle         = (string)trans('firefly.journals_in_period_for_account', ['name' => $account->name, 'start' => $fStart, 'end' => $fEnd]);
+        $subTitle         = (string)trans('firefly.journals_in_period', ['name' => $account->name, 'start' => $fStart, 'end' => $fEnd]);
         $chartUri         = route('chart.account.period', [$account->id, $start->format('Y-m-d'), $end->format('Y-m-d')]);
         $firstTransaction = $this->repository->oldestJournalDate($account) ?? $start;
         $periods          = $this->getAccountPeriodOverview($account, $firstTransaction, $end);
@@ -128,10 +126,13 @@ class ShowController extends Controller
         $groups->setPath(route('accounts.show', [$account->id, $start->format('Y-m-d'), $end->format('Y-m-d')]));
         $showAll = false;
         $balance = app('steam')->balance($account, $end);
+        $title = (string)trans('firefly.accounts') . ' ' . $account->name;
+
 
         return prefixView(
             'accounts.show',
             compact(
+                'title',
                 'account',
                 'showAll',
                 'objectType',

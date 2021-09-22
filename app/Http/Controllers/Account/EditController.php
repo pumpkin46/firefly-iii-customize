@@ -182,7 +182,6 @@ class EditController extends Controller
 
         $data = $request->getAccountData();
         $this->repository->update($account, $data);
-
         $request->session()->flash('success', (string)trans('firefly.updated_account', ['name' => $account->name]));
 
         // store new attachment(s):

@@ -1,191 +1,264 @@
 {% extends "./v1/layout/default" %}
 
 {% block breadcrumbs %}
-    {{ Breadcrumbs.render }}
+	{{ Breadcrumbs.render }}
 {% endblock %}
 {% block content %}
-    {% include 'v1.partials.boxes' %}
-    <div class="row">
-        <div class="col-lg-8 col-md-12 col-sm-12">
-            {# ACCOUNTS #}
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><a href="{{ route('accounts.index',['asset']) }}" title="{{ 'yourAccounts'|_ }}">{{ 'yourAccounts'|_ }}</a></h3>
-                </div>
-                <div class="box-body">
-                    <canvas id="accounts-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
-                </div>
-                <div class="box-footer">
-                    <a href="{{ route('accounts.index','asset') }}" class="btn btn-default button-sm"><i
-                                class="fa fa-money"></i> {{ 'go_to_asset_accounts'|_ }}</a>
-                </div>
-            </div>
+	{% include 'v1.partials.boxes' %}
+	<div class="row">
+		<div
+			class="col-lg-8 col-md-12 col-sm-12">
+			{# ACCOUNTS #}
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title">
+						<a href="{{ route('accounts.index',['asset']) }}" title="{{ 'yourAccounts'|_ }}">{{ 'yourAccounts'|_ }}</a>
+					</h3>
+				</div>
+				<div class="box-body">
+					<canvas id="accounts-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
+				</div>
+				<div class="box-footer">
+					<a href="{{ route('accounts.index','asset') }}" class="btn btn-default button-sm">
+						<i class="fa fa-money"></i>
+						{{ 'go_to_asset_accounts'|_ }}</a>
+				</div>
+			</div>
 
-            {# BUDGETS #}
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><a href="{{ route('budgets.index') }}" title="{{ 'budgetsAndSpending'|_ }}">{{ 'budgetsAndSpending'|_ }}</a></h3>
-                </div>
-                <div class="box-body">
-                    <canvas id="budgets-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
-                </div>
-                <div class="box-footer">
-                    <a href="{{ route('budgets.index') }}" class="btn btn-default button-sm">
-                        <i class="fa fa-pie-chart"></i>
-                        <span>{{ 'go_to_budgets'|_ }}</span>
-                    </a>
-                </div>
-            </div>
-            {# CATEGORIES #}
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><a href="{{ route('categories.index') }}" title="{{ 'categories'|_ }}">{{ 'categories'|_ }}</a></h3>
+			{# BUDGETS #}
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">
+						<a href="{{ route('budgets.index') }}" title="{{ 'budgetsAndSpending'|_ }}">{{ 'budgetsAndSpending'|_ }}</a>
+					</h3>
+				</div>
+				<div class="box-body">
+					<canvas id="budgets-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
+				</div>
+				<div class="box-footer">
+					<a href="{{ route('budgets.index') }}" class="btn btn-default button-sm">
+						<i class="fa fa-pie-chart"></i>
+						<span>{{ 'go_to_budgets'|_ }}</span>
+					</a>
+				</div>
+			</div>
+			{# CATEGORIES #}
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">
+						<a href="{{ route('categories.index') }}" title="{{ 'categories'|_ }}">{{ 'categories'|_ }}</a>
+					</h3>
 
-                </div>
-                <div class="box-body">
-                    <canvas id="categories-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
-                </div>
-                <div class="box-footer">
-                    <a href="{{ route('categories.index') }}" class="btn btn-default button-sm">
-                        <i class="fa fa-bookmark"></i>
-                        <span>{{ 'go_to_categories'|_ }}</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-12">
+				</div>
+				<div class="box-body">
+					<canvas id="categories-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
+				</div>
+				<div class="box-footer">
+					<a href="{{ route('categories.index') }}" class="btn btn-default button-sm">
+						<i class="fa fa-bookmark"></i>
+						<span>{{ 'go_to_categories'|_ }}</span>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div
+			class="col-lg-4 col-md-6 col-sm-12">
 
-            {# TRANSACTIONS #}
-            <div id="all_transactions">
-                {% for data in transactions %}
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><a href="{{ route('accounts.show', data.account.id) }}">{{ data.account.name }}</a></h3>
-                        </div>
+			{# TRANSACTIONS #}
+			<div id="all_transactions">
+				{% for data in transactions %}
+					<div class="box">
+						<div class="box-header with-border">
+							<h3 class="box-title">
+								<a href="{{ route('accounts.show', data.account.id) }}">{{ data.account.name }}</a>
+							</h3>
+						</div>
 
-                        {% if data.transactions|length > 0 %}
-                            <div class="box-body no-padding">
-                                {% include 'v1.list.groups-tiny' with {'transactions': data.transactions,'account': data.account} %}
-                            </div>
-                        {% else %}
-                            <div class="box-body">
-                                <p>
-                                    <em>
-                                        {{ trans('firefly.no_transactions_account', {name: data.account.name}) }}
-                                    </em>
-                                </p>
+						{% if data.transactions|length > 0 %}
+							<div class="box-body no-padding">
+								{% include 'v1.list.groups-tiny' with {'transactions': data.transactions,'account': data.account} %}
+							</div>
+						{% else %}
+							<div class="box-body">
+								<p>
+									<em>
+										{{ trans('firefly.no_transactions_account', {name: data.account.name}) }}
+									</em>
+								</p>
 
-                            </div>
-                        {% endif %}
+							</div>
+						{% endif %}
 
-                        <div class="box-footer clearfix">
-                            <!-- Single button -->
-                            <div class="btn-group">
-                                <a type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ 'sidebar_frontpage_create'|_ }} <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="{{ route('transactions.create', ['withdrawal']) }}?source={{ data.account.id }}">{{ 'create_new_withdrawal'|_ }}</a></li>
-                                    <li><a href="{{ route('transactions.create', ['deposit']) }}?destination={{ data.account.id }}">{{ 'create_new_deposit'|_ }}</a></li>
-                                    <li><a href="{{ route('transactions.create', ['transfer']) }}?source={{ data.account.id }}">{{ 'create_new_transfer'|_ }}</a></li>
-                                </ul>
-                            </div>
-                            <div class="btn-group">
-                                <a type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                   href="{{ route('accounts.show', [data.account.id]) }}">{{ formatAmountByAccount(data.account, data.account|balance, false) }}
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="{{ route('accounts.show', [data.account.id]) }}">{{ 'show'|_ }}</a></li>
-                                    <li><a href="{{ route('accounts.reconcile', [data.account.id]) }}">{{ 'reconcile'|_ }}</a></li>
-                                    <li><a href="{{ route('accounts.edit', [data.account.id]) }}">{{ 'edit'|_ }}</a></li>
-                                    <li><a href="{{ route('accounts.delete', [data.account.id]) }}">{{ 'delete'|_ }}</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+						<div
+							class="box-footer clearfix">
+							<!-- Single button -->
+							<div class="btn-group">
+								<a type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									{{ 'sidebar_frontpage_create'|_ }}
+									<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="{{ route('transactions.create', ['withdrawal']) }}?source={{ data.account.id }}">{{ 'create_new_withdrawal'|_ }}</a>
+									</li>
+									<li>
+										<a href="{{ route('transactions.create', ['deposit']) }}?destination={{ data.account.id }}">{{ 'create_new_deposit'|_ }}</a>
+									</li>
+									<li>
+										<a href="{{ route('transactions.create', ['transfer']) }}?source={{ data.account.id }}">{{ 'create_new_transfer'|_ }}</a>
+									</li>
+								</ul>
+							</div>
+							<div class="btn-group">
+								<a type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="{{ route('accounts.show', [data.account.id]) }}">{{ formatAmountByAccount(data.account, data.account|balance, false) }}
+									<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="{{ route('accounts.show', [data.account.id]) }}">{{ 'show'|_ }}</a>
+									</li>
+									<li>
+										<a href="{{ route('accounts.reconcile', [data.account.id]) }}">{{ 'reconcile'|_ }}</a>
+									</li>
+									<li>
+										<a href="{{ route('accounts.edit', [data.account.id]) }}">{{ 'edit'|_ }}</a>
+									</li>
+									<li>
+										<a href="{{ route('accounts.delete', [data.account.id]) }}">{{ 'delete'|_ }}</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
 
-            {% if billCount > 0 %}
-                {# BILLS #}
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><a href="{{ route('bills.index') }}" title="{{ 'bills'|_ }}">{{ 'bills'|_ }}</a></h3>
+			{% if billCount > 0 %}
+				{# BILLS #}
+				<div class="box">
+					<div class="box-header with-border">
+						<h3 class="box-title">
+							<a href="{{ route('bills.index') }}" title="{{ 'bills'|_ }}">{{ 'bills'|_ }}</a>
+						</h3>
 
-                    </div>
-                    <div class="box-body">
-                        <div style="width:100%;margin:0 auto;">
-                            <canvas id="bills-chart" style="width:100%;height:200px;" height="200"></canvas>
-                        </div>
-                    </div>
-                    <div class="box-footer">
-                        <a href="{{ route('bills.index') }}" class="btn btn-default button-sm"><i
-                                    class="fa fa-calendar"></i> {{ 'go_to_bills'|_ }}</a>
-                    </div>
-                </div>
-            {% endif %}
+					</div>
+					<div class="box-body">
+						<div style="width:100%;margin:0 auto;">
+							<canvas id="bills-chart" style="width:100%;height:200px;" height="200"></canvas>
+						</div>
+					</div>
+					<div class="box-footer">
+						<a href="{{ route('bills.index') }}" class="btn btn-default button-sm">
+							<i class="fa fa-calendar"></i>
+							{{ 'go_to_bills'|_ }}</a>
+					</div>
+				</div>
+			{% endif %}
 
-            {# box for piggy bank data (JSON) #}
-            <div id="piggy_bank_overview">
+			{# box for piggy bank data (JSON) #}
+			<div id="piggy_bank_overview"></div>
 
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            {# EXPENSE ACCOUNTS #}
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><a href="{{ route('accounts.index',['expense']) }}"
-                                             title="{{ 'expense_accounts'|_ }}">{{ 'expense_accounts'|_ }}</a>
-                    </h3>
-                </div>
-                <div class="box-body">
-                    <canvas id="expense-accounts-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
-                </div>
-                <div class="box-footer">
-                    <a href="{{ route('accounts.index', ['expense']) }}" class="btn btn-default button-sm"><i
-                                class="fa fa-shopping-cart"></i> {{ 'go_to_expense_accounts'|_ }}</a>
-                </div>
-            </div>
-            {# OPTIONAL REVENUE ACCOUNTS #}
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><a href="{{ route('accounts.index',['revenue']) }}"
-                                             title="{{ 'revenue_accounts'|_ }}">{{ 'revenue_accounts'|_ }}</a></h3>
+			{# box for expense account list #}
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">
+						<a href="{{ route('accounts.index',['expense']) }}" title="{{ 'expense_accounts'|_ }}">{{ 'expense_accounts'|_ }}</a>
+					</h3>
+				</div>
+				<div class="box-body no-padding">
+					<table class="table table-responsive table-hover">
+						<tbody class="ui-sortable">
+							{% for account in expense_accounts %}
+								<tr data-id="2" data-order="1" data-position="0">
+									<td style="padding-left: 15px;">
+										<a href="{{ route('accounts.show', [account.id])}}">{{account.name}}</a>
+									</td>
+									<td class="hidden-sm hidden-xs" style="padding-right: 15px;">
+										<div class="btn-group btn-group-xs pull-right">
+											<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Open
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu dropdown-menu-right" role="menu">
+												<li>
+													<a href="{{ route('real-estate-management.index')}}?expense={{ account.id }}">
+                                                        {{ 'apartment_list'|_ }}
+                                                    </a>
+												</li>
+												<li>
+													<a href="{{ route('accounts.show', [account.id])}}">
+                                                        {{ 'expense_account_list'|_ }}
+													</a>
+												</li>
+											</ul>
+										</div>
+									</td>
+								</tr>
+							{% endfor %}
 
-                </div>
-                <div class="box-body">
-                    <canvas id="revenue-accounts-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
-                </div>
-                <div class="box-footer">
-                    <a href="{{ route('accounts.index', ['revenue']) }}" class="btn btn-default button-sm"><i
-                                class="fa fa-download"></i> {{ 'go_to_revenue_accounts'|_ }}</a>
-                </div>
-            </div>
-        </div>
-    </div>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div
+			class="col-lg-12 col-md-12 col-sm-12">
+			{# EXPENSE ACCOUNTS #}
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">
+						<a href="{{ route('accounts.index',['expense']) }}" title="{{ 'expense_accounts'|_ }}">{{ 'expense_accounts'|_ }}</a>
+					</h3>
+				</div>
+				<div class="box-body">
+					<canvas id="expense-accounts-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
+				</div>
+				<div class="box-footer">
+					<a href="{{ route('accounts.index', ['expense']) }}" class="btn btn-default button-sm">
+						<i class="fa fa-shopping-cart"></i>
+						{{ 'go_to_expense_accounts'|_ }}</a>
+				</div>
+			</div>
+			{# OPTIONAL REVENUE ACCOUNTS #}
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">
+						<a href="{{ route('accounts.index',['revenue']) }}" title="{{ 'revenue_accounts'|_ }}">{{ 'revenue_accounts'|_ }}</a>
+					</h3>
+
+				</div>
+				<div class="box-body">
+					<canvas id="revenue-accounts-chart" style="width:100%;height:400px;" height="400" width="100%"></canvas>
+				</div>
+				<div class="box-footer">
+					<a href="{{ route('accounts.index', ['revenue']) }}" class="btn btn-default button-sm">
+						<i class="fa fa-download"></i>
+						{{ 'go_to_revenue_accounts'|_ }}</a>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 {% block scripts %}
-    <script type="text/javascript" nonce="{{ JS_NONCE }}">
-        var billCount = {{ billCount }};
-        var accountFrontpageUri = '{{ route('chart.account.frontpage') }}';
-        var accountRevenueUri = '{{ route('chart.account.revenue') }}';
-        var accountExpenseUri = '{{ route('chart.account.expense') }}';
-        var piggyInfoUri = '{{ route('json.fp.piggy-banks') }}';
-        var drawVerticalLine = '';
-        {# render vertical line with text "today"  #}
-        {% if start.lte(today) and end.gte(today) %}
-        drawVerticalLine = '{{ today.formatLocalized(monthAndDayFormat) }}';
-        {% endif %}
-    </script>
+	<script type="text/javascript" nonce="{{ JS_NONCE }}">
+		var billCount = {{ billCount }};
+var accountFrontpageUri = '{{ route('chart.account.frontpage') }}';
+var accountRevenueUri = '{{ route('chart.account.revenue') }}';
+var accountExpenseUri = '{{ route('chart.account.expense') }}';
+var piggyInfoUri = '{{ route('json.fp.piggy-banks') }}';
+var drawVerticalLine = '';
+{
+# render vertical line with text "today" #
+}
+{% if start.lte(today) and end.gte(today) %}drawVerticalLine = '{{ today.formatLocalized(monthAndDayFormat) }}';{% endif %}
+	</script>
 
-    <script type="text/javascript" src="v1/js/lib/Chart.bundle.min.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
-    <script type="text/javascript" src="v1/js/lib/chartjs-plugin-annotation.min.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
-    <script type="text/javascript" src="v1/js/ff/charts.defaults.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
-    <script type="text/javascript" src="v1/js/ff/charts.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
-    <script type="text/javascript" src="v1/js/ff/index.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+	<script type="text/javascript" src="v1/js/lib/Chart.bundle.min.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+	<script type="text/javascript" src="v1/js/lib/chartjs-plugin-annotation.min.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+	<script type="text/javascript" src="v1/js/ff/charts.defaults.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+	<script type="text/javascript" src="v1/js/ff/charts.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+	<script type="text/javascript" src="v1/js/ff/index.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
 {% endblock %}
-{% block styles %}
-{% endblock %}
+{% block styles %}{% endblock %}

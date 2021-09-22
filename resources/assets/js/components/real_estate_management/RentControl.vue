@@ -28,18 +28,49 @@
     <div>
       <div class="box">
         <div class="box-header">
-            <div style="width: 200px; max-width: 100%">
+            <div style="width: 400px; max-width: 100%;display:flex;align-items:center; gap:4px">
                 <custom-date :error="[]" v-model="date" type="month" ></custom-date>
+                
+                <select name="account" id="account" class="form-control" @change="selectAccount" v-model="selectedAccountId">
+                  <option value="" label="All"></option>
+                  <option v-for="account in accounts" v-bind:key="account.id" :value="account.id">{{account.name}}</option>
+                </select>
             </div>
         </div>
         <div class="box-body">
             <div class="row">
                 <div class="col-sm-6">
-                    <div style="margin: 20px 0px 20px 0px">
+
+                    <div style="margin: 20px 0px 20px 0px" v-if="isFilter">
+                      <div style="display:flex; align-items:center; margin-bottom: 8px">
+                          <span style="color: #87a6eb;font-size: 18px;font-weight: 500; padding-left: 10px;">{{selectedAccount.name}}</span>
+                      </div>
+                      <div>
+                          <table class="table table-responsive table-hover apartment_list_table" id="sortable-table">
+                          <thead>
+                              <th class="text-left" style="width: 15%;">{{$t('firefly.apt')}}</th>
+                              <th class="text-left" style="width: 25%;">{{$t('firefly.name')}}</th>
+                              <th class="text-left" style="width: 20%;">{{$t('firefly.total_rent')}}</th>
+                              <th class="text-left" style="width: 25%;">{{$t('firefly.deposit_account')}}</th>
+                              <th class="text-center" style="width: 15%;">{{$t('firefly.paid_rent')}}</th>
+                          </thead>
+                          <tr v-for="apartment in selectedAccount.apartments" v-bind:key="apartment.id" class="sortable-object apartment_row">
+                              <td class="text-left">{{apartment.id}}</td>
+                              <td class="text-left"><a :href="'/accounts/show/' + apartment.renter_account.id">{{apartment.renter_account.name}}</a></td>
+                              <td class="text-left">{{apartment.totalRent}}</td>
+                              <td class="text-left"><a :href="'/accounts/show/' + apartment.source_account.id">{{apartment.source_account.name}}</a></td>
+                              <td class="text-center">
+                                  <div v-if="isPaidMonth(apartment)" style="color:green;cursor:pointer" @click="deleteTransaction(apartment)">Ok</div>
+                                  <div v-else style="color:red;cursor:pointer" @click="addTransaction(apartment, account.id)">X</div>
+                              </td>
+                          </tr>
+                          </table>
+                      </div>
+                    </div>
+                    <div style="margin: 20px 0px 20px 0px" v-else>
                         <div v-for="account in accounts" v-bind:key="account.id">
                             <div style="display:flex; align-items:center; margin-bottom: 8px">
-                                <i class="fa fa-fw fa-bars object-handle" style="margin-right: 30px"></i>
-                                <span style="color: #87a6eb;font-size: 18px;font-weight: 500;">{{account.name}}</span>
+                                <span style="color: #87a6eb;font-size: 18px;font-weight: 500;cursor:pointer;padding-left: 10px;" @click="selectAccountByAsset(account.id)">{{account.name}}</span>
                             </div>
                             <div>
                                 <table class="table table-responsive table-hover apartment_list_table" id="sortable-table">
@@ -52,9 +83,9 @@
                                 </thead>
                                 <tr v-for="apartment in account.apartments" v-bind:key="apartment.id" class="sortable-object apartment_row">
                                     <td class="text-left">{{apartment.id}}</td>
-                                    <td class="text-left">{{apartment.renter_account.name}}</td>
+                                    <td class="text-left"><a :href="'/accounts/show/' + apartment.renter_account.id">{{apartment.renter_account.name}}</a></td>
                                     <td class="text-left">{{apartment.totalRent}}</td>
-                                    <td class="text-left">{{apartment.source_account.name}}</td>
+                                    <td class="text-left"><a :href="'/accounts/show/' + apartment.source_account.id">{{apartment.source_account.name}}</a></td>
                                     <td class="text-center">
                                         <div v-if="isPaidMonth(apartment)" style="color:green;cursor:pointer" @click="deleteTransaction(apartment)">Ok</div>
                                         <div v-else style="color:red;cursor:pointer" @click="addTransaction(apartment, account.id)">X</div>
@@ -95,6 +126,24 @@ export default {
         this.accounts = data.accounts;
         this.disablePaidAlert = data.disablePaidAlert;
       });
+    },
+    selectAccount() {
+      if(event.target.value === '') {
+        this.selectedAccount = null;
+        this.selectedAccountId = '';
+        this.isFilter = false;
+      } else {
+        let account = this.accounts.find((e) => e.id == event.target.value);
+        this.selectedAccountId = account.id;
+        this.selectedAccount = account;
+        this.isFilter = true;
+      }
+    },
+    selectAccountByAsset(id) {
+      let account = this.accounts.find((e) => e.id == id);
+      this.selectedAccountId = account.id;
+      this.selectedAccount = account;
+      this.isFilter = true;
     },
     addTransaction(apartment, account_id) {
         let pay = true;
@@ -189,6 +238,9 @@ export default {
       date: new Date(),
       accounts: [],
       disablePaidAlert: true,
+      selectedAccount: null,
+      isFilter: false,
+      selectedAccountId: '',
     };
   },
 };

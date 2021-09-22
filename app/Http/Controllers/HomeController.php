@@ -27,6 +27,7 @@ use Exception;
 use FireflyIII\Events\RequestedVersionCheckStatus;
 use FireflyIII\Helpers\Collector\GroupCollectorInterface;
 use FireflyIII\Http\Middleware\Installer;
+use FireflyIII\Models\Account;
 use FireflyIII\Models\AccountType;
 use FireflyIII\Repositories\Account\AccountRepositoryInterface;
 use FireflyIII\Repositories\Bill\BillRepositoryInterface;
@@ -139,10 +140,11 @@ class HomeController extends Controller
             $transactions[] = ['transactions' => $set, 'account' => $account];
         }
 
+        $expense_accounts      = Account::all()->where('account_type_id', '4');
         /** @var User $user */
         $user = auth()->user();
         event(new RequestedVersionCheckStatus($user));
 
-        return prefixView('index', compact('count', 'subTitle', 'transactions', 'billCount', 'start', 'end', 'today'));
+        return prefixView('index', compact('count', 'subTitle', 'transactions', 'billCount', 'start', 'end', 'today', 'expense_accounts'));
     }
 }

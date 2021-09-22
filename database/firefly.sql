@@ -47,7 +47,7 @@ CREATE TABLE `account_meta` (
   PRIMARY KEY (`id`),
   KEY `account_meta_account_id_foreign` (`account_id`),
   CONSTRAINT `account_meta_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `account_meta` */
 
@@ -65,7 +65,19 @@ insert  into `account_meta`(`id`,`created_at`,`updated_at`,`account_id`,`name`,`
 (11,'2021-09-13 08:25:40','2021-09-13 08:25:40',6,'include_net_worth','\"1\"'),
 (12,'2021-09-13 08:25:59','2021-09-13 08:25:59',7,'account_role','\"defaultAsset\"'),
 (13,'2021-09-13 08:25:59','2021-09-13 08:25:59',7,'currency_id','\"1\"'),
-(14,'2021-09-13 08:25:59','2021-09-13 08:25:59',7,'include_net_worth','\"1\"');
+(14,'2021-09-13 08:25:59','2021-09-13 08:25:59',7,'include_net_worth','\"1\"'),
+(15,'2021-09-22 01:50:18','2021-09-22 01:50:18',8,'currency_id','\"1\"'),
+(16,'2021-09-22 01:50:18','2021-09-22 01:50:18',8,'include_net_worth','\"1\"'),
+(17,'2021-09-22 01:51:16','2021-09-22 01:51:16',9,'currency_id','\"1\"'),
+(18,'2021-09-22 01:51:16','2021-09-22 01:51:16',9,'include_net_worth','\"1\"'),
+(19,'2021-09-22 01:54:47','2021-09-22 01:54:47',10,'currency_id','\"1\"'),
+(20,'2021-09-22 01:54:47','2021-09-22 01:54:47',10,'include_net_worth','\"1\"'),
+(21,'2021-09-22 16:50:37','2021-09-22 16:50:37',11,'currency_id','\"1\"'),
+(22,'2021-09-22 16:50:37','2021-09-22 16:50:37',11,'include_net_worth','\"1\"'),
+(23,'2021-09-22 17:01:55','2021-09-22 17:01:55',12,'currency_id','\"1\"'),
+(24,'2021-09-22 17:01:55','2021-09-22 17:01:55',12,'include_net_worth','\"1\"'),
+(25,'2021-09-22 17:03:49','2021-09-22 17:03:49',13,'currency_id','\"1\"'),
+(26,'2021-09-22 17:03:49','2021-09-22 17:03:49',13,'include_net_worth','\"1\"');
 
 /*Table structure for table `account_types` */
 
@@ -110,6 +122,18 @@ CREATE TABLE `accounts` (
   `name` varchar(1024) COLLATE utf8mb4_unicode_ci NOT NULL,
   `virtual_balance` decimal(36,24) DEFAULT NULL,
   `iban` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `emergency_contact` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rent_start_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rent_end_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `apartment_nr` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `expense_account` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `headline` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `zip_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `street` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `signature` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT 1,
   `encrypted` tinyint(1) NOT NULL DEFAULT 0,
   `order` int(10) unsigned NOT NULL DEFAULT 0,
@@ -118,18 +142,24 @@ CREATE TABLE `accounts` (
   KEY `accounts_account_type_id_foreign` (`account_type_id`),
   CONSTRAINT `accounts_account_type_id_foreign` FOREIGN KEY (`account_type_id`) REFERENCES `account_types` (`id`) ON DELETE CASCADE,
   CONSTRAINT `accounts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `accounts` */
 
-insert  into `accounts`(`id`,`created_at`,`updated_at`,`deleted_at`,`user_id`,`account_type_id`,`name`,`virtual_balance`,`iban`,`active`,`encrypted`,`order`) values 
-(1,'2021-09-11 02:20:15','2021-09-11 02:20:15',NULL,1,2,'Cash account',NULL,NULL,1,0,0),
-(2,'2021-09-11 09:55:08','2021-09-13 08:25:59',NULL,1,3,'test',NULL,NULL,1,0,1),
-(3,'2021-09-12 06:32:44','2021-09-12 06:32:44',NULL,1,4,'1',NULL,NULL,1,0,0),
-(4,'2021-09-13 07:18:43','2021-09-13 07:18:43',NULL,1,4,'2',NULL,NULL,1,0,0),
-(5,'2021-09-13 08:25:23','2021-09-13 08:25:23',NULL,1,5,'revenue1',NULL,NULL,1,0,0),
-(6,'2021-09-13 08:25:40','2021-09-13 08:25:40',NULL,1,4,'expense1',NULL,NULL,1,0,0),
-(7,'2021-09-13 08:25:59','2021-09-13 08:25:59',NULL,1,3,'destication1',NULL,NULL,1,0,2);
+insert  into `accounts`(`id`,`created_at`,`updated_at`,`deleted_at`,`user_id`,`account_type_id`,`name`,`virtual_balance`,`iban`,`phone_number`,`email`,`emergency_contact`,`rent_start_date`,`rent_end_date`,`apartment_nr`,`expense_account`,`headline`,`zip_code`,`city`,`street`,`signature`,`active`,`encrypted`,`order`) values 
+(1,'2021-09-11 02:20:15','2021-09-11 02:20:15',NULL,1,2,'Cash account',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,0),
+(2,'2021-09-11 09:55:08','2021-09-21 19:08:28',NULL,1,3,'test',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,1),
+(3,'2021-09-12 06:32:44','2021-09-12 06:32:44',NULL,1,4,'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,0),
+(4,'2021-09-13 07:18:43','2021-09-13 07:18:43',NULL,1,4,'2',NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,0),
+(5,'2021-09-13 08:25:23','2021-09-22 04:46:12',NULL,1,5,'revenue1',0.000000000000000000000000,'','22123123123','22','2','2021-09-13 00:00:00','2021-09-16 00:00:00','2','2222222','test','10202','test','test','S Y',1,0,0),
+(6,'2021-09-13 08:25:40','2021-09-22 17:01:18',NULL,1,4,'expense1',0.000000000000000000000000,'','','','',NULL,NULL,'','','test111','test','11',NULL,'11',1,0,0),
+(7,'2021-09-13 08:25:59','2021-09-21 19:08:28',NULL,1,3,'destication1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,2),
+(8,'2021-09-22 01:50:18','2021-09-22 01:50:18',NULL,1,4,'1121',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,0),
+(9,'2021-09-22 01:51:16','2021-09-22 17:01:35',NULL,1,4,'test',0.000000000000000000000000,'','','','',NULL,NULL,'','','test','test','test',NULL,'test',1,0,0),
+(10,'2021-09-22 01:54:46','2021-09-22 01:54:46',NULL,1,4,'testsdfsdf',NULL,NULL,'1','1','1','2021-06-09 00:00:00','2021-09-14 00:00:00','2','2',NULL,NULL,NULL,NULL,NULL,1,0,0),
+(11,'2021-09-22 16:50:37','2021-09-22 16:50:37',NULL,1,5,'sdfsdfsdf',NULL,NULL,'dfsdfsdfsd','fsdfsdf','sdfsdfs','2021-09-24 00:00:00','2021-09-30 00:00:00','1','test','test','test','test',NULL,'test',1,0,0),
+(12,'2021-09-22 17:01:55','2021-09-22 17:01:55',NULL,1,4,'expense2',NULL,NULL,'','','',NULL,NULL,'','','','','',NULL,'',1,0,0),
+(13,'2021-09-22 17:03:49','2021-09-22 17:03:49',NULL,1,4,'expense3',NULL,NULL,'','','',NULL,NULL,'','','test','test','test',NULL,'test',1,0,0);
 
 /*Table structure for table `apartment_payments` */
 
@@ -173,13 +203,14 @@ CREATE TABLE `apartments` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `apartments` */
 
 insert  into `apartments`(`id`,`apartmentNo`,`rawRent`,`expenseAccount`,`renterAccount`,`sourceAccount`,`totalRent`,`utilities`,`utilitiesTotal`,`vat`,`created_at`,`updated_at`) values 
 (1,'1','1','6','5','7','1','50','1','1','2021-09-13 09:30:58','2021-09-14 16:20:26'),
-(2,'111111','1','4','5','2','1','10','1','1','2021-09-13 10:22:11','2021-09-13 13:00:58');
+(2,'111111','1','4','5','2','1','10','1','1','2021-09-13 10:22:11','2021-09-13 13:00:58'),
+(3,'2','2','6','5','2','2','0','2','2','2021-09-22 17:30:16','2021-09-22 17:30:16');
 
 /*Table structure for table `attachments` */
 
@@ -1100,9 +1131,12 @@ CREATE TABLE `piggy_bank_repetitions` (
   PRIMARY KEY (`id`),
   KEY `piggy_bank_repetitions_piggy_bank_id_foreign` (`piggy_bank_id`),
   CONSTRAINT `piggy_bank_repetitions_piggy_bank_id_foreign` FOREIGN KEY (`piggy_bank_id`) REFERENCES `piggy_banks` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `piggy_bank_repetitions` */
+
+insert  into `piggy_bank_repetitions`(`id`,`created_at`,`updated_at`,`piggy_bank_id`,`startdate`,`targetdate`,`currentamount`) values 
+(1,'2021-09-22 04:32:00','2021-09-22 04:32:00',1,'2021-09-22','2021-09-30',0.000000000000000000000000);
 
 /*Table structure for table `piggy_banks` */
 
@@ -1124,9 +1158,12 @@ CREATE TABLE `piggy_banks` (
   PRIMARY KEY (`id`),
   KEY `piggy_banks_account_id_foreign` (`account_id`),
   CONSTRAINT `piggy_banks_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `piggy_banks` */
+
+insert  into `piggy_banks`(`id`,`created_at`,`updated_at`,`deleted_at`,`account_id`,`name`,`targetamount`,`startdate`,`targetdate`,`order`,`active`,`encrypted`) values 
+(1,'2021-09-22 04:32:00','2021-09-22 04:32:00',NULL,2,'tet',1000.000000000000000000000000,'2021-09-22','2021-09-30',1,0,1);
 
 /*Table structure for table `preferences` */
 
@@ -1142,16 +1179,16 @@ CREATE TABLE `preferences` (
   PRIMARY KEY (`id`),
   KEY `preferences_user_id_foreign` (`user_id`),
   CONSTRAINT `preferences_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `preferences` */
 
 insert  into `preferences`(`id`,`created_at`,`updated_at`,`user_id`,`name`,`data`) values 
-(1,'2021-09-11 02:18:28','2021-09-14 18:57:32',1,'login_ip_history','[{\"ip\":\"127.0.0.1\",\"time\":\"2021-09-14 18:57:32\",\"notified\":true}]'),
+(1,'2021-09-11 02:18:28','2021-09-22 15:27:08',1,'login_ip_history','[{\"ip\":\"127.0.0.1\",\"time\":\"2021-09-22 15:27:08\",\"notified\":true}]'),
 (2,'2021-09-11 02:18:28','2021-09-11 02:18:28',1,'viewRange','\"1M\"'),
 (3,'2021-09-11 02:18:28','2021-09-11 02:18:28',1,'language','\"en_US\"'),
 (4,'2021-09-11 02:18:28','2021-09-11 02:18:28',1,'locale','\"equal\"'),
-(5,'2021-09-11 02:18:28','2021-09-16 16:17:49',1,'lastActivity','\"0.48898100 1631801869\"'),
+(5,'2021-09-11 02:18:28','2021-09-22 17:30:41',1,'lastActivity','\"0.22560400 1632324641\"'),
 (6,'2021-09-11 02:18:28','2021-09-11 02:18:28',1,'currencyPreference','\"EUR\"'),
 (7,'2021-09-11 02:18:29','2021-09-11 02:18:29',1,'list-length','10'),
 (8,'2021-09-11 02:18:45','2021-09-11 02:18:51',1,'shown_demo_reports_index','true'),
@@ -1159,7 +1196,7 @@ insert  into `preferences`(`id`,`created_at`,`updated_at`,`user_id`,`name`,`data
 (10,'2021-09-11 02:20:15','2021-09-11 02:20:20',1,'shown_demo_transactions_create_withdrawal','true'),
 (11,'2021-09-11 02:20:15','2021-09-16 16:12:33',1,'transaction_journal_optional_fields','{\"interest_date\":false,\"book_date\":false,\"process_date\":false,\"due_date\":false,\"payment_date\":false,\"invoice_date\":false,\"internal_reference\":false,\"notes\":false,\"attachments\":false,\"external_uri\":false,\"location\":false,\"links\":false}'),
 (12,'2021-09-11 02:20:17','2021-09-11 02:20:17',1,'listPageSize','50'),
-(13,'2021-09-11 02:57:18','2021-09-11 02:57:18',1,'shown_demo_piggy-banks_index','false'),
+(13,'2021-09-11 02:57:18','2021-09-22 04:32:10',1,'shown_demo_piggy-banks_index','true'),
 (14,'2021-09-11 03:10:12','2021-09-11 10:23:58',1,'shown_demo_index','true'),
 (15,'2021-09-11 09:54:58','2021-09-11 09:55:03',1,'shown_demo_accounts_create_asset','true'),
 (16,'2021-09-11 09:55:08','2021-09-13 08:25:59',1,'frontPageAccounts','[2,7]'),
@@ -1170,7 +1207,11 @@ insert  into `preferences`(`id`,`created_at`,`updated_at`,`user_id`,`name`,`data
 (21,'2021-09-13 07:18:05','2021-09-13 07:18:15',1,'shown_demo_accounts_create_expense','true'),
 (22,'2021-09-16 16:06:52','2021-09-16 16:15:16',1,'disablePaidAlert','true'),
 (23,'2021-09-16 16:12:26','2021-09-16 16:12:30',1,'shown_demo_preferences_index','true'),
-(24,'2021-09-16 16:12:26','2021-09-16 16:12:26',1,'fiscalYearStart','\"01-01\"');
+(24,'2021-09-16 16:12:26','2021-09-16 16:12:26',1,'fiscalYearStart','\"01-01\"'),
+(25,'2021-09-17 20:10:32','2021-09-17 20:10:32',1,'shown_demo_bills_index','false'),
+(26,'2021-09-17 20:10:36','2021-09-17 20:10:36',1,'shown_demo_budgets_index','false'),
+(27,'2021-09-17 20:11:10','2021-09-17 20:11:15',1,'shown_demo_reports_report_default','true'),
+(28,'2021-09-22 04:31:40','2021-09-22 04:31:47',1,'shown_demo_piggy-banks_create','true');
 
 /*Table structure for table `recurrences` */
 

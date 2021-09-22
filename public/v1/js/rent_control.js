@@ -2214,6 +2214,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "RentControl",
@@ -2239,6 +2270,28 @@ __webpack_require__.r(__webpack_exports__);
         _this.accounts = data.accounts;
         _this.disablePaidAlert = data.disablePaidAlert;
       });
+    },
+    selectAccount: function selectAccount() {
+      if (event.target.value === '') {
+        this.selectedAccount = null;
+        this.selectedAccountId = '';
+        this.isFilter = false;
+      } else {
+        var account = this.accounts.find(function (e) {
+          return e.id == event.target.value;
+        });
+        this.selectedAccountId = account.id;
+        this.selectedAccount = account;
+        this.isFilter = true;
+      }
+    },
+    selectAccountByAsset: function selectAccountByAsset(id) {
+      var account = this.accounts.find(function (e) {
+        return e.id == id;
+      });
+      this.selectedAccountId = account.id;
+      this.selectedAccount = account;
+      this.isFilter = true;
     },
     addTransaction: function addTransaction(apartment, account_id) {
       var _this2 = this;
@@ -2356,7 +2409,10 @@ __webpack_require__.r(__webpack_exports__);
     return {
       date: new Date(),
       accounts: [],
-      disablePaidAlert: true
+      disablePaidAlert: true,
+      selectedAccount: null,
+      isFilter: false,
+      selectedAccountId: ''
     };
   }
 });
@@ -2905,7 +2961,15 @@ var render = function() {
           _c("div", { staticClass: "box-header" }, [
             _c(
               "div",
-              { staticStyle: { width: "200px", "max-width": "100%" } },
+              {
+                staticStyle: {
+                  width: "400px",
+                  "max-width": "100%",
+                  display: "flex",
+                  "align-items": "center",
+                  gap: "4px"
+                }
+              },
               [
                 _c("custom-date", {
                   attrs: { error: [], type: "month" },
@@ -2916,7 +2980,53 @@ var render = function() {
                     },
                     expression: "date"
                   }
-                })
+                }),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.selectedAccountId,
+                        expression: "selectedAccountId"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { name: "account", id: "account" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.selectedAccountId = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        _vm.selectAccount
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "", label: "All" } }),
+                    _vm._v(" "),
+                    _vm._l(_vm.accounts, function(account) {
+                      return _c(
+                        "option",
+                        { key: account.id, domProps: { value: account.id } },
+                        [_vm._v(_vm._s(account.name))]
+                      )
+                    })
+                  ],
+                  2
+                )
               ],
               1
             )
@@ -2925,177 +3035,415 @@ var render = function() {
           _c("div", { staticClass: "box-body" }, [
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-sm-6" }, [
-                _c(
-                  "div",
-                  { staticStyle: { margin: "20px 0px 20px 0px" } },
-                  _vm._l(_vm.accounts, function(account) {
-                    return _c("div", { key: account.id }, [
-                      _c(
-                        "div",
-                        {
-                          staticStyle: {
-                            display: "flex",
-                            "align-items": "center",
-                            "margin-bottom": "8px"
-                          }
-                        },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-fw fa-bars object-handle",
-                            staticStyle: { "margin-right": "30px" }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "span",
-                            {
-                              staticStyle: {
-                                color: "#87a6eb",
-                                "font-size": "18px",
-                                "font-weight": "500"
-                              }
-                            },
-                            [_vm._v(_vm._s(account.name))]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", [
+                _vm.isFilter
+                  ? _c(
+                      "div",
+                      { staticStyle: { margin: "20px 0px 20px 0px" } },
+                      [
                         _c(
-                          "table",
+                          "div",
                           {
-                            staticClass:
-                              "table table-responsive table-hover apartment_list_table",
-                            attrs: { id: "sortable-table" }
+                            staticStyle: {
+                              display: "flex",
+                              "align-items": "center",
+                              "margin-bottom": "8px"
+                            }
                           },
                           [
-                            _c("thead", [
-                              _c(
-                                "th",
-                                {
-                                  staticClass: "text-left",
-                                  staticStyle: { width: "15%" }
-                                },
-                                [_vm._v(_vm._s(_vm.$t("firefly.apt")))]
-                              ),
+                            _c(
+                              "span",
+                              {
+                                staticStyle: {
+                                  color: "#87a6eb",
+                                  "font-size": "18px",
+                                  "font-weight": "500",
+                                  "padding-left": "10px"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.selectedAccount.name))]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", [
+                          _c(
+                            "table",
+                            {
+                              staticClass:
+                                "table table-responsive table-hover apartment_list_table",
+                              attrs: { id: "sortable-table" }
+                            },
+                            [
+                              _c("thead", [
+                                _c(
+                                  "th",
+                                  {
+                                    staticClass: "text-left",
+                                    staticStyle: { width: "15%" }
+                                  },
+                                  [_vm._v(_vm._s(_vm.$t("firefly.apt")))]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "th",
+                                  {
+                                    staticClass: "text-left",
+                                    staticStyle: { width: "25%" }
+                                  },
+                                  [_vm._v(_vm._s(_vm.$t("firefly.name")))]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "th",
+                                  {
+                                    staticClass: "text-left",
+                                    staticStyle: { width: "20%" }
+                                  },
+                                  [_vm._v(_vm._s(_vm.$t("firefly.total_rent")))]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "th",
+                                  {
+                                    staticClass: "text-left",
+                                    staticStyle: { width: "25%" }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(_vm.$t("firefly.deposit_account"))
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "th",
+                                  {
+                                    staticClass: "text-center",
+                                    staticStyle: { width: "15%" }
+                                  },
+                                  [_vm._v(_vm._s(_vm.$t("firefly.paid_rent")))]
+                                )
+                              ]),
                               _vm._v(" "),
+                              _vm._l(_vm.selectedAccount.apartments, function(
+                                apartment
+                              ) {
+                                return _c(
+                                  "tr",
+                                  {
+                                    key: apartment.id,
+                                    staticClass: "sortable-object apartment_row"
+                                  },
+                                  [
+                                    _c("td", { staticClass: "text-left" }, [
+                                      _vm._v(_vm._s(apartment.id))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", { staticClass: "text-left" }, [
+                                      _c(
+                                        "a",
+                                        {
+                                          attrs: {
+                                            href:
+                                              "/accounts/show/" +
+                                              apartment.renter_account.id
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              apartment.renter_account.name
+                                            )
+                                          )
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", { staticClass: "text-left" }, [
+                                      _vm._v(_vm._s(apartment.totalRent))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", { staticClass: "text-left" }, [
+                                      _c(
+                                        "a",
+                                        {
+                                          attrs: {
+                                            href:
+                                              "/accounts/show/" +
+                                              apartment.source_account.id
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              apartment.source_account.name
+                                            )
+                                          )
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", { staticClass: "text-center" }, [
+                                      _vm.isPaidMonth(apartment)
+                                        ? _c(
+                                            "div",
+                                            {
+                                              staticStyle: {
+                                                color: "green",
+                                                cursor: "pointer"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.deleteTransaction(
+                                                    apartment
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Ok")]
+                                          )
+                                        : _c(
+                                            "div",
+                                            {
+                                              staticStyle: {
+                                                color: "red",
+                                                cursor: "pointer"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.addTransaction(
+                                                    apartment,
+                                                    _vm.account.id
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("X")]
+                                          )
+                                    ])
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ])
+                      ]
+                    )
+                  : _c(
+                      "div",
+                      { staticStyle: { margin: "20px 0px 20px 0px" } },
+                      _vm._l(_vm.accounts, function(account) {
+                        return _c("div", { key: account.id }, [
+                          _c(
+                            "div",
+                            {
+                              staticStyle: {
+                                display: "flex",
+                                "align-items": "center",
+                                "margin-bottom": "8px"
+                              }
+                            },
+                            [
                               _c(
-                                "th",
+                                "span",
                                 {
-                                  staticClass: "text-left",
-                                  staticStyle: { width: "25%" }
+                                  staticStyle: {
+                                    color: "#87a6eb",
+                                    "font-size": "18px",
+                                    "font-weight": "500",
+                                    cursor: "pointer",
+                                    "padding-left": "10px"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.selectAccountByAsset(
+                                        account.id
+                                      )
+                                    }
+                                  }
                                 },
-                                [_vm._v(_vm._s(_vm.$t("firefly.name")))]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "th",
-                                {
-                                  staticClass: "text-left",
-                                  staticStyle: { width: "20%" }
-                                },
-                                [_vm._v(_vm._s(_vm.$t("firefly.total_rent")))]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "th",
-                                {
-                                  staticClass: "text-left",
-                                  staticStyle: { width: "25%" }
-                                },
-                                [
-                                  _vm._v(
-                                    _vm._s(_vm.$t("firefly.deposit_account"))
+                                [_vm._v(_vm._s(account.name))]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", [
+                            _c(
+                              "table",
+                              {
+                                staticClass:
+                                  "table table-responsive table-hover apartment_list_table",
+                                attrs: { id: "sortable-table" }
+                              },
+                              [
+                                _c("thead", [
+                                  _c(
+                                    "th",
+                                    {
+                                      staticClass: "text-left",
+                                      staticStyle: { width: "15%" }
+                                    },
+                                    [_vm._v(_vm._s(_vm.$t("firefly.apt")))]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "th",
+                                    {
+                                      staticClass: "text-left",
+                                      staticStyle: { width: "25%" }
+                                    },
+                                    [_vm._v(_vm._s(_vm.$t("firefly.name")))]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "th",
+                                    {
+                                      staticClass: "text-left",
+                                      staticStyle: { width: "20%" }
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(_vm.$t("firefly.total_rent"))
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "th",
+                                    {
+                                      staticClass: "text-left",
+                                      staticStyle: { width: "25%" }
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.$t("firefly.deposit_account")
+                                        )
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "th",
+                                    {
+                                      staticClass: "text-center",
+                                      staticStyle: { width: "15%" }
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(_vm.$t("firefly.paid_rent"))
+                                      )
+                                    ]
                                   )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "th",
-                                {
-                                  staticClass: "text-center",
-                                  staticStyle: { width: "15%" }
-                                },
-                                [_vm._v(_vm._s(_vm.$t("firefly.paid_rent")))]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _vm._l(account.apartments, function(apartment) {
-                              return _c(
-                                "tr",
-                                {
-                                  key: apartment.id,
-                                  staticClass: "sortable-object apartment_row"
-                                },
-                                [
-                                  _c("td", { staticClass: "text-left" }, [
-                                    _vm._v(_vm._s(apartment.id))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", { staticClass: "text-left" }, [
-                                    _vm._v(
-                                      _vm._s(apartment.renter_account.name)
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", { staticClass: "text-left" }, [
-                                    _vm._v(_vm._s(apartment.totalRent))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", { staticClass: "text-left" }, [
-                                    _vm._v(
-                                      _vm._s(apartment.source_account.name)
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", { staticClass: "text-center" }, [
-                                    _vm.isPaidMonth(apartment)
-                                      ? _c(
-                                          "div",
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(account.apartments, function(apartment) {
+                                  return _c(
+                                    "tr",
+                                    {
+                                      key: apartment.id,
+                                      staticClass:
+                                        "sortable-object apartment_row"
+                                    },
+                                    [
+                                      _c("td", { staticClass: "text-left" }, [
+                                        _vm._v(_vm._s(apartment.id))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", { staticClass: "text-left" }, [
+                                        _c(
+                                          "a",
                                           {
-                                            staticStyle: {
-                                              color: "green",
-                                              cursor: "pointer"
-                                            },
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.deleteTransaction(
-                                                  apartment
-                                                )
-                                              }
+                                            attrs: {
+                                              href:
+                                                "/accounts/show/" +
+                                                apartment.renter_account.id
                                             }
                                           },
-                                          [_vm._v("Ok")]
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                apartment.renter_account.name
+                                              )
+                                            )
+                                          ]
                                         )
-                                      : _c(
-                                          "div",
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", { staticClass: "text-left" }, [
+                                        _vm._v(_vm._s(apartment.totalRent))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", { staticClass: "text-left" }, [
+                                        _c(
+                                          "a",
                                           {
-                                            staticStyle: {
-                                              color: "red",
-                                              cursor: "pointer"
-                                            },
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.addTransaction(
-                                                  apartment,
-                                                  account.id
-                                                )
-                                              }
+                                            attrs: {
+                                              href:
+                                                "/accounts/show/" +
+                                                apartment.source_account.id
                                             }
                                           },
-                                          [_vm._v("X")]
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                apartment.source_account.name
+                                              )
+                                            )
+                                          ]
                                         )
-                                  ])
-                                ]
-                              )
-                            })
-                          ],
-                          2
-                        )
-                      ])
-                    ])
-                  }),
-                  0
-                )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", { staticClass: "text-center" }, [
+                                        _vm.isPaidMonth(apartment)
+                                          ? _c(
+                                              "div",
+                                              {
+                                                staticStyle: {
+                                                  color: "green",
+                                                  cursor: "pointer"
+                                                },
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.deleteTransaction(
+                                                      apartment
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [_vm._v("Ok")]
+                                            )
+                                          : _c(
+                                              "div",
+                                              {
+                                                staticStyle: {
+                                                  color: "red",
+                                                  cursor: "pointer"
+                                                },
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.addTransaction(
+                                                      apartment,
+                                                      account.id
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [_vm._v("X")]
+                                            )
+                                      ])
+                                    ]
+                                  )
+                                })
+                              ],
+                              2
+                            )
+                          ])
+                        ])
+                      }),
+                      0
+                    )
               ])
             ])
           ])
@@ -3297,7 +3645,7 @@ module.exports = JSON.parse('{"firefly":{"welcome_back":"What\'s playing?","flas
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"firefly":{"welcome_back":"What\'s playing?","flash_error":"Error!","flash_success":"Success!","close":"Close","split_transaction_title":"Description of the split transaction","errors_submission":"There was something wrong with your submission. Please check out the errors.","split":"Split","single_split":"Split","transaction_stored_link":"<a href=\\"transactions/show/{ID}\\">Transaction #{ID} (\\"{title}\\")</a> has been stored.","transaction_updated_link":"<a href=\\"transactions/show/{ID}\\">Transaction #{ID}</a> (\\"{title}\\") has been updated.","transaction_new_stored_link":"<a href=\\"transactions/show/{ID}\\">Transaction #{ID}</a> has been stored.","transaction_journal_information":"Transaction information","no_budget_pointer":"You seem to have no budgets yet. You should create some on the <a href=\\"budgets\\">budgets</a>-page. Budgets can help you keep track of expenses.","no_bill_pointer":"You seem to have no bills yet. You should create some on the <a href=\\"bills\\">bills</a>-page. Bills can help you keep track of expenses.","source_account":"Source account","hidden_fields_preferences":"You can enable more transaction options in your <a href=\\"preferences\\">preferences</a>.","destination_account":"Destination account","diposit_account":"Deposit Account","add_another_split":"Add another split","create_apartment ":"Create Apartment","edit_apartment ":"Edit Apartment","submission":"Submission","create_another":"After storing, return here to create another one.","reset_after":"Reset form after submission","submit":"Submit","amount":"Amount","date":"Date","tags":"Tags","no_budget":"(no budget)","no_bill":"(no bill)","category":"Category","attachments":"Attachments","notes":"Notes","external_uri":"External URL","update_transaction":"Update transaction","after_update_create_another":"After updating, return here to continue editing.","store_as_new":"Store as a new transaction instead of updating.","split_title_help":"If you create a split transaction, there must be a global description for all splits of the transaction.","none_in_select_list":"(none)","no_piggy_bank":"(no piggy bank)","description":"Description","split_transaction_title_help":"If you create a split transaction, there must be a global description for all splits of the transaction.","destination_account_reconciliation":"You can\'t edit the destination account of a reconciliation transaction.","source_account_reconciliation":"You can\'t edit the source account of a reconciliation transaction.","budget":"Budget","bill":"Bill","you_create_withdrawal":"You\'re creating a withdrawal.","you_create_transfer":"You\'re creating a transfer.","you_create_deposit":"You\'re creating a deposit.","edit":"Edit","delete":"Delete","name":"Name","profile_whoops":"Whoops!","profile_something_wrong":"Something went wrong!","profile_try_again":"Something went wrong. Please try again.","profile_oauth_clients":"OAuth Clients","profile_oauth_no_clients":"You have not created any OAuth clients.","profile_oauth_clients_header":"Clients","profile_oauth_client_id":"Client ID","profile_oauth_client_name":"Name","profile_oauth_client_secret":"Secret","profile_oauth_create_new_client":"Create New Client","profile_oauth_create_client":"Create Client","profile_oauth_edit_client":"Edit Client","profile_oauth_name_help":"Something your users will recognize and trust.","profile_oauth_redirect_url":"Redirect URL","profile_oauth_redirect_url_help":"Your application\'s authorization callback URL.","profile_authorized_apps":"Authorized applications","profile_authorized_clients":"Authorized clients","profile_scopes":"Scopes","profile_revoke":"Revoke","profile_personal_access_tokens":"Personal Access Tokens","profile_personal_access_token":"Personal Access Token","profile_personal_access_token_explanation":"Here is your new personal access token. This is the only time it will be shown so don\'t lose it! You may now use this token to make API requests.","profile_no_personal_access_token":"You have not created any personal access tokens.","profile_create_new_token":"Create new token","profile_create_token":"Create token","profile_create":"Create","profile_save_changes":"Save changes","default_group_title_name":"(ungrouped)","piggy_bank":"Piggy bank","profile_oauth_client_secret_title":"Client Secret","profile_oauth_client_secret_expl":"Here is your new client secret. This is the only time it will be shown so don\'t lose it! You may now use this secret to make API requests.","profile_oauth_confidential":"Confidential","profile_oauth_confidential_help":"Require the client to authenticate with a secret. Confidential clients can hold credentials in a secure way without exposing them to unauthorized parties. Public applications, such as native desktop or JavaScript SPA applications, are unable to hold secrets securely.","multi_account_warning_unknown":"Depending on the type of transaction you create, the source and/or destination account of subsequent splits may be overruled by whatever is defined in the first split of the transaction.","multi_account_warning_withdrawal":"Keep in mind that the source account of subsequent splits will be overruled by whatever is defined in the first split of the withdrawal.","multi_account_warning_deposit":"Keep in mind that the destination account of subsequent splits will be overruled by whatever is defined in the first split of the deposit.","multi_account_warning_transfer":"Keep in mind that the source + destination account of subsequent splits will be overruled by whatever is defined in the first split of the transfer.","renter_name":"Renter Name","actions":"Actions","apt":"Apt","utilities":"Utilities","raw_rent":"Raw Rent","utilities_total":"Utilities Total","vat%":"Vat %","total_rent":"Total Rent","deposit_account":"Deposit Account","paid_rent":"Paid Rent","jan":"Jan","feb":"Feb","mar":"Mar","apr":"Apr","may":"May","jun":"Jun","jul":"Jul","aug":"Aug","sep":"Sep","oct":"Oct","nov":"Nov","dec":"Dec","add_new_apartment":"Add New Apartment","expense_account":"Expense Account"},"form":{"interest_date":"Interest date","book_date":"Book date","process_date":"Processing date","due_date":"Due date","foreign_amount":"Foreign amount","payment_date":"Payment date","invoice_date":"Invoice date","internal_reference":"Internal reference"},"config":{"html_language":"en"}}');
+module.exports = JSON.parse('{"firefly":{"welcome_back":"What\'s playing?","flash_error":"Error!","flash_success":"Success!","close":"Close","split_transaction_title":"Description of the split transaction","errors_submission":"There was something wrong with your submission. Please check out the errors.","split":"Split","single_split":"Split","transaction_stored_link":"<a href=\\"transactions/show/{ID}\\">Transaction #{ID} (\\"{title}\\")</a> has been stored.","transaction_updated_link":"<a href=\\"transactions/show/{ID}\\">Transaction #{ID}</a> (\\"{title}\\") has been updated.","transaction_new_stored_link":"<a href=\\"transactions/show/{ID}\\">Transaction #{ID}</a> has been stored.","transaction_journal_information":"Transaction information","no_budget_pointer":"You seem to have no budgets yet. You should create some on the <a href=\\"budgets\\">budgets</a>-page. Budgets can help you keep track of expenses.","no_bill_pointer":"You seem to have no bills yet. You should create some on the <a href=\\"bills\\">bills</a>-page. Bills can help you keep track of expenses.","source_account":"Source account","hidden_fields_preferences":"You can enable more transaction options in your <a href=\\"preferences\\">preferences</a>.","destination_account":"Destination account","diposit_account":"Deposit Account","add_another_split":"Add another split","create_apartment ":"Create Apartment","edit_apartment ":"Edit Apartment","create_warning":"Create Warning","submission":"Submission","create_another":"After storing, return here to create another one.","reset_after":"Reset form after submission","submit":"Submit","amount":"Amount","date":"Date","tags":"Tags","no_budget":"(no budget)","no_bill":"(no bill)","category":"Category","attachments":"Attachments","notes":"Notes","external_uri":"External URL","update_transaction":"Update transaction","after_update_create_another":"After updating, return here to continue editing.","store_as_new":"Store as a new transaction instead of updating.","split_title_help":"If you create a split transaction, there must be a global description for all splits of the transaction.","none_in_select_list":"(none)","no_piggy_bank":"(no piggy bank)","description":"Description","split_transaction_title_help":"If you create a split transaction, there must be a global description for all splits of the transaction.","destination_account_reconciliation":"You can\'t edit the destination account of a reconciliation transaction.","source_account_reconciliation":"You can\'t edit the source account of a reconciliation transaction.","budget":"Budget","bill":"Bill","you_create_withdrawal":"You\'re creating a withdrawal.","you_create_transfer":"You\'re creating a transfer.","you_create_deposit":"You\'re creating a deposit.","edit":"Edit","delete":"Delete","name":"Name","profile_whoops":"Whoops!","profile_something_wrong":"Something went wrong!","profile_try_again":"Something went wrong. Please try again.","profile_oauth_clients":"OAuth Clients","profile_oauth_no_clients":"You have not created any OAuth clients.","profile_oauth_clients_header":"Clients","profile_oauth_client_id":"Client ID","profile_oauth_client_name":"Name","profile_oauth_client_secret":"Secret","profile_oauth_create_new_client":"Create New Client","profile_oauth_create_client":"Create Client","profile_oauth_edit_client":"Edit Client","profile_oauth_name_help":"Something your users will recognize and trust.","profile_oauth_redirect_url":"Redirect URL","profile_oauth_redirect_url_help":"Your application\'s authorization callback URL.","profile_authorized_apps":"Authorized applications","profile_authorized_clients":"Authorized clients","profile_scopes":"Scopes","profile_revoke":"Revoke","profile_personal_access_tokens":"Personal Access Tokens","profile_personal_access_token":"Personal Access Token","profile_personal_access_token_explanation":"Here is your new personal access token. This is the only time it will be shown so don\'t lose it! You may now use this token to make API requests.","profile_no_personal_access_token":"You have not created any personal access tokens.","profile_create_new_token":"Create new token","profile_create_token":"Create token","profile_create":"Create","profile_save_changes":"Save changes","default_group_title_name":"(ungrouped)","piggy_bank":"Piggy bank","profile_oauth_client_secret_title":"Client Secret","profile_oauth_client_secret_expl":"Here is your new client secret. This is the only time it will be shown so don\'t lose it! You may now use this secret to make API requests.","profile_oauth_confidential":"Confidential","profile_oauth_confidential_help":"Require the client to authenticate with a secret. Confidential clients can hold credentials in a secure way without exposing them to unauthorized parties. Public applications, such as native desktop or JavaScript SPA applications, are unable to hold secrets securely.","multi_account_warning_unknown":"Depending on the type of transaction you create, the source and/or destination account of subsequent splits may be overruled by whatever is defined in the first split of the transaction.","multi_account_warning_withdrawal":"Keep in mind that the source account of subsequent splits will be overruled by whatever is defined in the first split of the withdrawal.","multi_account_warning_deposit":"Keep in mind that the destination account of subsequent splits will be overruled by whatever is defined in the first split of the deposit.","multi_account_warning_transfer":"Keep in mind that the source + destination account of subsequent splits will be overruled by whatever is defined in the first split of the transfer.","renter_name":"Renter Name","actions":"Actions","apt":"Apt","utilities":"Utilities","raw_rent":"Raw Rent","utilities_total":"Utilities Total","vat%":"Vat %","total_rent":"Total Rent","deposit_account":"Deposit Account","paid_rent":"Paid Rent","jan":"Jan","feb":"Feb","mar":"Mar","apr":"Apr","may":"May","jun":"Jun","jul":"Jul","aug":"Aug","sep":"Sep","oct":"Oct","nov":"Nov","dec":"Dec","add_new_apartment":"Add New Apartment","expense_account":"Expense Account"},"form":{"interest_date":"Interest date","book_date":"Book date","process_date":"Processing date","due_date":"Due date","foreign_amount":"Foreign amount","payment_date":"Payment date","invoice_date":"Invoice date","internal_reference":"Internal reference"},"config":{"html_language":"en"}}');
 
 /***/ }),
 

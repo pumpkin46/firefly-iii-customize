@@ -249,6 +249,15 @@ return [
     'collected' => 'Collected',
     'submitted' => 'Submitted',
     'key'       => 'Key',
+    'phone_number'              => 'Phone Number',
+    'emergency_contact'         => 'Emergency Contact',
+    'rent_start_date'           => 'Rent Start Date',
+    'rent_end_date'             => 'Rent End Date',
+    'apartment_nr'              => 'Apartment Nr',
+    'headline'                  => 'Headline',
+    'zip_code'                  => 'Zip Code',
+    'city'                      => 'City',
+    'signature'                 => 'Signature',
     'value'     => 'Content of record',
 
 

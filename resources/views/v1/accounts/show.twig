@@ -157,6 +157,7 @@
                     </p>
                 </div>
             </div>
+            <a href="{{ route('transactions.create', ['withdrawal']) }}?destination={{ account.id }}" class="btn btn-success"><i class="fa fa-plus fa-fw"></i> Create a new transaction</a>
         </div>
         {% if periods|length > 0 %}
             <div class="col-lg-2 col-md-4 col-sm-12 col-xs-12">

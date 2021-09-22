@@ -186,6 +186,18 @@ class AccountFactory
                            'virtual_balance' => $virtualBalance,
                            'active'          => $active,
                            'iban'            => $data['iban'],
+                           'phone_number'            => $data['phone_number'],
+                           'email'            => $data['email'],
+                           'emergency_contact'=> $data['emergency_contact'],
+                           'rent_start_date'  => $data['rent_start_date'],
+                           'rent_end_date'    => $data['rent_end_date'],
+                           'apartment_nr'     => $data['apartment_nr'],
+                           'expense_account'  => $data['expense_account'],
+                           'headline'         => $data['headline'],
+                           'zip_code'         => $data['zip_code'],
+                           'city'             => $data['city'],
+                           'street'           => $data['street'],
+                           'signature'  => $data['signature'],
         ];
         // fix virtual balance when it's empty
         if ('' === (string)$databaseData['virtual_balance']) {

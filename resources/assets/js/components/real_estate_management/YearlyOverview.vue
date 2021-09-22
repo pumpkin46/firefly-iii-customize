@@ -53,7 +53,7 @@
                   </thead>
                   <tr v-for="apartment in selectedAccount.apartments" v-bind:key="apartment.id" class="sortable-object apartment_row">
                       <td class="text-left">{{apartment.id}}</td>
-                      <td class="text-left">{{apartment.renter_account.name}}</td>
+                      <td class="text-left"><a :href="'/accounts/show/' + apartment.renter_account.id">{{apartment.renter_account.name}}</a></td>
                       <td class="text-left">{{apartment.totalRent}}</td>
                       <td class="text-center" v-for="n in 12" v-bind:key="n">
                         <div v-if="isPaidMonth(apartment, n)" style="color:green;cursor:pointer" @click="deleteTransaction(apartment, n)">Ok</div>

@@ -118,6 +118,43 @@ class AccountUpdateService
     private function updateAccount(Account $account, array $data): Account
     {
         // update the account itself:
+        // print_r($data['rent_start_date']);exit;
+        if (array_key_exists('phone_number', $data)) {
+            $account->phone_number = $data['phone_number'];
+        }
+        if (array_key_exists('email', $data)) {
+            $account->email = $data['email'];
+        }
+        if (array_key_exists('emergency_contact', $data)) {
+            $account->emergency_contact = $data['emergency_contact'];
+        }
+        if (array_key_exists('apartment_nr', $data)) {
+            $account->apartment_nr = $data['apartment_nr'];
+        }
+        if (array_key_exists('expense_account', $data)) {
+            $account->expense_account = $data['expense_account'];
+        }
+        if (array_key_exists('headline', $data)) {
+            $account->headline = $data['headline'];
+        }
+        if (array_key_exists('zip_code', $data)) {
+            $account->zip_code = $data['zip_code'];
+        }
+        if (array_key_exists('city', $data)) {
+            $account->city = $data['city'];
+        }
+        if (array_key_exists('street', $data)) {
+            $account->street = $data['street'];
+        }
+        if (array_key_exists('signature', $data)) {
+            $account->signature = $data['signature'];
+        }
+        if (array_key_exists('rent_start_date', $data)) {
+            $account->rent_start_date = $data['rent_start_date'];
+        }
+        if (array_key_exists('rent_end_date', $data)) {
+            $account->rent_end_date = $data['rent_end_date'];
+        }
         if (array_key_exists('name', $data)) {
             $account->name = $data['name'];
         }

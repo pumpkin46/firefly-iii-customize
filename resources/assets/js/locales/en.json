@@ -21,6 +21,7 @@
         "add_another_split": "Add another split",
         "create_apartment ": "Create Apartment",
         "edit_apartment ": "Edit Apartment",
+        "create_warning": "Create Warning",
         "submission": "Submission",
         "create_another": "After storing, return here to create another one.",
         "reset_after": "Reset form after submission",

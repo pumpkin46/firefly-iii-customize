@@ -101,6 +101,18 @@ class CreateMainTables extends Migration
                     $table->decimal('virtual_balance', 36, 24)->nullable();
                     $table->string('iban', 255)->nullable();
                     $table->boolean('active')->default(1);
+                    $table->string('phone_number', 255)->nullable();
+                    $table->string('email', 255)->nullable();
+                    $table->string('emergency_contact', 255)->nullable();
+                    $table->date('rent_start_date', 255)->nullable();
+                    $table->date('rent_end_date', 255)->nullable();
+                    $table->string('apartment_nr', 255)->nullable();
+                    $table->string('expense_account', 255)->nullable();
+                    $table->string('headline', 255)->nullable();
+                    $table->string('zip_code', 255)->nullable();
+                    $table->string('city', 255)->nullable();
+                    $table->string('street', 255)->nullable();
+                    $table->string('signature', 255)->nullable();
                     $table->boolean('encrypted')->default(0);
                     $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                     $table->foreign('account_type_id')->references('id')->on('account_types')->onDelete('cascade');

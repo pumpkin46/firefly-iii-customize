@@ -108,9 +108,30 @@ class Account extends Model
             'deleted_at' => 'datetime',
             'active'     => 'boolean',
             'encrypted'  => 'boolean',
+            'rent_start_date'  => 'date',
+            'rent_end_date' => 'date',
         ];
     /** @var array Fields that can be filled */
-    protected $fillable = ['user_id', 'account_type_id', 'name', 'active', 'virtual_balance', 'iban'];
+    protected $fillable = [
+        'user_id', 
+        'account_type_id', 
+        'name', 
+        'active', 
+        'phone_number', 
+        'email', 
+        'emergency_contact', 
+        'rent_start_date', 
+        'rent_end_date', 
+        'apartment_nr', 
+        'expense_account', 
+        'headline', 
+        'zip_code', 
+        'city', 
+        'signature', 
+        'street', 
+        'virtual_balance', 
+        'iban'
+    ];
     /** @var array Hidden from view */
     protected $hidden = ['encrypted'];
     /** @var bool */

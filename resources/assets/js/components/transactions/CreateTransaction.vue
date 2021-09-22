@@ -159,7 +159,6 @@
                       label="Vat"
                       placeholder="Vat"
                       type="number"
-                      disabled
                       error=""
                       :index="index"
                     ></custom-input>
@@ -168,7 +167,6 @@
                       label="Netto"
                       placeholder="Netto"
                       type="number"
-                      disabled
                       error=""
                       :index="index"
                     ></custom-input>
