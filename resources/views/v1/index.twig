@@ -245,13 +245,12 @@
 	<script type="text/javascript" nonce="{{ JS_NONCE }}">
 		var billCount = {{ billCount }};
 var accountFrontpageUri = '{{ route('chart.account.frontpage') }}';
+console.log(accountFrontpageUri);
 var accountRevenueUri = '{{ route('chart.account.revenue') }}';
 var accountExpenseUri = '{{ route('chart.account.expense') }}';
 var piggyInfoUri = '{{ route('json.fp.piggy-banks') }}';
 var drawVerticalLine = '';
-{
-# render vertical line with text "today" #
-}
+{# render vertical line with text "today" #}
 {% if start.lte(today) and end.gte(today) %}drawVerticalLine = '{{ today.formatLocalized(monthAndDayFormat) }}';{% endif %}
 	</script>
 
