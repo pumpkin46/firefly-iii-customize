@@ -5181,11 +5181,6 @@ function loadFile(url, callback) {
         var expense_account = accounts.find(function (e) {
           return e.id == apartment.expenseAccount;
         });
-        console.log('apartment', apartment);
-        console.log('expense', expense_account);
-        console.log('revenue', apartment.renter_account); // return;
-        // return;
-
         var zip = new (pizzip__WEBPACK_IMPORTED_MODULE_2___default())(content);
         var doc = new (docxtemplater__WEBPACK_IMPORTED_MODULE_1___default())(zip, {
           paragraphLoop: true,
@@ -5198,7 +5193,7 @@ function loadFile(url, callback) {
           "expense.zipcode": expense_account.zip_code ? expense_account.zip_code : '',
           "expense.city": expense_account.city ? expense_account.city : '',
           "revenue.name": apartment.renter_account.name,
-          "revenue.street": apartment.renter_account.street ? apartment.renter_account.street : '',
+          "revenue.street": expense_account.street ? expense_account.street : '',
           "doc.signature": expense_account.signature,
           "doc.text_input": text_input
         });

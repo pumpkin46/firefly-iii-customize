@@ -2300,7 +2300,9 @@ __webpack_require__.r(__webpack_exports__);
             var data = _ref3.data;
 
             _this2.selectedAccount.apartments.forEach(function (element) {
-              element.payments.push(data['payment']);
+              if (element.id === apartment.id) {
+                element.payments.push(data['payment']);
+              }
             });
           });
         });

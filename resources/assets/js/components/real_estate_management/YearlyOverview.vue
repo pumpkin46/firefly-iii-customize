@@ -140,7 +140,9 @@ export default {
               };
               axios.post(uri, submitData).then(({ data }) => {
                 this.selectedAccount.apartments.forEach((element) => {
-                  element.payments.push(data['payment']);
+                  if(element.id === apartment.id) {
+                    element.payments.push(data['payment']);
+                  }
                 });
               })
           })

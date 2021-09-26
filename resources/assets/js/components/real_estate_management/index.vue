@@ -201,12 +201,6 @@ export default {
         }
         let text_input = window.prompt("Please enter date");
         let expense_account = accounts.find((e) => e.id == apartment.expenseAccount);
-        console.log('apartment',apartment);
-        console.log('expense',expense_account);
-
-        console.log('revenue',apartment.renter_account);
-        // return;
-        // return;
         const zip = new PizZip(content);
         const doc = new Docxtemplater(zip, { paragraphLoop: true, linebreaks: true });
         doc.setData({
@@ -216,7 +210,7 @@ export default {
           "expense.zipcode": expense_account.zip_code?expense_account.zip_code:'',
           "expense.city": expense_account.city?expense_account.city:'',
           "revenue.name": apartment.renter_account.name,
-          "revenue.street": apartment.renter_account.street?apartment.renter_account.street:'',
+          "revenue.street": expense_account.street?expense_account.street:'',
           "doc.signature": expense_account.signature,
           "doc.text_input": text_input,
         });

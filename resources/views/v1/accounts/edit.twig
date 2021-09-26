@@ -48,6 +48,7 @@
                         <h3 class="box-title">{{ 'contact_details'|_ }}</h3>
                     </div>
                     <div class="box-body">
+                        {{ ExpandedForm.text('street') }}
                         {{ ExpandedForm.text('headline') }}
                         {{ ExpandedForm.text('zip_code') }}
                         {{ ExpandedForm.text('city') }}
@@ -63,7 +64,6 @@
                     <div class="box-body">
                         {{ ExpandedForm.text('phone_number') }}
                         {{ ExpandedForm.text('email') }}
-                        {{ ExpandedForm.text('street') }}
                         {{ ExpandedForm.text('emergency_contact') }}
                     </div>
                 </div>
@@ -72,8 +72,8 @@
                         <h3 class="box-title">{{ 'apartment_info'|_ }}</h3>
                     </div>
                     <div class="box-body">
-                        {{ ExpandedForm.date('rent_start_date', account.rent_start_date.format('Y-m-d')) }}
-                        {{ ExpandedForm.date('rent_end_date', account.rent_end_date.format('Y-m-d')) }}
+                        {{ ExpandedForm.date('rent_start_date', account.rent_start_date.format('Y-m-d'), {disabled:true}) }}
+                        {{ ExpandedForm.date('rent_end_date', account.rent_end_date.format('Y-m-d'), {disabled:true}) }}
                         {{ ExpandedForm.text('apartment_nr') }}
                         {{ ExpandedForm.text('expense_account') }}
                     </div>

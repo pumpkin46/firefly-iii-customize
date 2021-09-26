@@ -255,6 +255,7 @@ return [
     'rent_end_date'             => 'Rent End Date',
     'apartment_nr'              => 'Apartment Nr',
     'headline'                  => 'Headline',
+    'street'                    => 'Street',
     'zip_code'                  => 'Zip Code',
     'city'                      => 'City',
     'signature'                 => 'Signature',
